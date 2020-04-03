@@ -1,0 +1,20 @@
+<project name="TranspoApp" basedir=".">
+
+    <target name="clean">
+        <delete includeemptydirs="true">
+			<fileset dir="build" includes="**/*"/>
+			<fileset dir="dest" includes="**/*"/>
+		</delete>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"/>
+		<jar destfile="dest/TranspoApp.jar" basedir="build/classes"/>
+    </target>
+
+    <target name="run">
+        <java jar="dest/TranspoApp.jar" fork="true"/>
+    </target>
+
+</project>
