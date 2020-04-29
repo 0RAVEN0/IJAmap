@@ -1,4 +1,4 @@
-<project name="TranspoApp" basedir=".">
+<project name="ija-app" basedir=".">
 
     <target name="clean">
         <delete includeemptydirs="true">
@@ -10,11 +10,11 @@
     <target name="compile">
         <mkdir dir="build/classes"/>
         <javac srcdir="src" destdir="build/classes"/>
-		<jar destfile="dest/TranspoApp.jar" basedir="build/classes"/>
+		<jar destfile="dest/ija-app.jar" basedir="build/classes"/>
     </target>
 
     <target name="run">
-        <java jar="dest/TranspoApp.jar" fork="true"/>
+        <java jar="dest/ija-app.jar" fork="true"/>
     </target>
 
 </project>
