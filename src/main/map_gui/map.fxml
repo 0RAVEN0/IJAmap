@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.map_gui.Controller">
+   <center>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0" />
+        </content>
+      </ScrollPane>
+   </center>
+   <right>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="31.0" layoutY="31.0" mnemonicParsing="false" text="stupeň provozu" />
+            <Button layoutX="20.0" layoutY="85.0" mnemonicParsing="false" text="uzavrenie provozu" />
+            <TextField alignment="TOP_LEFT" layoutX="14.0" layoutY="140.0" prefHeight="260.0" prefWidth="177.0" text="Tu chcem davat jizdni rad">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
