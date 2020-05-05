@@ -11,26 +11,30 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
    <center>
-      <ScrollPane prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-        <content>
-          <AnchorPane fx:id="mapWindow" minHeight="0.0" minWidth="0.0" prefHeight="1000.0" prefWidth="1000.0" style="-fx-background-color: #ffffff;">
+      <ScrollPane pannable="true" prefViewportHeight="1000.0" prefViewportWidth="1000.0" style="-fx-background-color: #ffffff;">
+         <content>
+            <Group>
                <children>
-                  <ImageView fx:id="Imagemap" fitHeight="1000.0" fitWidth="1000.0" onScroll="#Zoom" pickOnBounds="true" preserveRatio="true" />
+                  <Pane fx:id="mapWindow" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <ImageView fx:id="Imagemap" fitHeight="1000.0" fitWidth="1000.0" onScroll="#Zoom" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
                </children>
-          </AnchorPane>
-        </content>
+            </Group>
+         </content>
       </ScrollPane>
    </center>
-   <right>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button layoutX="31.0" layoutY="31.0" mnemonicParsing="false" text="stupeň provozu" />
-            <Button layoutX="20.0" layoutY="85.0" mnemonicParsing="false" text="uzavrenie provozu" />
-            <TextField alignment="TOP_LEFT" layoutX="14.0" layoutY="140.0" prefHeight="260.0" prefWidth="177.0" text="Tu chcem davat jizdni rad">
-               <font>
-                  <Font size="14.0" />
-               </font></TextField>
-         </children>
-      </AnchorPane>
-   </right>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER_LEFT">
+        <menus>
+          <Menu mnemonicParsing="false" text="Load">
+            <items>
+              <MenuItem fx:id="MapOpen" mnemonicParsing="false" onAction="#mapClick" text="Map Load" />
+                  <MenuItem fx:id="LineOpen" mnemonicParsing="false" onAction="#lineClick" text="Line Load" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>
