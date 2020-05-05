@@ -1,4 +1,4 @@
-package main.map_gui;
+package main.java;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
