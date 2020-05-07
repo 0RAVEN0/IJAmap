@@ -2,36 +2,35 @@ package main.java;
 
 import java.util.Objects;
 
+//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Coordinate {
-    private int xPos;
-    private int yPos;
+    private int x;
+    private int y;
 
-    private Coordinate(int x, int y) {
-        xPos = x;
-        yPos = y;
-    }
+    public Coordinate() {};
 
-    public static Coordinate create(int x, int y) {
+    public Coordinate(int x, int y) {
         if (x < 0 || y < 0) {
-            return null;
+            throw new IllegalArgumentException("Both x and y coordinates must be positive");
         }
-        return new Coordinate(x,y);
+        this.x = x;
+        this.y = y;
     }
 
     public int getX() {
-        return xPos;
+        return x;
     }
 
     public int getY() {
-        return yPos;
+        return y;
     }
 
     public int diffX(Coordinate c) {
-        return this.xPos-c.xPos;
+        return this.x -c.x;
     }
 
     public int diffY(Coordinate c) {
-        return this.yPos-c.yPos;
+        return this.y -c.y;
     }
 
     public boolean isGreaterOrEqual(Coordinate coordinate) {
@@ -47,12 +46,20 @@ public class Coordinate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coordinate that = (Coordinate) o;
-        return xPos == that.xPos &&
-                yPos == that.yPos;
+        return x == that.x &&
+                y == that.y;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(xPos, yPos);
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "xPos=" + x +
+                ", yPos=" + y +
+                '}';
     }
 }
