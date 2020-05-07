@@ -10,7 +10,6 @@
     </target>
 
     <target name="compile" depends="clean">
-        <mkdir dir="build/classes"/>
         <javac srcdir="${src}" destdir="${build}"/>
 		<jar destfile="dest/ija-app.jar" basedir="${build}">
             <manifest>
