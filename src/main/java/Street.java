@@ -1,14 +1,6 @@
 package main.java;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Street {
@@ -16,19 +8,17 @@ public class Street {
     private List<Coordinate> coordinates = new ArrayList<>();
     private List<Stop> stops = new ArrayList<>();
 
-    private Street(String id, Coordinate... coordinates){
-        this.id = id;
-        this.coordinates = Arrays.asList(coordinates);
-    }
+    public Street() {};
 
-    public static Street defaultStreet(String id, Coordinate... coordinates) {
-        for (int i = 0; i < coordinates.length-1; i++) {
-            if (coordinates[i].getX() != coordinates[i+1].getX() && coordinates[i].getY() != coordinates[i+1].getY()) {
-                return null;
+    public Street(String id, List<Coordinate> coordinates){
+        for (int i = 0; i < coordinates.size()-1; i++) {
+            if (coordinates.get(i).getX() != coordinates.get(i + 1).getX() && coordinates.get(i).getY() != coordinates.get(i + 1).getY()) {
+                throw new IllegalArgumentException("Streets can only have right angle turns");
             }
         }
 
-        return new Street(id, coordinates);
+        this.id = id;
+        this.coordinates = coordinates;
     }
 
     public String getId() {
