@@ -79,7 +79,6 @@ public class Line {
      * Draw all lines into Pane from streetReader class
      */
     public List<javafx.scene.shape.Line> drawLine(List<Street> streets){
-        //textArray.add(streets.get(0).getId());
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
             for (int coorSize = 0; coorSize < streets.get(streetSize).getCoordinates().size() - 1; coorSize++) {
                 line = new javafx.scene.shape.Line();
@@ -95,6 +94,9 @@ public class Line {
         return lineArray;
     }
 
+    /**
+     * Draw name of street into Pane from streetReader class
+     */
     public List<Text> drawText(List<Street> streets){
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
 
