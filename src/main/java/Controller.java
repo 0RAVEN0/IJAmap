@@ -7,6 +7,7 @@ package main.java;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
@@ -21,6 +22,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+import static javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED;
+
 /**
  * Used for display map
  */
@@ -30,12 +33,16 @@ public class Controller implements Initializable {
     public Line lineC = new Line("line");
     public List<Street> streets = null;
     private List<javafx.scene.shape.Line> lineArray;
+    private List<Text> textArray;
 
     public File StreetFile = null;
     public File LinkFile = null;
 
     @FXML
     private Pane mapWindow;
+
+    @FXML
+    private ScrollPane scrollP;
 
 
     @Override
@@ -70,21 +77,25 @@ public class Controller implements Initializable {
     public void mapClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("YAML", "*.yaml"));
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"),
+                    new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"));
             fc.setTitle("Open your map: ");
 
             StreetFile = fc.showOpenDialog(null);
 
-            //TODO nech ti načítava len .yaml files
             if (StreetFile != null){
                 streets = stRead.read(StreetFile);
                 lineArray = lineC.drawLine(streets);
-
+                textArray = lineC.drawText(streets);
 
                 for (int i = 0; i < lineArray.size(); i++){
-                    mapWindow.getChildren().addAll(lineC.drawText(streets).get(i));
                     mapWindow.getChildren().addAll(lineArray.get(i));
                 }
+
+                for (int i = 0; i < textArray.size(); i++){
+                    mapWindow.getChildren().addAll(textArray.get(i));
+                }
+
 
             }
             else{
@@ -104,6 +115,8 @@ public class Controller implements Initializable {
     public void lineClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"),
+                    new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"));
             fc.setTitle("Open your line: ");
 
             LinkFile = fc.showOpenDialog(null);
