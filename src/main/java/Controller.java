@@ -70,6 +70,7 @@ public class Controller implements Initializable {
     public void mapClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("YAML", "*.yaml"));
             fc.setTitle("Open your map: ");
 
             StreetFile = fc.showOpenDialog(null);
