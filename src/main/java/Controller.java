@@ -92,6 +92,16 @@ public class Controller implements Initializable {
 
             if (StreetFile != null){
                 streets = stRead.read(StreetFile);
+
+                //check if all coordinates are positive
+                for (Street street : streets) {
+                    for (Coordinate coordinate : street.getCoordinates()) {
+                        if (!coordinate.check()) {
+                            throw new IllegalArgumentException("Both x and y coordinates must be positive");
+                        }
+                    }
+                }
+
                 lineArray = lineC.drawLine(streets);
                 textArray = lineC.drawText(streets);
 
