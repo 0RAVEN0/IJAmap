@@ -4,6 +4,9 @@
  */
 package main.java;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
@@ -11,14 +14,13 @@ public class Coordinate {
     private int x;
     private int y;
 
-    public Coordinate() {};
-
     /**
      * Constructor that checks if all coordinates are positive
      * @param x x position
      * @param y y position
      */
-    public Coordinate(int x, int y) {
+    @JsonCreator
+    public Coordinate(@JsonProperty("x") int x, @JsonProperty("y") int y) {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException("Both x and y coordinates must be positive");
         }
