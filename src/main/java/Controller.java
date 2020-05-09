@@ -7,9 +7,14 @@ package main.java;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -18,6 +23,8 @@ import javafx.scene.shape.*;
 import javax.swing.*;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -77,8 +84,8 @@ public class Controller implements Initializable {
     public void mapClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"),
-                    new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"));
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"),
+                    new FileChooser.ExtensionFilter("All Files", "*.*"));
             fc.setTitle("Open your map: ");
 
             StreetFile = fc.showOpenDialog(null);
@@ -88,22 +95,53 @@ public class Controller implements Initializable {
                 lineArray = lineC.drawLine(streets);
                 textArray = lineC.drawText(streets);
 
-                for (int i = 0; i < lineArray.size(); i++){
-                    mapWindow.getChildren().addAll(lineArray.get(i));
+                for (javafx.scene.shape.Line line : lineArray) {
+                    mapWindow.getChildren().addAll(line);
                 }
 
-                for (int i = 0; i < textArray.size(); i++){
-                    mapWindow.getChildren().addAll(textArray.get(i));
+                for (Text text : textArray) {
+                    mapWindow.getChildren().addAll(text);
                 }
 
 
             }
             else{
-                System.out.println("Not valid file");
+                System.err.println("Not valid file");
             }
         }
-        catch (Exception e){
-            JOptionPane.showMessageDialog(null,e);
+        catch (IllegalArgumentException e){
+            //JOptionPane.showMessageDialog(null,e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error in file, please check the file for mistakes");
+            alert.showAndWait();
+        }
+        //catching generic exception with displaying stacktrace in the error window
+        catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            String exceptionText = sw.toString();
+            Label label = new Label("The exception stacktrace was:");
+            TextArea textArea = new TextArea(exceptionText);
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
+
+            textArea.setMaxWidth(Double.MAX_VALUE);
+            textArea.setMaxHeight(Double.MAX_VALUE);
+            GridPane.setVgrow(textArea, Priority.ALWAYS);
+            GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+            GridPane expContent = new GridPane();
+            expContent.setMaxWidth(Double.MAX_VALUE);
+            expContent.add(label, 0, 0);
+            expContent.add(textArea, 0, 1);
+
+            // Set expandable Exception into the dialog pane.
+            alert.getDialogPane().setExpandableContent(expContent);
+            alert.showAndWait();
         }
 
     }
@@ -115,8 +153,8 @@ public class Controller implements Initializable {
     public void lineClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
-            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Files", "*.*"),
-                    new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"));
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"),
+                    new FileChooser.ExtensionFilter("All Files", "*.*"));
             fc.setTitle("Open your line: ");
 
             LinkFile = fc.showOpenDialog(null);
@@ -129,7 +167,11 @@ public class Controller implements Initializable {
             }
         }
         catch (Exception e){
-            JOptionPane.showMessageDialog(null,e);
+            //JOptionPane.showMessageDialog(null,e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error in file, please check the file for mistakes");
+            alert.showAndWait();
         }
     }
 
