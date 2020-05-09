@@ -70,6 +70,14 @@ public class Coordinate {
         return ( coordinate.getX() >= this.getX() && coordinate.getY() >= this.getY() );
     }
 
+    /**
+     * Checks if both coordinates are positive (if empty constructor is used)
+     * @return Returns true if coordinates are positive, false if not
+     */
+    public boolean check() {
+        return (x > 0 && y > 0);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
