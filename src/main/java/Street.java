@@ -4,6 +4,9 @@
  */
 package main.java;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,20 +15,13 @@ public class Street {
     private List<Coordinate> coordinates = new ArrayList<>();
     private List<Stop> stops = new ArrayList<>();
 
-    public Street() {};
-
     /**
-     * Constructor that ensures that the street only has right angle turns
+     * Constructor for the street
      * @param id ID of the street
      * @param coordinates List of coordinates of the street
      */
-    public Street(String id, List<Coordinate> coordinates){
-        for (int i = 0; i < coordinates.size()-1; i++) {
-            if (coordinates.get(i).getX() != coordinates.get(i + 1).getX() && coordinates.get(i).getY() != coordinates.get(i + 1).getY()) {
-                throw new IllegalArgumentException("Streets can only have right angle turns");
-            }
-        }
-
+    @JsonCreator
+    public Street(@JsonProperty("id") String id,@JsonProperty("coordinates") List<Coordinate> coordinates){
         this.id = id;
         this.coordinates = coordinates;
     }
