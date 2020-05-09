@@ -1,3 +1,7 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: Class representing street with adittional functions
+ */
 package main.java;
 
 import java.util.ArrayList;
@@ -10,6 +14,11 @@ public class Street {
 
     public Street() {};
 
+    /**
+     * Constructor that ensures that the street only has right angle turns
+     * @param id ID of the street
+     * @param coordinates List of coordinates of the street
+     */
     public Street(String id, List<Coordinate> coordinates){
         for (int i = 0; i < coordinates.size()-1; i++) {
             if (coordinates.get(i).getX() != coordinates.get(i + 1).getX() && coordinates.get(i).getY() != coordinates.get(i + 1).getY()) {
@@ -33,6 +42,11 @@ public class Street {
         return stops;
     }
 
+    /**
+     * Adds stop to the street
+     * @param stop Stop to be added
+     * @return Returns true upon success, false upon failure
+     */
     public boolean addStop(Stop stop) {
         if (this.isWithinStreet(stop)) {
             stops.add(stop);
@@ -43,14 +57,27 @@ public class Street {
         return false;
     }
 
+    /**
+     * Gets the beginning coordinate of the street
+     * @return Beginning coordinate
+     */
     public Coordinate begin() {
         return this.coordinates.get(0);
     }
 
+    /**
+     * Gets the ending coordinate of the street
+     * @return Ending coordinate
+     */
     public Coordinate end() {
         return this.coordinates.get((this.coordinates.size())-1);
     }
 
+    /**
+     * Checks if the given street follows this street
+     * @param s Street to be checked
+     * @return Returns true if the given street follows this street, false if not
+     */
     public boolean follows(Street s) {
         return ( this.begin().equals(s.begin()) ||
                 this.begin().equals(s.end()) ||
@@ -58,6 +85,11 @@ public class Street {
                 this.end().equals(s.end()) );
     }
 
+    /**
+     * Checks if the stop is within street coordinates
+     * @param stop Stop to be checked
+     * @return Returns true if stop is within this street, false if not
+     */
     public boolean isWithinStreet(Stop stop) {
         return ( (stop.getCoordinate().isGreaterOrEqual(this.begin()) && stop.getCoordinate().isLessOrEqual(this.end()))
         || (stop.getCoordinate().isLessOrEqual(this.begin()) && stop.getCoordinate().isGreaterOrEqual(this.end())) );

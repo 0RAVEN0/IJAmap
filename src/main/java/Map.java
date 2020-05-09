@@ -1,3 +1,7 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: Entry point for GUI
+ */
 package main.java;
 
 import javafx.application.Application;

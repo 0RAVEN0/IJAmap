@@ -1,3 +1,7 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: Class representing a single stop
+ */
 package main.java;
 
 import java.util.Objects;

@@ -1,5 +1,5 @@
 /**
- * Author: Romana Dzubarova (xdzuba00)
+ * Author: Michal Vanka (xvanka00) Romana Dzubarova (xdzuba00)
  * Contents: Controller for map.fxml
  */
 package main.java;

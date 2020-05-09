@@ -1,5 +1,5 @@
 /**
- * Authors: Michal Vanka (xvanka00)
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
  * Contents: Class for reading yaml files
  */
 package main.java;

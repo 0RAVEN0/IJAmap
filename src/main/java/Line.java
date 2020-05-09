@@ -1,3 +1,7 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: Representation of a line crossing one or more streets with multiple stops
+ */
 package main.java;
 
 
@@ -22,14 +26,17 @@ public class Line {
     private javafx.scene.shape.Line line = null;
     private Text text = null;
 
-    Line(String id) {
+    public Line() {};
+
+    public Line(String id) {
         this.id = id;
     }
 
-    public static Line defaultLine(String id) {
-        return new Line(id);
-    }
-
+    /**
+     * Adds street to this line
+     * @param street Street to be added
+     * @return Returns true upon success, false upon failure
+     */
     public boolean addStreet(Street street) {
         if (stops.isEmpty()) {
             return false;
@@ -41,6 +48,11 @@ public class Line {
         return true;
     }
 
+    /**
+     * Adds stop to this line
+     * @param stop Stop to be added
+     * @return Returns true upon success, false upon failure
+     */
     public boolean addStop(Stop stop) {
         if (this.stops.isEmpty()) {
             stops.add(stop);

@@ -1,3 +1,7 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: Map coordinates representation
+ */
 package main.java;
 
 import java.util.Objects;
@@ -9,6 +13,11 @@ public class Coordinate {
 
     public Coordinate() {};
 
+    /**
+     * Constructor that checks if all coordinates are positive
+     * @param x x position
+     * @param y y position
+     */
     public Coordinate(int x, int y) {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException("Both x and y coordinates must be positive");
@@ -16,7 +25,7 @@ public class Coordinate {
         this.x = x;
         this.y = y;
     }
-
+    
     public int getX() {
         return x;
     }
@@ -25,18 +34,38 @@ public class Coordinate {
         return y;
     }
 
+    /**
+     * Calculates difference between x positions of two coordinates (this.x - that.x)
+     * @param c Coordinate to take x from
+     * @return Returns the difference (this.x - that.x)
+     */
     public int diffX(Coordinate c) {
         return this.x -c.x;
     }
 
+    /**
+     * Calculates difference between y positions of two coordinates (this.y - that.y)
+     * @param c Coordinate to take y from
+     * @return Returns the difference (this.y - that.y)
+     */
     public int diffY(Coordinate c) {
         return this.y -c.y;
     }
 
+    /**
+     * Checks if given coordinate is greater or equal to this coordinate
+     * @param coordinate Coordinate to be checked
+     * @return Returns true if given coordinate is greater or equal, false if not
+     */
     public boolean isGreaterOrEqual(Coordinate coordinate) {
         return ( coordinate.getX() <= this.getX() && coordinate.getY() <= this.getY() );
     }
 
+    /**
+     * Checks if given coordinate is less or equal to this coordinate
+     * @param coordinate Coordinate to be checked
+     * @return Returns true if given coordinate is less or equal, false if not
+     */
     public boolean isLessOrEqual(Coordinate coordinate) {
         return ( coordinate.getX() >= this.getX() && coordinate.getY() >= this.getY() );
     }
