@@ -15,9 +15,9 @@ import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
 
 public class Line {
-    private final String id;
-    private final List<Stop> stops = new ArrayList<>();
-    private final List<Street> streets = new ArrayList<>();
+    private String id;
+    private List<Stop> stops = new ArrayList<>();
+    private List<Street> streets = new ArrayList<>();
     private final List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private final List<Text> textArray = new ArrayList<>();
     
