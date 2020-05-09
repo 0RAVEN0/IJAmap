@@ -85,15 +85,15 @@
 -   id: street15
     coordinates:
         -   x: 513
-            y: 543
+            y: 657
         -   x: 435
             y: 735
 -   id: street16
     coordinates:
-        -   x: 491
-            y: 255
-        -   x: 491
-            y: 455
+        -   x: 621
+            y: 543
+        -   x: 621
+            y: 657
 -   id: street17
     coordinates:
         -   x: 858
@@ -110,7 +110,7 @@
     coordinates:
         -   x: 1011
             y: 657
-        -   x: 1016
+        -   x: 1107
             y: 565
 -   id: street20
     coordinates:
