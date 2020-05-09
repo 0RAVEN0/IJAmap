@@ -97,7 +97,7 @@ public class Controller implements Initializable {
                 for (Street street : streets) {
                     for (Coordinate coordinate : street.getCoordinates()) {
                         if (!coordinate.check()) {
-                            throw new IllegalArgumentException("Both x and y coordinates must be positive");
+                            throw new IllegalStateException("Both x and y coordinates must be positive");
                         }
                     }
                 }
@@ -121,14 +121,17 @@ public class Controller implements Initializable {
         }
         catch (IllegalArgumentException e){
             //JOptionPane.showMessageDialog(null,e);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error in file, please check the file for mistakes");
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText("Error in file, please check the file for mistakes");
+//            alert.showAndWait();
+            e.printStackTrace();
         }
         //catching generic exception with displaying stacktrace in the error window
         catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Unexpected exception");
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);

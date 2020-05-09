@@ -10,5 +10,23 @@
     coordinates:
         -   x: 500
             y: 500
-        -   x: 950
+        -   x: 1050
             y: 500
+-   id: street3
+    coordinates:
+        -   x: 331
+            y: 134
+        -   x: 581
+            y: 314
+-   id: street4
+    coordinates:
+        -   x: 581
+            y: 314
+        -   x: 916
+            y: 411    
+-   id: street4
+    coordinates:
+        -   x: 916
+            y: 411
+        -   x: 1093
+            y: 523
