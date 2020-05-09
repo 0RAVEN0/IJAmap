@@ -4,17 +4,16 @@
  */
 package main.java;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -39,15 +38,43 @@ public class Controller implements Initializable {
     public File StreetFile = null;
     public File LinkFile = null;
 
+    TextArea timeTable = new TextArea("Tu bude ten jizdni rad");
+    ChoiceBox roadDegree = new ChoiceBox(FXCollections.observableArrayList(
+            "1", "2", "3"));
+    CheckBox closeStreet = new CheckBox("Close street");
+    AnchorPane anchorP;
+
+
     @FXML
     private Pane mapWindow;
 
     @FXML
     private ScrollPane scrollP;
 
+    @FXML
+    private BorderPane borderP;
+
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        timeTable.setPrefWidth(200);
+        timeTable.setPrefHeight(300);
+        timeTable.setLayoutY(130);
+
+        roadDegree.setTooltip(new Tooltip("Select road degree"));
+        roadDegree.setLayoutX(25);
+        roadDegree.setLayoutY(5);
+        roadDegree.setPrefWidth(150);
+
+        closeStreet.setLayoutX(25);
+        closeStreet.setLayoutY(75);
+        closeStreet.setPrefWidth(150);
+        closeStreet.setSelected(false);
+
+        anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
     }
 
     /**
@@ -93,12 +120,19 @@ public class Controller implements Initializable {
 
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
+
+                    line.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                            new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    borderP.setRight(anchorP);
+                                }
+                            });
                 }
 
                 for (Text text : textArray) {
                     mapWindow.getChildren().addAll(text);
                 }
-
 
             }
             else{
