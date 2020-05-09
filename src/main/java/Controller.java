@@ -15,12 +15,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.scene.shape.*;
-
-import javax.swing.*;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -29,18 +25,16 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
-import static javafx.scene.control.ScrollPane.ScrollBarPolicy.AS_NEEDED;
-
 /**
  * Used for display map
  */
 public class Controller implements Initializable {
 
-    streetReader stRead = new streetReader();
+    StreetReader stRead = new StreetReader();
     public Line lineC = new Line("line");
     public List<Street> streets = null;
-    private List<javafx.scene.shape.Line> lineArray;
-    private List<Text> textArray;
+    private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
+    private List<Text> textArray = new ArrayList<>();
 
     public File StreetFile = null;
     public File LinkFile = null;
@@ -93,15 +87,6 @@ public class Controller implements Initializable {
             if (StreetFile != null){
                 streets = stRead.read(StreetFile);
 
-                //check if all coordinates are positive
-                for (Street street : streets) {
-                    for (Coordinate coordinate : street.getCoordinates()) {
-                        if (!coordinate.check()) {
-                            throw new IllegalStateException("Both x and y coordinates must be positive");
-                        }
-                    }
-                }
-
                 lineArray = lineC.drawLine(streets);
                 textArray = lineC.drawText(streets);
 
@@ -122,11 +107,11 @@ public class Controller implements Initializable {
         }
         catch (IllegalArgumentException e){
             //JOptionPane.showMessageDialog(null,e);
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Error");
-//            alert.setHeaderText("Error in file, please check the file for mistakes");
-//            alert.showAndWait();
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error in file, please check the file for mistakes");
+            alert.showAndWait();
+            //e.printStackTrace();
         }
         //catching generic exception with displaying stacktrace in the error window
         catch (Exception e) {
