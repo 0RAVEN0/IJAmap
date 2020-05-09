@@ -20,7 +20,7 @@ public class Map extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("../resources/map.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/main/resources/map.fxml"));
 
         primaryStage.setTitle("Map");
         primaryStage.setScene(new Scene(root, 600, 400));
