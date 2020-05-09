@@ -1,32 +1,120 @@
 -   id: street1
     coordinates:
-        -   x: 400
-            y: 400
-        -   x: 800
-            y: 400
-        -   x: 800
-            y: 630
+        -   x: 379
+            y: 93
+        -   x: 501
+            y: 219
 -   id: street2
     coordinates:
-        -   x: 500
-            y: 500
-        -   x: 1050
-            y: 500
+        -   x: 379
+            y: 93
+        -   x: 379
+            y: 323
 -   id: street3
     coordinates:
-        -   x: 331
-            y: 134
-        -   x: 581
-            y: 314
+        -   x: 379
+            y: 323
+        -   x: 1019
+            y: 323
 -   id: street4
     coordinates:
-        -   x: 581
-            y: 314
-        -   x: 916
-            y: 411    
+        -   x: 501
+            y: 219
+        -   x: 1019
+            y: 220   
 -   id: street5
     coordinates:
-        -   x: 916
-            y: 411
-        -   x: 1093
-            y: 523
+        -   x: 530
+            y: 150
+        -   x: 530
+            y: 657
+-   id: street6
+    coordinates:
+        -   x: 737
+            y: 141
+        -   x: 737
+            y: 543
+-   id: street7
+    coordinates:
+        -   x: 950
+            y: 164
+        -   x: 950
+            y: 657
+-   id: street8
+    coordinates:
+        -   x: 513
+            y: 432
+        -   x: 950
+            y: 432
+-   id: street9
+    coordinates:
+        -   x: 513
+            y: 543
+        -   x: 1003
+            y: 543
+-   id: street10
+    coordinates:
+        -   x: 1019
+            y: 220
+        -   x: 1104
+            y: 127
+-   id: street11
+    coordinates:
+        -   x: 1019
+            y: 220
+        -   x: 1019
+            y: 323
+-   id: street12
+    coordinates:
+        -   x: 513
+            y: 657
+        -   x: 1011
+            y: 657
+-   id: street13
+    coordinates:
+        -   x: 513
+            y: 432
+        -   x: 454
+            y: 488
+-   id: street14
+    coordinates:
+        -   x: 454
+            y: 488
+        -   x: 513
+            y: 543
+-   id: street15
+    coordinates:
+        -   x: 513
+            y: 543
+        -   x: 435
+            y: 735
+-   id: street16
+    coordinates:
+        -   x: 491
+            y: 255
+        -   x: 491
+            y: 455
+-   id: street17
+    coordinates:
+        -   x: 858
+            y: 543
+        -   x: 858
+            y: 657
+-   id: street18
+    coordinates:
+        -   x: 1003
+            y: 543
+        -   x: 1065
+            y: 607
+-   id: street19
+    coordinates:
+        -   x: 1011
+            y: 657
+        -   x: 1016
+            y: 565
+-   id: street20
+    coordinates:
+        -   x: 1011
+            y: 657
+        -   x: 1098
+            y: 741
