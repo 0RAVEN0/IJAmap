@@ -1,6 +1,7 @@
 <project name="ija-app" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
     <property name="src" location="src"/>
     <property name="build" location="build"/>
+    <property name="lib" location="lib"/>
 
     <target name="clean">
         <delete includeemptydirs="true">
@@ -10,16 +11,23 @@
     </target>
 
     <target name="compile" depends="clean">
-        <javac srcdir="${src}" destdir="${build}"/>
+        <javac srcdir="${src}" destdir="${build}">
+            <classpath>
+                <fileset dir="${lib}">
+                    <include name="**/*.jar" />
+                </fileset>
+            </classpath>
+        </javac>
 		<jar destfile="dest/ija-app.jar" basedir="${build}">
             <manifest>
                 <attribute name="Main-Class" value="main.java.main"/>
             </manifest>
             <fileset dir="${src}" includes="main/resources/map.fxml"/>
+            <zipgroupfileset dir="${lib}" includes="**/*.jar"/>
         </jar>
     </target>
 
-    <target name="run">
+    <target name="run" depends="compile">
         <java jar="dest/ija-app.jar" fork="true"/>
     </target>
 
