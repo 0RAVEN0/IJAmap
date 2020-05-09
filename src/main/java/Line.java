@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
@@ -26,8 +27,7 @@ public class Line {
     private javafx.scene.shape.Line line = null;
     private Text text = null;
 
-    public Line() {};
-
+    @JsonCreator
     public Line(String id) {
         this.id = id;
     }
@@ -93,7 +93,7 @@ public class Line {
     }
 
     /**
-     * Draw all lines into Pane from streetReader class
+     * Draw all lines into Pane from StreetReader class
      */
     public List<javafx.scene.shape.Line> drawLine(List<Street> streets){
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
@@ -114,7 +114,7 @@ public class Line {
     }
 
     /**
-     * Draw name of street into Pane from streetReader class
+     * Draw name of street into Pane from StreetReader class
      */
     public List<Text> drawText(List<Street> streets){
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
