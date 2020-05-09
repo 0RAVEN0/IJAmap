@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Used for reading streets from yaml files
  */
-public class streetReader {
+public class StreetReader {
     private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     /**
