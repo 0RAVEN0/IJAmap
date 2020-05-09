@@ -105,6 +105,7 @@ public class Controller implements Initializable {
                 lineArray = lineC.drawLine(streets);
                 textArray = lineC.drawText(streets);
 
+
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
                 }

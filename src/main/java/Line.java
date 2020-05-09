@@ -118,19 +118,21 @@ public class Line {
      */
     public List<Text> drawText(List<Street> streets){
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
-
             if (streets.get(streetSize).getCoordinates().get(0).getX() == streets.get(streetSize).getCoordinates().get(1).getX()){
-                text = new Text(Math.abs(streets.get(streetSize).getCoordinates().get(streetSize).getX() - 10), Math.abs(streets.get(streetSize).getCoordinates().get(0).getY() + streets.get(streetSize).getCoordinates().get(1).getY()) / 2.0, streets.get(streetSize).getId());
+                text = new Text(Math.abs(streets.get(streetSize).getCoordinates().get(0).getX() - 10), Math.abs(streets.get(streetSize).getCoordinates().get(0).getY() + streets.get(streetSize).getCoordinates().get(1).getY()) / 2.0, streets.get(streetSize).getId());
                 text.setRotate(-90);
             }
 
-            if (streets.get(streetSize).getCoordinates().get(0).getY() == streets.get(streetSize).getCoordinates().get(1).getY()) {
-                text = new Text(Math.abs(streets.get(streetSize).getCoordinates().get(0).getX() + streets.get(streetSize).getCoordinates().get(1).getX()) / 2.0, Math.abs(streets.get(streetSize).getCoordinates().get(streetSize).getY() - 10), streets.get(streetSize).getId());
+            else if (streets.get(streetSize).getCoordinates().get(0).getY() == streets.get(streetSize).getCoordinates().get(1).getY()) {
+                text = new Text(Math.abs(streets.get(streetSize).getCoordinates().get(0).getX() + streets.get(streetSize).getCoordinates().get(1).getX()) / 2.0, Math.abs(streets.get(streetSize).getCoordinates().get(0).getY() - 10), streets.get(streetSize).getId());
+            }
+
+            else{
+                text = new Text(Math.abs(streets.get(streetSize).getCoordinates().get(0).getX() + streets.get(streetSize).getCoordinates().get(1).getX()) / 2.0, Math.abs(streets.get(streetSize).getCoordinates().get(0).getY() + streets.get(streetSize).getCoordinates().get(1).getY()) / 2.0, streets.get(streetSize).getId());
             }
 
             text.setFont(Font.font ("Verdana", 12));
             textArray.add(text);
-
         }
 
         return textArray;
