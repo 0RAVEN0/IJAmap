@@ -14,16 +14,10 @@ public class Stop {
     private Coordinate coordinate = null;
     private Street street = null;
     private String name;
-    private String streetID;
 
     @JsonCreator
-    public Stop(@JsonProperty("id") String id,@JsonProperty("coordinate") Coordinate coordinate,@JsonProperty("streetID") String streetID) {
+    public Stop(@JsonProperty("id") String id,@JsonProperty("coordinate") Coordinate coordinate) {
         this.coordinate = coordinate;
-        this.id = id;
-        this.streetID = streetID;
-    }
-
-    public Stop(String id){
         this.id = id;
     }
 
@@ -37,10 +31,6 @@ public class Stop {
 
     public Street getStreet() {
         return street;
-    }
-
-    public String getStreetID() {
-        return streetID;
     }
 
     public void setStreet(Street street) {
