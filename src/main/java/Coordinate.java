@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-//@JsonIgnoreProperties(ignoreUnknown = true)
 public class Coordinate {
     private int x;
     private int y;
