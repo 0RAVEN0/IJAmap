@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Used for reading streets from yaml files
  */
-public class StreetReader {
+public class Reader {
     private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     /**
@@ -22,7 +22,7 @@ public class StreetReader {
      * @param ymlFile The yaml file with streets
      * @return List of streets
      */
-    public List<Street> read(File ymlFile) {
+    public List<Street> readStreets(File ymlFile) {
         List<Street> streets = null;
         try {
             streets = mapper.readValue(ymlFile, new TypeReference<List<Street>>() {});
@@ -31,6 +31,22 @@ public class StreetReader {
             e.printStackTrace();
         }
         return streets;
+    }
+
+    /**
+     * Reads a list of lines from a yaml file and stores them in a list
+     * @param ymlFile The yaml file with lines
+     * @return List of lines
+     */
+    public List<Line> readLines(File ymlFile) {
+        List<Line> lines = null;
+        try {
+            lines = mapper.readValue(ymlFile, new TypeReference<List<Line>>() {});
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lines;
     }
 
 }
