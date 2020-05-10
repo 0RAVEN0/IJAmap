@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Line {
     private String id;
     private List<Stop> stops;
-    private List<Street> streets;
+    private List<Street> streets = new ArrayList<>();
     private List<String> streetIDs;
 
     @JsonCreator
@@ -53,6 +53,9 @@ public class Line {
     public boolean addStreet(Street street) {
         if (stops.isEmpty()) {
             return false;
+        }
+        if (streets.isEmpty()) {
+            streets.add(street);
         }
         if (!street.follows(this.streets.get(this.streets.size()-1))) {
            return false;
