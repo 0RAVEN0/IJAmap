@@ -101,7 +101,7 @@ public class Controller implements Initializable {
             StreetFile = fc.showOpenDialog(null);
 
             if (StreetFile != null){
-                streets = stRead.read(StreetFile);
+                streets = stRead.readStreets(StreetFile);
                 streetMap = streets.stream().collect(Collectors.toMap(Street::getId, street -> street));
 
 
@@ -142,7 +142,6 @@ public class Controller implements Initializable {
             }
         }
         catch (IllegalArgumentException e){
-            //JOptionPane.showMessageDialog(null,e);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Error in file, please check the file for mistakes");
@@ -151,32 +150,7 @@ public class Controller implements Initializable {
         }
         //catching generic exception with displaying stacktrace in the error window
         catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Unexpected exception");
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-
-            String exceptionText = sw.toString();
-            Label label = new Label("The exception stacktrace was:");
-            TextArea textArea = new TextArea(exceptionText);
-            textArea.setEditable(false);
-            textArea.setWrapText(true);
-
-            textArea.setMaxWidth(Double.MAX_VALUE);
-            textArea.setMaxHeight(Double.MAX_VALUE);
-            GridPane.setVgrow(textArea, Priority.ALWAYS);
-            GridPane.setHgrow(textArea, Priority.ALWAYS);
-
-            GridPane expContent = new GridPane();
-            expContent.setMaxWidth(Double.MAX_VALUE);
-            expContent.add(label, 0, 0);
-            expContent.add(textArea, 0, 1);
-
-            // Set expandable Exception into the dialog pane.
-            alert.getDialogPane().setExpandableContent(expContent);
-            alert.showAndWait();
+            StacktraceErrWindow.display(e);
         }
 
     }
@@ -240,11 +214,7 @@ public class Controller implements Initializable {
             alert.showAndWait();
         }
         catch (Exception e){
-            //JOptionPane.showMessageDialog(null,e);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText("Error in file, please check the file for mistakes");
-            alert.showAndWait();
+            StacktraceErrWindow.display(e);
         }
     }
 
