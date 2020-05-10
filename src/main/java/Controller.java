@@ -4,12 +4,10 @@
  */
 package main.java;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -19,8 +17,6 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -32,10 +28,11 @@ import java.util.stream.Collectors;
  */
 public class Controller implements Initializable {
 
-    StreetReader stRead = new StreetReader();
+    Reader stRead = new Reader();
     public ShapeLine lineC = new ShapeLine();
     private List<Street> streets = null;
     private Map<String, Street> streetMap = null;
+    private List<Line> lines = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private List<Text> textArray = new ArrayList<>();
 
@@ -189,6 +186,13 @@ public class Controller implements Initializable {
      * @param actionEvent
      */
     public void lineClick(ActionEvent actionEvent) {
+        if (streets == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Map file needs to be loaded first");
+            alert.showAndWait();
+            return;
+        }
         try {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("YAML (*.yaml)", "*.yaml"),
@@ -198,11 +202,42 @@ public class Controller implements Initializable {
             LinkFile = fc.showOpenDialog(null);
 
             if (LinkFile != null){
-                System.out.println(LinkFile.getAbsolutePath());
-            }
+                lines = stRead.readLines(LinkFile);
+
+                //check if all streets within all lines are valid and add them, same with stops
+                for(Line line : lines) {
+                    for (Stop stop : line.getStops()) {
+                        boolean found = false;
+                        for(Street street : streets) {
+                            if(street.addStop(stop)) {
+                                found = true;
+                                line.addStreet(street);
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            throw new NoSuchElementException("Stop \"" + stop.getId() + "\" is not within any street.");
+                        }
+                    } //end for Stop stop
+//                    for(String streetID : line.getStreetIDs()) {
+//                        Street street = streetMap.get(streetID);
+//                        if(street == null) {
+//                            throw new NoSuchElementException("Street \""+streetID+"\" not found on the map.");
+//                        }
+//                        line.addStreet(street);
+//                    } //end for String streetID
+
+                } //end for Line line
+            } //end if
             else{
                 System.out.println("Not valid file");
             }
+        }
+        catch (NoSuchElementException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Line file:" + e.getMessage());
+            alert.showAndWait();
         }
         catch (Exception e){
             //JOptionPane.showMessageDialog(null,e);
