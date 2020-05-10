@@ -1,0 +1,10 @@
+-   id: line1
+    stops:
+        -   id: L1stop1
+            coordinate:
+                x: 582
+                y: 219
+    streetIDs:
+        -   street4
+        -   street1
+        -   street10
