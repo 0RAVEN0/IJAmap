@@ -23,15 +23,18 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * Used for display map
+ * Used for displaying a map
  */
 public class Controller implements Initializable {
 
     StreetReader stRead = new StreetReader();
-    public Line lineC = new Line("line");
-    public List<Street> streets = null;
+    public ShapeLine lineC;
+    private List<Street> streets = null;
+    private Map<String, Street> streetMap = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private List<Text> textArray = new ArrayList<>();
 
@@ -113,6 +116,8 @@ public class Controller implements Initializable {
 
             if (StreetFile != null){
                 streets = stRead.read(StreetFile);
+                streetMap = streets.stream().collect(Collectors.toMap(Street::getId, street -> street));
+
 
                 lineArray = lineC.drawLine(streets);
                 textArray = lineC.drawText(streets);
