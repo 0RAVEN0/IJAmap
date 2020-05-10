@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class Controller implements Initializable {
 
     StreetReader stRead = new StreetReader();
-    public ShapeLine lineC;
+    public ShapeLine lineC = new ShapeLine();
     private List<Street> streets = null;
     private Map<String, Street> streetMap = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
