@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -38,9 +39,10 @@ public class Controller implements Initializable {
     public File StreetFile = null;
     public File LinkFile = null;
 
-    TextArea timeTable = new TextArea("Tu bude ten jizdni rad");
-    ChoiceBox roadDegree = new ChoiceBox(FXCollections.observableArrayList(
-            "1", "2", "3"));
+    private boolean click = false;
+
+    TextArea timeTable = new TextArea();
+    ComboBox roadDegree = new ComboBox();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
@@ -49,7 +51,7 @@ public class Controller implements Initializable {
     private Pane mapWindow;
 
     @FXML
-    private ScrollPane scrollP;
+    private Group groupP;
 
     @FXML
     private BorderPane borderP;
@@ -59,22 +61,9 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        timeTable.setPrefWidth(200);
-        timeTable.setPrefHeight(300);
-        timeTable.setLayoutY(130);
-
-        roadDegree.setTooltip(new Tooltip("Select road degree"));
-        roadDegree.setLayoutX(25);
-        roadDegree.setLayoutY(5);
-        roadDegree.setPrefWidth(150);
-
-        closeStreet.setLayoutX(25);
-        closeStreet.setLayoutY(75);
-        closeStreet.setPrefWidth(150);
-        closeStreet.setSelected(false);
-
         anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
+        roadDegree.setPromptText("Road degree");
+        roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
     }
 
     /**
@@ -120,13 +109,24 @@ public class Controller implements Initializable {
 
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
-
                     line.addEventHandler(MouseEvent.MOUSE_CLICKED,
                             new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent event) {
-                                    borderP.setRight(anchorP);
+                                    if (!click) {
+                                        visibleNode();
+                                        borderP.setRight(anchorP);
+                                        click = true;
+                                        return;
+                                    }
+
+                                    if (click){
+                                        borderP.setRight(null);
+                                        click = false;
+                                        return;
+                                    }
                                 }
+
                             });
                 }
 
@@ -206,6 +206,23 @@ public class Controller implements Initializable {
             alert.setHeaderText("Error in file, please check the file for mistakes");
             alert.showAndWait();
         }
+    }
+
+    private void visibleNode(){
+        timeTable.setPrefWidth(200);
+        timeTable.setPrefHeight(230);
+        timeTable.setLayoutY(130);
+        timeTable.setEditable(false);
+        timeTable.setText("Tu bude ten jizdni rad");
+
+        roadDegree.setLayoutX(25);
+        roadDegree.setLayoutY(5);
+        roadDegree.setPrefWidth(150);
+
+        closeStreet.setLayoutX(25);
+        closeStreet.setLayoutY(75);
+        closeStreet.setPrefWidth(150);
+        closeStreet.setSelected(false);
     }
 
 }

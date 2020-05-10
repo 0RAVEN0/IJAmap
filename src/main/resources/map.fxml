@@ -25,7 +25,7 @@
    <center>
       <ScrollPane fx:id="scrollP" fitToHeight="true" maxHeight="-Infinity" maxWidth="-Infinity" pannable="true" prefHeight="1080.0" prefViewportHeight="1920.0" prefViewportWidth="1080.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
          <content>
-            <Group>
+            <Group fx:id="groupP">
                <children>
                   <Pane fx:id="mapWindow" onScroll="#Zoom" prefHeight="361.0" prefWidth="597.0" />
                </children>
