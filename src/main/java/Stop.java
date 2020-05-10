@@ -4,6 +4,9 @@
  */
 package main.java;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Stop {
@@ -11,11 +14,13 @@ public class Stop {
     private Coordinate coordinate = null;
     private Street street = null;
     private String name;
+    private String streetID;
 
-    public Stop(String id, Coordinate coordinate, Street street) {
+    @JsonCreator
+    public Stop(@JsonProperty("id") String id,@JsonProperty("coordinate") Coordinate coordinate,@JsonProperty("streetID") String streetID) {
         this.coordinate = coordinate;
         this.id = id;
-        this.street = street;
+        this.streetID = streetID;
     }
 
     public Stop(String id){
@@ -32,6 +37,10 @@ public class Stop {
 
     public Street getStreet() {
         return street;
+    }
+
+    public String getStreetID() {
+        return streetID;
     }
 
     public void setStreet(Street street) {
