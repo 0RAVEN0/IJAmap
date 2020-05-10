@@ -25,7 +25,7 @@ public class Line {
     private final List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private final List<Text> textArray = new ArrayList<>();
     
-    private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","IVORY","LAVENDER","LINEN","MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN","PURPLE","GREY"};
+    private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET","MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN","PURPLE","GREY"};
 
     private javafx.scene.shape.Line line = null;
     private Text text = null;
