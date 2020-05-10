@@ -29,6 +29,22 @@ public class Line {
         this.streetIDs = streetIDs;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public List<String> getStreetIDs() {
+        return streetIDs;
+    }
+
+    public List<Street> getStreets() {
+        return streets;
+    }
+
+    public List<Stop> getStops() {
+        return stops;
+    }
+
     /**
      * Adds street to this line
      * @param street Street to be added
