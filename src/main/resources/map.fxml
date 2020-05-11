@@ -33,4 +33,18 @@
          </content>
       </ScrollPane>
    </center>
+   <bottom>
+      <AnchorPane fx:id="timeAnchor" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="Clock" layoutX="5.0" prefHeight="38.0" prefWidth="80.0" text="Label" />
+            <Button fx:id="plusBtn" alignment="CENTER" layoutX="250.0" layoutY="10.0" mnemonicParsing="false" onAction="#fasterTime" prefHeight="15.0" prefWidth="30.0" text="+" />
+            <Button fx:id="minusBtn" alignment="CENTER" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#slowerTime" prefHeight="15.0" prefWidth="30.0" text="-" />
+            <TextField fx:id="setHour" layoutX="72.0" layoutY="10.0" prefHeight="15.0" prefWidth="30.0" />
+            <Label layoutX="105.0" layoutY="10.0" text="h : " />
+            <TextField fx:id="setMinute" layoutX="135.0" layoutY="10.0" prefHeight="15.0" prefWidth="30.0" />
+            <Label layoutX="170.0" layoutY="7.0" text="m" />
+            <Button fx:id="setBtn" layoutX="205.0" layoutY="10.0" mnemonicParsing="false" onAction="#setNewTime" prefHeight="15.0" prefWidth="30.0" text="Set" />
+         </children>
+      </AnchorPane>
+   </bottom>
 </BorderPane>
