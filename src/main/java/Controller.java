@@ -247,12 +247,17 @@ public class Controller implements Initializable {
 
                 //check if all streets within all lines are valid and add them, same with stops
                 for(Line line : lines) {
+                    if (line.getStops().size() < 2) {
+                        throw new NoSuchElementException("At least 2 stops are necessary to form a line. (Line ID: \"" + line.getId() +"\")");
+                    }
                     for (Stop stop : line.getStops()) {
                         boolean found = false;
                         for(Street street : streets) {
                             if(street.addStop(stop)) {
                                 found = true;
-                                line.addStreet(street);
+                                if(!line.addStreet(street)) {
+                                    throw new IllegalArgumentException("Street \"" + street.getId() + "\" does not follow the last street.");
+                                }
                                 break;
                             }
                         }
@@ -277,7 +282,13 @@ public class Controller implements Initializable {
         catch (NoSuchElementException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Line file:" + e.getMessage());
+            alert.setHeaderText("Line file: " + e.getMessage());
+            alert.showAndWait();
+        }
+        catch (IllegalArgumentException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Line file street error: " + e.getMessage());
             alert.showAndWait();
         }
         catch (Exception e){

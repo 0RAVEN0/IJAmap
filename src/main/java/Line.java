@@ -9,6 +9,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,22 +21,18 @@ public class Line {
     private String id;
     private List<Stop> stops;
     private List<Street> streets = new ArrayList<>();
-    private List<String> streetIDs;
+    private List<Journey> journeys = new ArrayList<>();
 
     @JsonCreator
-    public Line(@JsonProperty("id") String id, @JsonProperty("stops") List<Stop> stops,@JsonProperty("streetIDs") List<String> streetIDs) {
+    public Line(@JsonProperty("id") String id, @JsonProperty("stops") List<Stop> stops) {
         this.id = id;
-        this.stops = stops;
-        this.streetIDs = streetIDs;
+        this.stops = stops.stream().distinct().collect(Collectors.toList());
     }
 
     public String getId() {
         return id;
     }
 
-    public List<String> getStreetIDs() {
-        return streetIDs;
-    }
 
     public List<Street> getStreets() {
         return streets;
@@ -57,6 +54,9 @@ public class Line {
         if (streets.isEmpty()) {
             streets.add(street);
         }
+        if (streets.contains(street)) {
+            return true;
+        }
         if (!street.follows(this.streets.get(this.streets.size()-1))) {
            return false;
         }
@@ -75,11 +75,14 @@ public class Line {
             streets.add(stop.getStreet());
             return true;
         }
+        if (this.stops.contains(stop)) {
+            return true;
+        }
         if (!stop.getStreet().follows(this.streets.get(this.streets.size()-1))) {
             return false;
         }
-        stops.add(stop);
-        streets.add(stop.getStreet());
+        this.stops.add(stop);
+        this.streets.add(stop.getStreet());
         return true;
     }
 
