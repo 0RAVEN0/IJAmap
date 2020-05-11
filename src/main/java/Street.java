@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Street {
     private String id;
-    private List<Coordinate> coordinates = new ArrayList<>();
+    private List<Coordinate> coordinates;
     private List<Stop> stops = new ArrayList<>();
 
     /**
@@ -44,6 +44,9 @@ public class Street {
      * @return Returns true upon success, false upon failure
      */
     public boolean addStop(Stop stop) {
+        if (this.stops.contains(stop)) {
+            return true;
+        }
         if (this.isWithinStreet(stop)) {
             stops.add(stop);
             stop.setStreet(this);
