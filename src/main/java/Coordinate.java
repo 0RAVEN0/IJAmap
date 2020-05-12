@@ -53,32 +53,6 @@ public class Coordinate {
         return this.y -c.y;
     }
 
-    /**
-     * Checks if given coordinate is greater or equal to this coordinate
-     * @param coordinate Coordinate to be checked
-     * @return Returns true if given coordinate is greater or equal, false if not
-     */
-    public boolean isGreaterOrEqual(Coordinate coordinate) {
-        return ( coordinate.getX() <= this.getX() && coordinate.getY() <= this.getY() );
-    }
-
-    /**
-     * Checks if given coordinate is less or equal to this coordinate
-     * @param coordinate Coordinate to be checked
-     * @return Returns true if given coordinate is less or equal, false if not
-     */
-    public boolean isLessOrEqual(Coordinate coordinate) {
-        return ( coordinate.getX() >= this.getX() && coordinate.getY() >= this.getY() );
-    }
-
-    /**
-     * Checks if both coordinates are positive (if empty constructor is used)
-     * @return Returns true if coordinates are positive, false if not
-     */
-    public boolean check() {
-        return (x > 0 && y > 0);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
