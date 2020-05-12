@@ -4,30 +4,20 @@
  */
 package main.java;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.File;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -89,8 +79,10 @@ public class Controller implements Initializable {
     @FXML
     private Label timeSpeed;
 
-
-
+    /**
+     * Run time and change time by adding time into text fields. Set this time into Label.
+     * @param updateTime can change time speed
+     */
     public void timeStart(double updateTime){
         programTime = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -160,6 +152,7 @@ public class Controller implements Initializable {
      * Open Dialog window when click on MapOpen MenuItem
      * @param actionEvent
      */
+    @FXML
     public void mapClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
@@ -227,6 +220,7 @@ public class Controller implements Initializable {
      * Open Dialog window when click on LineOpen MenuItem
      * @param actionEvent
      */
+    @FXML
     public void lineClick(ActionEvent actionEvent) {
         if (streets == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -297,6 +291,9 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Visible all nodes in BorderPane right.
+     */
     private void visibleNode(){
         timeTable.setPrefWidth(200);
         timeTable.setPrefHeight(230);
@@ -314,6 +311,11 @@ public class Controller implements Initializable {
         closeStreet.setSelected(false);
     }
 
+    /**
+     * When click on faster button, updateTime increase
+     * @param actionEvent
+     */
+    @FXML
     public void fasterTime(ActionEvent actionEvent) {
 
         if (updateTime >= 1) {
@@ -330,6 +332,11 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * When click on faster button, updateTime decrease
+     * @param actionEvent
+     */
+    @FXML
     public void slowerTime(ActionEvent actionEvent) {
 
         if (updateTime > 1) {
@@ -349,6 +356,11 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Gets value from text fields into variables.
+     * @param actionEvent
+     */
+    @FXML
     public void setNewTime(ActionEvent actionEvent) {
 
         if (setHour.getText().isEmpty() || setMinute.getText().isEmpty()){
