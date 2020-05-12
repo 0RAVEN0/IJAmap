@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Street {
-    private String id;
-    private List<Coordinate> coordinates;
-    private List<Stop> stops = new ArrayList<>();
+    private final String id;
+    private final List<Coordinate> coordinates;
+    private final List<Stop> stops = new ArrayList<>();
 
     /**
      * Constructor for the street
@@ -90,8 +90,34 @@ public class Street {
      * @return Returns true if stop is within this street, false if not
      */
     public boolean isWithinStreet(Stop stop) {
-        return ( (stop.getCoordinate().isGreaterOrEqual(this.begin()) && stop.getCoordinate().isLessOrEqual(this.end()))
-        || (stop.getCoordinate().isLessOrEqual(this.begin()) && stop.getCoordinate().isGreaterOrEqual(this.end())) );
+        if (this.begin().getX() <= this.end().getX()) {
+            if (this.begin().getY() <= this.end().getY()) {
+                return stop.getCoordinate().getX() >= this.begin().getX()
+                        && stop.getCoordinate().getY() >= this.begin().getY()
+                        && stop.getCoordinate().getX() <= this.end().getX()
+                        && stop.getCoordinate().getY() <= this.end().getY();
+            }
+            else {
+                return stop.getCoordinate().getX() >= this.begin().getX()
+                        && stop.getCoordinate().getY() <= this.begin().getY()
+                        && stop.getCoordinate().getX() <= this.end().getX()
+                        && stop.getCoordinate().getY() >= this.end().getY();
+            }
+        }
+        else {
+            if (this.begin().getY() <= this.end().getY()) {
+                return stop.getCoordinate().getX() <= this.begin().getX()
+                        && stop.getCoordinate().getY() >= this.begin().getY()
+                        && stop.getCoordinate().getX() >= this.begin().getX()
+                        && stop.getCoordinate().getY() <= this.end().getY();
+            }
+            else {
+                return stop.getCoordinate().getX() <= this.begin().getX()
+                        && stop.getCoordinate().getY() <= this.begin().getY()
+                        && stop.getCoordinate().getX() >= this.begin().getX()
+                        && stop.getCoordinate().getY() >= this.end().getY();
+            }
+        }
     }
 
 }

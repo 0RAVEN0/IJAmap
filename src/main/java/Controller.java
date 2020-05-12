@@ -246,10 +246,7 @@ public class Controller implements Initializable {
                 lines = stRead.readLines(LinkFile);
 
                 //check if all streets within all lines are valid and add them, same with stops
-                for(Line line : lines) {
-                    if (line.getStops().size() < 2) {
-                        throw new NoSuchElementException("At least 2 stops are necessary to form a line. (Line ID: \"" + line.getId() +"\")");
-                    }
+                for (Line line : lines) {
                     for (Stop stop : line.getStops()) {
                         boolean found = false;
                         for(Street street : streets) {
@@ -265,15 +262,10 @@ public class Controller implements Initializable {
                             throw new NoSuchElementException("Stop \"" + stop.getId() + "\" is not within any street.");
                         }
                     } //end for Stop stop
-//                    for(String streetID : line.getStreetIDs()) {
-//                        Street street = streetMap.get(streetID);
-//                        if(street == null) {
-//                            throw new NoSuchElementException("Street \""+streetID+"\" not found on the map.");
-//                        }
-//                        line.addStreet(street);
-//                    } //end for String streetID
-
                 } //end for Line line
+
+            //TODO show buses on the map
+
             } //end if
             else{
                 System.out.println("Not valid file");

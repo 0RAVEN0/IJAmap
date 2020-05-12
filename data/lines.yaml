@@ -1,10 +1,22 @@
 -   id: line1
     stops:
-        -   id: L1stop1
+        -   &L1stop1 id: L1stop1
             coordinate:
                 x: 582
                 y: 219
-    streetIDs:
-        -   street4
-        -   street1
-        -   street10
+        -   &L1stop2 id: L1stop2
+            coordinate:
+                x: 1086
+                y: 146
+    journeys:
+        -   id: L1journey1
+            originStop: *L1stop1
+            starts:
+                -   "12:00"
+                -   "13:00"
+                -   "14:00"
+            sequence:
+                -   arrival: 0
+                    departure: 0
+                -   arrival: 40
+                    departure: 50
