@@ -5,10 +5,7 @@
 package main.java;
 
 
-import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,15 +15,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Representation of a line crossing one or more streets with multiple stops
  */
 public class Line {
-    private String id;
-    private List<Stop> stops;
-    private List<Street> streets = new ArrayList<>();
-    private List<Journey> journeys = new ArrayList<>();
+    private final String id;
+    private final List<Stop> stops;
+    private final List<Street> streets = new ArrayList<>();
+    private final List<Journey> journeys;
 
+    /**
+     * Constructor for a line
+     * @param id A unique ID
+     * @param stops A list of stops that the line contains
+     * @param journeys A list of journeys that the line contains
+     */
     @JsonCreator
-    public Line(@JsonProperty("id") String id, @JsonProperty("stops") List<Stop> stops) {
+    public Line(@JsonProperty("id") String id, @JsonProperty("stops") List<Stop> stops, @JsonProperty("journeys") List<Journey> journeys) {
         this.id = id;
+        if (stops.size() < 2) {
+            throw new IllegalArgumentException("At least 2 stops are necessary to form a line. (Line ID: \"" + this.getId() +"\")");
+        }
         this.stops = stops.stream().distinct().collect(Collectors.toList());
+        this.journeys = journeys;
+        for (Journey journey : this.journeys) {
+            if (journey.getOriginStop() == this.stops.get(0)) {
+                journey.setStops(this.stops);
+            }
+            else if (journey.getOriginStop() == this.stops.get(this.stops.size()-1)) {
+                List<Stop> reversedStops = new ArrayList<>(this.stops);
+                Collections.reverse(reversedStops);
+                journey.setStops(reversedStops);
+            }
+            else {
+                throw new IllegalArgumentException("The originStation in journey \""+journey.getId()+"\" of line \""
+                +this.getId()+"\" must be either the first or the last stop of the line.");
+            }
+            journey.checkSequence();
+        }
     }
 
     public String getId() {
@@ -40,6 +62,10 @@ public class Line {
 
     public List<Stop> getStops() {
         return stops;
+    }
+
+    public List<Journey> getJourneys() {
+        return journeys;
     }
 
     /**
@@ -85,33 +111,6 @@ public class Line {
         this.streets.add(stop.getStreet());
         return true;
     }
-
-    public List<SimpleImmutableEntry<Street, Stop>> getRoute() {
-        if (stops.isEmpty()) {
-            return null;
-        }
-
-        List<SimpleImmutableEntry<Street, Stop>> route = new ArrayList<>();
-        boolean match = false;
-        for (Street street : streets) {
-            for (Stop stop : stops) {
-                if (stop.getStreet().equals(street)) {
-                    match = true;
-                    route.add(new SimpleImmutableEntry<>(street, stop));
-                    break;
-                }
-            }
-            if (!match) {
-                route.add(new SimpleImmutableEntry<>(street,null));
-            }
-            else {
-                match = false;
-            }
-        }
-        return route;
-    }
-
-
 
     @Override
     public boolean equals(Object o) {
