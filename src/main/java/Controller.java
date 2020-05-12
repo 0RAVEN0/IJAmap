@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
@@ -52,10 +54,13 @@ public class Controller implements Initializable {
 
     private String hours;
     private String minute;
+    public String stringTime;
 
     private boolean click = false;
     private boolean newTimeSet = false;
-    public String stringTime;
+
+    private double updateTime = 1.0;
+
 
     TextArea timeTable = new TextArea();
     ComboBox roadDegree = new ComboBox();
@@ -63,6 +68,7 @@ public class Controller implements Initializable {
     AnchorPane anchorP;
 
 
+    private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
 
     @FXML
@@ -75,25 +81,18 @@ public class Controller implements Initializable {
     private Label Clock;
 
     @FXML
-    private Button plusBtn;
-
-    @FXML
-    private Button minusBtn;
-
-    @FXML
-    private AnchorPane timeAnchor;
-
-    @FXML
     private TextField setHour;
 
     @FXML
     private TextField setMinute;
 
     @FXML
-    private Button setBtn;
+    private Label timeSpeed;
 
-    public void start(){
-        Timer programTime = new Timer();
+
+
+    public void timeStart(double updateTime){
+        programTime = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -114,17 +113,21 @@ public class Controller implements Initializable {
                     }
                 });
 
-                System.out.println("cas = " + stringTime);
+                //System.out.println("cas = " + stringTime);
             }
         };
 
-        programTime.scheduleAtFixedRate(timerTask,0,1000);
+        timeSpeed.setText(updateTime + "x");
+        programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        start();
+        timeStart(updateTime);
+
+        setHour.setText(String.valueOf(currentTime.getHour()));
+        setMinute.setText(String.valueOf(currentTime.getMinute()));
 
         anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
 
@@ -313,13 +316,46 @@ public class Controller implements Initializable {
 
     public void fasterTime(ActionEvent actionEvent) {
 
+        if (updateTime >= 1) {
+            updateTime = updateTime + 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime >= 0.1){
+            updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
     }
 
     public void slowerTime(ActionEvent actionEvent) {
-        //Timer.setDelay(Duration.seconds(0.5));
+
+        if (updateTime > 1) {
+            updateTime = updateTime - 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime > 0.1){
+            updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime <= 0.1){
+            return;
+        }
     }
 
     public void setNewTime(ActionEvent actionEvent) {
+
+        if (setHour.getText().isEmpty() || setMinute.getText().isEmpty()){
+            System.out.println("Wrong time format");
+            return;
+        }
+
         newTimeSet = true;
 
         if(Integer.valueOf(setHour.getText()) >= 0 && Integer.valueOf(setHour.getText()) <= 24){
@@ -329,8 +365,7 @@ public class Controller implements Initializable {
             minute = setMinute.getText();
         }
 
-        setHour.setText("");
-        setMinute.setText("");
-
+        setHour.setText(setHour.getText());
+        setMinute.setText(setMinute.getText());
     }
 }
