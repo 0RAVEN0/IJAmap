@@ -6,6 +6,7 @@ package main.java;
 
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -23,6 +24,7 @@ public class ShapeLine {
     private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET","MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN","PURPLE","GREY"};
 
     private javafx.scene.shape.Line line = null;
+
     private Text text = null;
 
 

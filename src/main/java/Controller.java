@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -41,6 +42,7 @@ public class Controller implements Initializable {
 
     Reader stRead = new Reader();
     public ShapeLine lineC = new ShapeLine();
+    public ShapeCircle circleC = new ShapeCircle();
     private List<Street> streets = null;
     private Map<String, Street> streetMap = null;
     private List<Line> lines = null;
@@ -90,6 +92,8 @@ public class Controller implements Initializable {
             });
         }
     };
+
+    private Circle busCircle = null;
 
     @FXML
     private Pane mapWindow;
@@ -264,7 +268,21 @@ public class Controller implements Initializable {
                     } //end for Stop stop
                 } //end for Line line
 
-            //TODO show buses on the map
+                //TODO show buses on the map
+                /**
+                 * Do node busCircle si zavoláš metodu drawCircle, ktorá je v classe ShapeCircle.
+                 * Ako argument funkcie použiješ ten lines.yaml subor, ktorý si zmenil na, ved ty vieš
+                 * čo v tvojej classe Reader.
+                 * Chod do ShapeCircle.java. --->
+                 */
+                busCircle = circleC.drawCircle(lines);
+
+                /**
+                 * ---> mapWindow je Pane do neho vykresluješ kruh pomocou týchto metod.
+                 * KONEC.
+                 */
+                mapWindow.getChildren().add(busCircle);
+
 
             } //end if
             else{
