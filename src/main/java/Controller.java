@@ -52,44 +52,18 @@ public class Controller implements Initializable {
 
     private String hours;
     private String minute;
-    private String[] dayTime = new String[]{"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};
-    List<String> dayTimelist = Arrays.asList(dayTime);
 
     private boolean click = false;
     private boolean newTimeSet = false;
-    public String formatDateTime;
+    public String stringTime;
 
     TextArea timeTable = new TextArea();
     ComboBox roadDegree = new ComboBox();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
-    Timer programTime = new Timer();
-    private LocalTime currentTime = LocalTime.now();
-    TimerTask timerTask = new TimerTask() {
-        @Override
-        public void run() {
-            currentTime = currentTime.plusSeconds(1);
-            DateTimeFormatter format1 = DateTimeFormatter.ofPattern("HH:mm:ss");
-            formatDateTime = currentTime.format(format1);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    if (newTimeSet){
-                        System.out.println("si tu ");
-                        System.out.println("hodiny =  " + Integer.valueOf(hours));
-                        System.out.println("minuty = " + Integer.valueOf(minute));
-                        currentTime.of(Integer.valueOf(hours),Integer.valueOf(minute),currentTime.getSecond());
-                        Clock.setText(currentTime.format(format1));
-                    }
-                    else{
-                        Clock.setText(formatDateTime);
-                    }
 
-                }
-            });
-        }
-    };
+    private LocalTime currentTime = LocalTime.now();
 
     @FXML
     private Pane mapWindow;
@@ -119,6 +93,31 @@ public class Controller implements Initializable {
     private Button setBtn;
 
     public void start(){
+        Timer programTime = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                currentTime = currentTime.plusSeconds(1);
+
+                DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+                stringTime = currentTime.format(timeFormat);
+
+                if (newTimeSet){
+                    currentTime = currentTime.of(Math.abs(currentTime.getHour() + (Integer.valueOf(hours) - currentTime.getHour())),Math.abs(currentTime.getMinute() + (Integer.valueOf(minute) - currentTime.getMinute())),currentTime.getSecond());
+                    newTimeSet = false;
+                }
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Clock.setText(stringTime);
+                    }
+                });
+
+                System.out.println("cas = " + stringTime);
+            }
+        };
+
         programTime.scheduleAtFixedRate(timerTask,0,1000);
 
     }
@@ -195,7 +194,6 @@ public class Controller implements Initializable {
                                         return;
                                     }
                                 }
-
                             });
                 }
 
