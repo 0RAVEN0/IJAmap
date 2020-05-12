@@ -372,12 +372,20 @@ public class Controller implements Initializable {
 
         if(Integer.valueOf(setHour.getText()) >= 0 && Integer.valueOf(setHour.getText()) <= 24){
             hours = setHour.getText();
+            setHour.setText(setHour.getText());
+        }
+        else {
+            hours = String.valueOf(currentTime.getHour());
+            setHour.setText(hours);
         }
         if(Integer.valueOf(setMinute.getText()) >= 0 && Integer.valueOf(setMinute.getText()) <= 59){
             minute = setMinute.getText();
+            setMinute.setText(setMinute.getText());
+        }
+        else {
+            minute = String.valueOf(currentTime.getMinute());
+            setMinute.setText(minute);
         }
 
-        setHour.setText(setHour.getText());
-        setMinute.setText(setMinute.getText());
     }
 }
