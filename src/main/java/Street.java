@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Street {
-    private String id;
-    private List<Coordinate> coordinates;
-    private List<Stop> stops = new ArrayList<>();
+    private final String id;
+    private final List<Coordinate> coordinates;
+    private final List<Stop> stops = new ArrayList<>();
 
     /**
      * Constructor for the street

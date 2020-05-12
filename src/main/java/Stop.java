@@ -8,13 +8,21 @@ import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
+/**
+ * Class representing a single stop
+ */
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Stop {
-    private String id;
-    private Coordinate coordinate = null;
+    private final String id;
+    private final Coordinate coordinate;
     private Street street = null;
     private String name;
 
+    /**
+     * Constructor for a stop
+     * @param id A unique ID
+     * @param coordinate x and y coordinates for the stop
+     */
     @JsonCreator
     public Stop(@JsonProperty("id") String id,@JsonProperty("coordinate") Coordinate coordinate) {
         this.coordinate = coordinate;
