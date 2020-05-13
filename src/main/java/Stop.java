@@ -45,6 +45,15 @@ public class Stop {
         this.street = street;
     }
 
+    /**
+     * Calculates both x and y distance from the given coordinate
+     * @param coordinate Distant coordinate to be checked against
+     * @return Coordinate object with respective x and y distances
+     */
+    public Coordinate distance(Coordinate coordinate) {
+        return new Coordinate(coordinate.diffX(this.getCoordinate()), coordinate.diffY(this.getCoordinate()), true);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
