@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
 public class Coordinate {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
     /**
      * Constructor that checks if all coordinates are positive
@@ -19,7 +19,7 @@ public class Coordinate {
      * @param y y position
      */
     @JsonCreator
-    public Coordinate(@JsonProperty("x") int x, @JsonProperty("y") int y) {
+    public Coordinate(@JsonProperty("x") double x, @JsonProperty("y") double y) {
         if (x < 0 || y < 0) {
             throw new IllegalArgumentException("Both x and y coordinates must be positive");
         }
@@ -31,7 +31,7 @@ public class Coordinate {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -40,8 +40,8 @@ public class Coordinate {
      * @param c Coordinate to take x from
      * @return Returns the difference (this.x - that.x)
      */
-    public int diffX(Coordinate c) {
-        return this.x -c.x;
+    public double diffX(Coordinate c) {
+        return this.x -c.getX();
     }
 
     /**
@@ -49,8 +49,16 @@ public class Coordinate {
      * @param c Coordinate to take y from
      * @return Returns the difference (this.y - that.y)
      */
-    public int diffY(Coordinate c) {
-        return this.y -c.y;
+    public double diffY(Coordinate c) {
+        return this.y -c.getY();
+    }
+
+    /**
+     * Negates both x and y coordinates
+     */
+    public void negate() {
+        this.x = -x;
+        this.y = -y;
     }
 
     @Override
@@ -70,8 +78,8 @@ public class Coordinate {
     @Override
     public String toString() {
         return "Coordinate{" +
-                "xPos=" + x +
-                ", yPos=" + y +
+                "x=" + x +
+                ", y=" + y +
                 '}';
     }
 }
