@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
@@ -122,8 +123,11 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         timeStart(updateTime);
 
-        setHour.setText(String.valueOf(currentTime.getHour()));
-        setMinute.setText(String.valueOf(currentTime.getMinute()));
+        onlyNumber(setHour);
+        onlyNumber(setMinute);
+
+        setHour.setPromptText(String.valueOf(currentTime.getHour()));
+        setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
         anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
 
@@ -396,6 +400,33 @@ public class Controller implements Initializable {
             minute = String.valueOf(currentTime.getMinute());
             setMinute.setText(minute);
         }
+    }
 
+    public void onlyNumber(TextField timeField){
+        timeField.addEventHandler(KeyEvent.KEY_PRESSED,
+                new EventHandler<KeyEvent>() {
+
+                    @Override
+                    public void handle(KeyEvent event) {
+                        switch (event.getCode()){
+                            case DIGIT0:
+                            case DIGIT1:
+                            case DIGIT2:
+                            case DIGIT3:
+                            case DIGIT4:
+                            case DIGIT5:
+                            case DIGIT6:
+                            case DIGIT7:
+                            case DIGIT8:
+                            case DIGIT9:
+                            case BACK_SPACE:
+                                timeField.setEditable(true);
+                                break;
+                            default:
+                                timeField.setEditable(false);
+                                break;
+                        }
+                    }
+                });
     }
 }
