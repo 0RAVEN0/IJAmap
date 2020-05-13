@@ -4,15 +4,11 @@
  */
 package main.java;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -20,13 +16,9 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
-import javax.swing.*;
 import java.io.File;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -54,44 +46,22 @@ public class Controller implements Initializable {
 
     private String hours;
     private String minute;
-    private String[] dayTime = new String[]{"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"};
-    List<String> dayTimelist = Arrays.asList(dayTime);
+    public String stringTime;
 
     private boolean click = false;
     private boolean newTimeSet = false;
-    public String formatDateTime;
+
+    private double updateTime = 1.0;
+
 
     TextArea timeTable = new TextArea();
     ComboBox roadDegree = new ComboBox();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
-    Timer programTime = new Timer();
-    private LocalTime currentTime = LocalTime.now();
-    TimerTask timerTask = new TimerTask() {
-        @Override
-        public void run() {
-            currentTime = currentTime.plusSeconds(1);
-            DateTimeFormatter format1 = DateTimeFormatter.ofPattern("HH:mm:ss");
-            formatDateTime = currentTime.format(format1);
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    if (newTimeSet){
-                        System.out.println("si tu ");
-                        System.out.println("hodiny =  " + Integer.valueOf(hours));
-                        System.out.println("minuty = " + Integer.valueOf(minute));
-                        currentTime.of(Integer.valueOf(hours),Integer.valueOf(minute),currentTime.getSecond());
-                        Clock.setText(currentTime.format(format1));
-                    }
-                    else{
-                        Clock.setText(formatDateTime);
-                    }
 
-                }
-            });
-        }
-    };
+    private Timer programTime;
+    private LocalTime currentTime = LocalTime.now();
 
     private Circle busCircle = null;
 
@@ -105,31 +75,55 @@ public class Controller implements Initializable {
     private Label Clock;
 
     @FXML
-    private Button plusBtn;
-
-    @FXML
-    private Button minusBtn;
-
-    @FXML
-    private AnchorPane timeAnchor;
-
-    @FXML
     private TextField setHour;
 
     @FXML
     private TextField setMinute;
 
     @FXML
-    private Button setBtn;
+    private Label timeSpeed;
 
-    public void start(){
-        programTime.scheduleAtFixedRate(timerTask,0,1000);
+    /**
+     * Run time and change time by adding time into text fields. Set this time into Label.
+     * @param updateTime can change time speed
+     */
+    public void timeStart(double updateTime){
+        programTime = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                currentTime = currentTime.plusSeconds(1);
+
+                DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+                stringTime = currentTime.format(timeFormat);
+
+                if (newTimeSet){
+                    currentTime = currentTime.of(Math.abs(currentTime.getHour() + (Integer.valueOf(hours) - currentTime.getHour())),Math.abs(currentTime.getMinute() + (Integer.valueOf(minute) - currentTime.getMinute())),currentTime.getSecond());
+                    newTimeSet = false;
+                }
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Clock.setText(stringTime);
+                    }
+                });
+
+                //System.out.println("cas = " + stringTime);
+            }
+        };
+
+        timeSpeed.setText(updateTime + "x");
+        programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        start();
+        timeStart(updateTime);
+
+        setHour.setText(String.valueOf(currentTime.getHour()));
+        setMinute.setText(String.valueOf(currentTime.getMinute()));
 
         anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
 
@@ -162,6 +156,7 @@ public class Controller implements Initializable {
      * Open Dialog window when click on MapOpen MenuItem
      * @param actionEvent
      */
+    @FXML
     public void mapClick(ActionEvent actionEvent) {
         try {
             FileChooser fc = new FileChooser();
@@ -199,7 +194,6 @@ public class Controller implements Initializable {
                                         return;
                                     }
                                 }
-
                             });
                 }
 
@@ -230,6 +224,7 @@ public class Controller implements Initializable {
      * Open Dialog window when click on LineOpen MenuItem
      * @param actionEvent
      */
+    @FXML
     public void lineClick(ActionEvent actionEvent) {
         if (streets == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -306,6 +301,9 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Visible all nodes in BorderPane right.
+     */
     private void visibleNode(){
         timeTable.setPrefWidth(200);
         timeTable.setPrefHeight(230);
@@ -323,26 +321,81 @@ public class Controller implements Initializable {
         closeStreet.setSelected(false);
     }
 
+    /**
+     * When click on faster button, updateTime increase
+     * @param actionEvent
+     */
+    @FXML
     public void fasterTime(ActionEvent actionEvent) {
 
+        if (updateTime >= 1) {
+            updateTime = updateTime + 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime >= 0.1){
+            updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
     }
 
+    /**
+     * When click on faster button, updateTime decrease
+     * @param actionEvent
+     */
+    @FXML
     public void slowerTime(ActionEvent actionEvent) {
-        //Timer.setDelay(Duration.seconds(0.5));
+
+        if (updateTime > 1) {
+            updateTime = updateTime - 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime > 0.1){
+            updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime <= 0.1){
+            return;
+        }
     }
 
+    /**
+     * Gets value from text fields into variables.
+     * @param actionEvent
+     */
+    @FXML
     public void setNewTime(ActionEvent actionEvent) {
+
+        if (setHour.getText().isEmpty() || setMinute.getText().isEmpty()){
+            System.out.println("Wrong time format");
+            return;
+        }
+
         newTimeSet = true;
 
         if(Integer.valueOf(setHour.getText()) >= 0 && Integer.valueOf(setHour.getText()) <= 24){
             hours = setHour.getText();
+            setHour.setText(setHour.getText());
+        }
+        else {
+            hours = String.valueOf(currentTime.getHour());
+            setHour.setText(hours);
         }
         if(Integer.valueOf(setMinute.getText()) >= 0 && Integer.valueOf(setMinute.getText()) <= 59){
             minute = setMinute.getText();
+            setMinute.setText(setMinute.getText());
         }
-
-        setHour.setText("");
-        setMinute.setText("");
+        else {
+            minute = String.valueOf(currentTime.getMinute());
+            setMinute.setText(minute);
+        }
 
     }
 }
