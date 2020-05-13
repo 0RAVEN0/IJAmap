@@ -26,8 +26,19 @@ public class Coordinate {
         this.x = x;
         this.y = y;
     }
-    
-    public int getX() {
+
+    /**
+     * Alternate constructor that allows negative values (used only for calculating distance)
+     * @param x x distance
+     * @param y y distance
+     * @param diff dummy flag to differ the constructor
+     */
+    public Coordinate(double x, double y, boolean diff) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getX() {
         return x;
     }
 
