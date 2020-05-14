@@ -31,3 +31,32 @@
                     departure: 0
                 -   arrival: 50
                     departure: 51
+-   id: line2
+    stops:
+        -   &L2stop1 id: L2stop1
+            coordinate:
+                x: 737
+                y: 543
+        -   &L2stop2 id: L2stop2
+            coordinate:
+                x: 896
+                y: 543
+        -   &L2stop3 id: L2stop3
+            coordinate:
+                x: 1027
+                y: 567
+    journeys:
+        -   id: L2journey1
+            originStop: *L2stop1
+            starts:
+                -   "12:10"
+                -   "12:30"
+                -   "13:10"
+                -   "13:30"
+            sequence:
+                -   arrival: 0
+                    departure: 0
+                -   arrival: 30
+                    departure: 32
+                -   arrival: 51
+                    departure: 51
