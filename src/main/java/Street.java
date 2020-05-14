@@ -140,6 +140,30 @@ public class Street {
         }
     }
 
+    public Coordinate findIntersectionWith(Street street) {
+        double a1 = this.end().getY() - this.begin().getY();
+        double b1 = this.begin().getX() - this.end().getX();
+        double c1 = a1*(this.begin().getX()) + b1*(this.begin().getY());
+
+        double a2 = street.end().getY() - street.begin().getY();
+        double b2 = street.begin().getX() - street.end().getX();
+        double c2 = a2*(street.begin().getX())+ b2*(street.begin().getY());
+
+        double determinant = a1*b2 - a2*b1;
+
+        //if parallel streets
+        if (determinant == 0)
+        {
+            return null;
+        }
+        else
+        {
+            double x = (b2*c1 - b1*c2)/determinant;
+            double y = (a1*c2 - a2*c1)/determinant;
+            return new Coordinate(x, y);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
