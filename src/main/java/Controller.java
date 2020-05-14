@@ -125,6 +125,8 @@ public class Controller implements Initializable {
                             for (Line line : lines) {
                                 for (Journey journey : line.getJourneys()) {
                                     for (LocalTime start : journey.getStarts()) {
+                                        //a unique ID for identifying the circle for this journey at this time
+                                        String circleId = journey.getId()+start.toString();
                                         //check if the time is between start and end of the journey
                                         if (currentTime.compareTo(start) >= 0
                                                 && currentTime.compareTo(start.plusMinutes(journey.getLastSchedule().getArrival())) <= 0) {
@@ -152,8 +154,26 @@ public class Controller implements Initializable {
                                                         position = new Coordinate(x, y);
                                                     }
                                                     else {
-
-                                                        Coordinate streetEnd = stop1.getStreet().closerEndTo(stop2.getCoordinate());
+                                                        Coordinate streetEnd;
+                                                        if (stop1.getStreet().follows(stop2.getStreet())) {
+                                                            streetEnd = stop1.getStreet().closerEndTo(stop2.getCoordinate());
+                                                        }
+                                                        //if the street doesn't follow, the streets must intersect
+                                                        else {
+                                                            streetEnd = stop1.getStreet().findIntersectionWith(stop2.getStreet());
+                                                            try {
+                                                                if (streetEnd == null) {
+                                                                    throw new ArithmeticException("Stops \""+stop1.getId()+"\" and \""+stop2.getId()+"\" are on non-following streets, but no intersection was found");
+                                                                }
+                                                            }
+                                                            catch (ArithmeticException e) {
+                                                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                                                alert.setTitle("Error");
+                                                                alert.setHeaderText("Calculating bus position: "+e.getMessage());
+                                                                alert.showAndWait();
+                                                                continue;
+                                                            }
+                                                        }
                                                         //distance between stop1 and the street end
                                                         Coordinate distance1 = stop1.distance(streetEnd);
                                                         Coordinate distance2 = stop2.distance(streetEnd);
@@ -188,7 +208,6 @@ public class Controller implements Initializable {
                                                         position = new Coordinate(x,y);
                                                     }
                                                     System.out.println("Position: "+position);
-                                                    String circleId = journey.getId()+start.toString();
                                                     busCircle = ShapeCircle.drawCircle(position, circleId);
                                                     for (Circle circle : circles) {
                                                         if (circle.getId().equals(circleId)) {
@@ -206,8 +225,6 @@ public class Controller implements Initializable {
                         }//end if time to redraw
                     }
                 });
-
-                //System.out.println("cas = " + stringTime);
             }
         };
 
