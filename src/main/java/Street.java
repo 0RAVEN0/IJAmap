@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Street {
     private final String id;
@@ -120,4 +121,34 @@ public class Street {
         }
     }
 
+    /**
+     * Calculates which end of this street is closer to the given coordinates
+     * @param coordinate Coordinate to be checked against
+     * @return Closer of the two street ends
+     */
+    public Coordinate closerEndTo(Coordinate coordinate) {
+        double distanceBegin = Math.sqrt(coordinate.diffX(this.begin()) * coordinate.diffX(this.begin())
+                + coordinate.diffY(this.begin()) *  coordinate.diffY(this.begin()));
+        double distanceEnd = Math.sqrt(coordinate.diffX(this.end()) * coordinate.diffX(this.end())
+                + coordinate.diffY(this.end()) *  coordinate.diffY(this.end()));
+        if (distanceBegin > distanceEnd) {
+            return this.end();
+        }
+        else {
+            return this.begin();
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Street street = (Street) o;
+        return getId().equals(street.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

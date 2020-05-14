@@ -59,6 +59,10 @@ public class Journey {
         return sequence;
     }
 
+    public Schedule getLastSchedule() {
+        return sequence.get(sequence.size()-1);
+    }
+
     public Stop getOriginStop() {
         return originStop;
     }
