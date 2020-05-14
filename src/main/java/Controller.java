@@ -22,6 +22,7 @@ import java.io.File;
 import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
@@ -265,6 +266,77 @@ public class Controller implements Initializable {
                             throw new NoSuchElementException("Stop \"" + stop.getId() + "\" is not within any street.");
                         }
                     } //end for Stop stop
+                    for (Journey journey : line.getJourneys()) {
+
+                        for (LocalTime start : journey.getStarts()) {
+                            //check if the time is between start and end of the journey
+                            if (currentTime.compareTo(start) >= 0
+                                    && currentTime.compareTo(start.plusMinutes(journey.getLastSchedule().getArrival())) <= 0) {
+                                //check between which 2 stops the bus should be
+                                for (int i = 0; i < journey.getSequence().size()-1; i++) {
+                                    LocalTime stop1departure = start.plusMinutes(journey.getSequence().get(i).getDeparture());
+                                    LocalTime stop2arrival = start.plusMinutes(journey.getSequence().get(i+1).getArrival());
+
+                                    //if the time is between these two stops, start calculating position
+                                    if (currentTime.compareTo(stop1departure) >= 0 && currentTime.compareTo(stop2arrival) <= 0) {
+                                        Stop stop1 = journey.getStops().get(i);
+                                        Stop stop2 = journey.getStops().get(i+1);
+                                        //number of seconds between stops
+                                        int timeDiff = (journey.getSequence().get(i+1).getArrival()-journey.getSequence().get(i).getDeparture())*60;
+                                        Coordinate position;
+                                        double x, y;
+
+                                        //if the stops are on the same street (which is just a line)
+                                        if (stop1.getStreet() == stop2.getStreet()) {
+                                            Coordinate distance = stop1.distance(stop2.getCoordinate());
+                                            x = (stop1.getCoordinate().getX()
+                                                    + (distance.getX() / timeDiff) * (stop1departure.until(currentTime, ChronoUnit.SECONDS)));
+                                            y = (stop1.getCoordinate().getY()
+                                                    + (distance.getY() / timeDiff) * (stop1departure.until(currentTime, ChronoUnit.SECONDS)));
+                                            position = new Coordinate(x, y);
+                                        }
+                                        else {
+
+                                            Coordinate streetEnd = stop1.getStreet().closerEndTo(stop2.getCoordinate());
+                                            //distance between stop1 and the street end
+                                            Coordinate distance1 = stop1.distance(streetEnd);
+                                            Coordinate distance2 = stop2.distance(streetEnd);
+                                            //distance between street end and stop2
+                                            distance2.negate();
+
+                                            //Pythagoras theorem used to calculate straight line distance between stop1 and street end
+                                            double totalDistance1 = Math.sqrt(streetEnd.diffX(stop1.getCoordinate()) * streetEnd.diffX(stop1.getCoordinate())
+                                                    + streetEnd.diffY(stop1.getCoordinate()) *  streetEnd.diffY(stop1.getCoordinate()));
+                                            //Pythagoras theorem used to calculate straight line distance between street end and stop2
+                                            double totalDistance2 = Math.sqrt(stop2.getCoordinate().diffX(streetEnd) * stop2.getCoordinate().diffX(streetEnd)
+                                                    + stop2.getCoordinate().diffY(streetEnd) *  stop2.getCoordinate().diffY(streetEnd));
+
+                                            //calculation of the time (in seconds) the bus spends between stop1 and street end
+                                            long timeDiff1 = (long) ((timeDiff * totalDistance1) / (totalDistance1+totalDistance2));
+                                            //calculation of the time (in seconds) the bus spends between street end and stop2
+                                            long timeDiff2 = (long) ((timeDiff * totalDistance2) / (totalDistance1+totalDistance2));
+
+                                            //if current time is before the time that bus passes the street end (line direction change)
+                                            if (currentTime.compareTo(stop1departure.plusSeconds(timeDiff1)) <= 0) {
+                                                x = stop1.getCoordinate().getX()
+                                                        + (distance1.getX() / timeDiff1) * (stop1departure.until(currentTime, ChronoUnit.SECONDS));
+                                                y = stop1.getCoordinate().getY()
+                                                        + (distance1.getY() / timeDiff1) * (stop1departure.until(currentTime, ChronoUnit.SECONDS));
+                                            }
+                                            else {
+                                                x = streetEnd.getX() + (distance2.getX() / timeDiff2)
+                                                        * (stop1departure.plusSeconds(timeDiff1).until(currentTime, ChronoUnit.SECONDS));
+                                                y = streetEnd.getY() + (distance2.getY() / timeDiff2)
+                                                        * (stop1departure.plusSeconds(timeDiff1).until(currentTime, ChronoUnit.SECONDS));
+                                            }
+                                            position = new Coordinate(x,y);
+                                        }
+                                        System.out.println("Position: "+position);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 } //end for Line line
 
                 //TODO show buses on the map
