@@ -20,3 +20,14 @@
                     departure: 0
                 -   arrival: 40
                     departure: 50
+        -   id: L1journey2
+            originStop: *L1stop2
+            starts:
+                -   "12:00"
+                -   "13:00"
+                -   "14:00"
+            sequence:
+                -   arrival: 0
+                    departure: 0
+                -   arrival: 50
+                    departure: 51

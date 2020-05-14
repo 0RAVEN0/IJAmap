@@ -8,14 +8,9 @@ import java.util.List;
 
 public class ShapeCircle {
 
-    private Circle busCircle = new Circle();
-
-    public Circle drawCircle(Coordinate position){
-
-        busCircle.setCenterX(position.getX());
-        busCircle.setCenterY(position.getY());
-        busCircle.setRadius(5);
-
-        return busCircle;
+    public static Circle drawCircle(Coordinate position, String id){
+        Circle circle = new Circle(position.getX(), position.getY(), 5);
+        circle.setId(id);
+        return circle;
     }
 }
