@@ -1,10 +1,6 @@
 package main.java;
 
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ShapeCircle {
 

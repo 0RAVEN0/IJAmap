@@ -443,19 +443,17 @@ public class Controller implements Initializable {
 
         newTimeSet = true;
 
-        if(Integer.parseInt(setHour.getText()) >= 0 && Integer.parseInt(setHour.getText()) <= 24){
+        if(Integer.parseInt(setHour.getText()) >= 0 && Integer.parseInt(setHour.getText()) <= 24 && Integer.parseInt(setMinute.getText()) >= 0 && Integer.parseInt(setMinute.getText()) <= 59){
+            errorLabel.setText("");
             hours = setHour.getText();
-            setHour.setText(setHour.getText());
-        }
-        else {
-            hours = String.valueOf(currentTime.getHour());
-            setHour.setText(hours);
-        }
-        if(Integer.parseInt(setMinute.getText()) >= 0 && Integer.parseInt(setMinute.getText()) <= 59){
             minute = setMinute.getText();
+            setHour.setText(setHour.getText());
             setMinute.setText(setMinute.getText());
         }
         else {
+            errorLabel.setText("Wrong hour or minute format");
+            hours = String.valueOf(currentTime.getHour());
+            setHour.setText(hours);
             minute = String.valueOf(currentTime.getMinute());
             setMinute.setText(minute);
         }
