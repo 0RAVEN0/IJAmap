@@ -219,6 +219,13 @@ public class Controller implements Initializable {
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
+                                        else {
+                                            for (Circle circle : circles) {
+                                                if (circle.getId().equals(circleId)) {
+                                                    mapWindow.getChildren().remove(circle);
+                                                }
+                                            }
+                                        }
                                     } //end for journey.starts
                                 }// end for Journey journey
                             } //end for Line line
