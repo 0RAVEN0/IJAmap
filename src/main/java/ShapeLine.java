@@ -35,6 +35,7 @@ public class ShapeLine {
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
             for (int coorSize = 0; coorSize < streets.get(streetSize).getCoordinates().size() - 1; coorSize++) {
                 line = new javafx.scene.shape.Line();
+                line.setId(streets.get(streetSize).getId());
                 line.setStartX(streets.get(streetSize).getCoordinates().get(coorSize).getX());
                 line.setStartY(streets.get(streetSize).getCoordinates().get(coorSize).getY());
                 line.setEndX(streets.get(streetSize).getCoordinates().get(coorSize + 1).getX());
@@ -67,8 +68,6 @@ public class ShapeLine {
             text.setFont(Font.font("Verdana", 12));
             textArray.add(text);
         }
-
         return textArray;
-
     }
 }
