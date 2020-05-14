@@ -90,6 +90,15 @@ public class Line {
         return true;
     }
 
+    public Journey findJourneyByID(String id) {
+        for (Journey journey : this.journeys) {
+            if (journey.getId().equals(id)) {
+                return journey;
+            }
+        }
+        return null;
+    }
+
     /**
      * Adds stop to this line
      * @param stop Stop to be added

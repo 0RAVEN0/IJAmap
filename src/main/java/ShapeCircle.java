@@ -1,19 +1,16 @@
 package main.java;
 
-import javafx.scene.Cursor;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShapeCircle {
 
-    private Circle busCircle;
-
-    public Circle drawCircle(Coordinate position){
-        busCircle = new Circle();
-        busCircle.setTranslateX(position.getX() + busCircle.getTranslateX());
-        busCircle.setTranslateY(position.getY() + busCircle.getTranslateY());
-        busCircle.setRadius(5);
-        busCircle.setCursor(Cursor.HAND);
-
-        return busCircle;
+    public static Circle drawCircle(Coordinate position, String id){
+        Circle circle = new Circle(position.getX(), position.getY(), 5);
+        circle.setId(id);
+        return circle;
     }
 }

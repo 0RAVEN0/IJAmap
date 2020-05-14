@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -26,6 +27,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 /**
  * Used for displaying a map
@@ -34,11 +37,11 @@ public class Controller implements Initializable {
 
     Reader stRead = new Reader();
     public ShapeLine lineC = new ShapeLine();
-    public ShapeCircle circleC = new ShapeCircle();
     private List<Street> streets = null;
     private List<Line> lines = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private List<Text> textArray = new ArrayList<>();
+    private List<Circle> circles = new ArrayList<>();
 
     public File StreetFile = null;
     public File LinkFile = null;
@@ -185,9 +188,14 @@ public class Controller implements Initializable {
                                                         position = new Coordinate(x,y);
                                                     }
                                                     System.out.println("Position: "+position);
-
-                                                    busCircle = circleC.drawCircle(position);
-
+                                                    String circleId = journey.getId()+start.toString();
+                                                    busCircle = ShapeCircle.drawCircle(position, circleId);
+                                                    for (Circle circle : circles) {
+                                                        if (circle.getId().equals(circleId)) {
+                                                            mapWindow.getChildren().remove(circle);
+                                                        }
+                                                    }
+                                                    circles.add(busCircle);
                                                     mapWindow.getChildren().add(busCircle);
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
@@ -276,9 +284,6 @@ public class Controller implements Initializable {
                 }
 
             }
-            else{
-                System.err.println("Not valid file");
-            }
         }
         catch (IllegalArgumentException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -360,9 +365,6 @@ public class Controller implements Initializable {
                 } //end for Line line
                 linesBeingSet = false;
             } //end if
-            else{
-                System.out.println("Not valid file");
-            }
         }
         catch (NoSuchElementException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -516,6 +518,10 @@ public class Controller implements Initializable {
     }
 
     public void onlyNumber(TextField timeField){
+        Pattern pattern = Pattern.compile(".{0,2}");
+        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>)
+                change -> pattern.matcher(change.getControlNewText()).matches() ? change : null);
+        timeField.setTextFormatter(formatter);
         timeField.addEventHandler(KeyEvent.KEY_PRESSED,
                 new EventHandler<KeyEvent>() {
 
