@@ -37,7 +37,6 @@ public class Map extends Application {
         primaryStage.setTitle("Map");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
-
     }
 
 }
