@@ -103,7 +103,9 @@ public class Controller implements Initializable {
                 stringTime = currentTime.format(timeFormat);
 
                 if (newTimeSet){
-                    currentTime = currentTime.of(Math.abs(currentTime.getHour() + (Integer.valueOf(hours) - currentTime.getHour())),Math.abs(currentTime.getMinute() + (Integer.valueOf(minute) - currentTime.getMinute())),currentTime.getSecond());
+                    currentTime = LocalTime.of(Math.abs(currentTime.getHour()
+                            + (Integer.parseInt(hours) - currentTime.getHour())),Math.abs(currentTime.getMinute()
+                            + (Integer.parseInt(minute) - currentTime.getMinute())),0);
                     newTimeSet = false;
                 }
 
@@ -111,6 +113,8 @@ public class Controller implements Initializable {
                     @Override
                     public void run() {
                         Clock.setText(stringTime);
+
+
                     }
                 });
 
@@ -196,11 +200,8 @@ public class Controller implements Initializable {
                                         return;
                                     }
 
-                                    if (click){
-                                        borderP.setRight(null);
-                                        click = false;
-                                        return;
-                                    }
+                                    borderP.setRight(null);
+                                    click = false;
                                 }
                             });
                 }
@@ -405,7 +406,6 @@ public class Controller implements Initializable {
             updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
             programTime.cancel();
             timeStart(updateTime);
-            return;
         }
     }
 
@@ -426,10 +426,6 @@ public class Controller implements Initializable {
             updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
             programTime.cancel();
             timeStart(updateTime);
-            return;
-        }
-        if (updateTime <= 0.1){
-            return;
         }
     }
 
@@ -447,7 +443,7 @@ public class Controller implements Initializable {
 
         newTimeSet = true;
 
-        if(Integer.valueOf(setHour.getText()) >= 0 && Integer.valueOf(setHour.getText()) <= 24){
+        if(Integer.parseInt(setHour.getText()) >= 0 && Integer.parseInt(setHour.getText()) <= 24){
             hours = setHour.getText();
             setHour.setText(setHour.getText());
         }
@@ -455,7 +451,7 @@ public class Controller implements Initializable {
             hours = String.valueOf(currentTime.getHour());
             setHour.setText(hours);
         }
-        if(Integer.valueOf(setMinute.getText()) >= 0 && Integer.valueOf(setMinute.getText()) <= 59){
+        if(Integer.parseInt(setMinute.getText()) >= 0 && Integer.parseInt(setMinute.getText()) <= 59){
             minute = setMinute.getText();
             setMinute.setText(setMinute.getText());
         }
