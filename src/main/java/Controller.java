@@ -57,7 +57,7 @@ public class Controller implements Initializable {
 
 
     TextArea timeTable = new TextArea();
-    ComboBox roadDegree = new ComboBox();
+    //ComboBox roadDegree = new ComboBox();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
@@ -218,10 +218,10 @@ public class Controller implements Initializable {
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
+        anchorP = new AnchorPane(closeStreet,timeTable);
 
-        roadDegree.setPromptText("Road degree");
-        roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
+        //roadDegree.setPromptText("Road degree");
+        //roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
     }
 
     /**
@@ -247,7 +247,7 @@ public class Controller implements Initializable {
 
     /**
      * Open Dialog window when click on MapOpen MenuItem
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void mapClick(ActionEvent actionEvent) {
@@ -268,21 +268,7 @@ public class Controller implements Initializable {
 
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
-                    line.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                            new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    if (!click) {
-                                        visibleNode();
-                                        borderP.setRight(anchorP);
-                                        click = true;
-                                        return;
-                                    }
 
-                                    borderP.setRight(null);
-                                    click = false;
-                                }
-                            });
                 }
 
                 for (Text text : textArray) {
@@ -310,7 +296,7 @@ public class Controller implements Initializable {
 
     /**
      * Open Dialog window when click on LineOpen MenuItem
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void lineClick(ActionEvent actionEvent) {
@@ -332,6 +318,27 @@ public class Controller implements Initializable {
             if (LinkFile != null){
                 linesBeingSet = true;
                 lines = stRead.readLines(LinkFile);
+
+                busCircle = circleC.drawCircle(lines.get(0).getStops().get(0).getCoordinate());
+
+                mapWindow.getChildren().add(busCircle);
+                busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                        new EventHandler<MouseEvent>() {
+                            @Override
+                            public void handle(MouseEvent event) {
+                                if (!click) {
+                                    visibleNode();
+                                    //strokeLine(lineArray,line);
+                                    itineraryPrint(lines);
+                                    borderP.setRight(anchorP);
+                                    click = true;
+                                    return;
+                                }
+                                //unstrokeLine(lineArray,line);
+                                borderP.setRight(null);
+                                click = false;
+                            }
+                        });
 
                 //check if all streets within all lines are valid and add them, same with stops
                 for (Line line : lines) {
@@ -374,6 +381,50 @@ public class Controller implements Initializable {
         }
     }
 
+    public void itineraryPrint(List<Line> lineBus){
+
+        for (int i = 0; i < lineBus.get(0).getStops().size(); i++){
+
+            Label streetLabel = new Label();
+            Label timeLabel = new Label();
+
+            streetLabel.setLayoutX(15);
+            streetLabel.setLayoutY(25 + i*30);
+            streetLabel.setText(String.valueOf(lineBus.get(0).getStops().get(i).getId()));
+            for (int j = 0; j < lineBus.get(0).getJourneys().get(0).getStarts().size(); j++){
+                if (lineBus.get(0).getJourneys().get(0).getStarts().get(j).getHour() == currentTime.getHour()){
+
+                    timeLabel.setLayoutX(15);
+                    timeLabel.setLayoutY(40 + i*30);
+                    timeLabel.setText(String.valueOf(lineBus.get(0).getJourneys().get(0).getStarts().get(j).plusMinutes(lineBus.get(0).getJourneys().get(0).getSequence().get(i).getArrival())));
+                }
+
+            }
+
+            anchorP.getChildren().add(streetLabel);
+            anchorP.getChildren().add(timeLabel);
+
+        }
+
+    }
+
+    public void strokeLine(List<javafx.scene.shape.Line> lineList, javafx.scene.shape.Line clickLine){
+        for (javafx.scene.shape.Line line : lineArray) {
+            if (line.getId().equals(clickLine.getId())){
+                line.setStrokeWidth(5);
+            }
+        }
+        //timeTable.setText(clickLine.getId());
+    }
+
+    public void unstrokeLine(List<javafx.scene.shape.Line> lineList, javafx.scene.shape.Line clickLine){
+        for (javafx.scene.shape.Line line : lineArray) {
+            if (line.getId().equals(clickLine.getId())){
+                line.setStrokeWidth(3);
+            }
+        }
+    }
+
     /**
      * Visible all nodes in BorderPane right.
      */
@@ -384,19 +435,19 @@ public class Controller implements Initializable {
         timeTable.setEditable(false);
         timeTable.setText("Tu bude ten jizdni rad");
 
-        roadDegree.setLayoutX(25);
+        /*roadDegree.setLayoutX(25);
         roadDegree.setLayoutY(5);
-        roadDegree.setPrefWidth(150);
+        roadDegree.setPrefWidth(150);*/
 
         closeStreet.setLayoutX(25);
-        closeStreet.setLayoutY(75);
+        closeStreet.setLayoutY(5);
         closeStreet.setPrefWidth(150);
         closeStreet.setSelected(false);
     }
 
     /**
      * When click on faster button, updateTime increase
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void fasterTime(ActionEvent actionEvent) {
@@ -416,7 +467,7 @@ public class Controller implements Initializable {
 
     /**
      * When click on faster button, updateTime decrease
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void slowerTime(ActionEvent actionEvent) {
@@ -436,7 +487,7 @@ public class Controller implements Initializable {
 
     /**
      * Gets value from text fields into variables.
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void setNewTime(ActionEvent actionEvent) {

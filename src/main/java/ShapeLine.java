@@ -42,7 +42,7 @@ public class ShapeLine {
                 line.setEndY(streets.get(streetSize).getCoordinates().get(coorSize + 1).getY());
                 line.setStroke(Color.valueOf(color[streetSize]));
                 line.setStrokeWidth(3);
-                line.setCursor(Cursor.HAND);
+
 
                 lineArray.add(line);
             }
