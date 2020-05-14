@@ -21,8 +21,6 @@ public class ShapeLine {
     private final List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private final List<Text> textArray = new ArrayList<>();
 
-    private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET","MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN","PURPLE","GREY"};
-
     private javafx.scene.shape.Line line = null;
 
     private Text text = null;
@@ -40,7 +38,7 @@ public class ShapeLine {
                 line.setStartY(streets.get(streetSize).getCoordinates().get(coorSize).getY());
                 line.setEndX(streets.get(streetSize).getCoordinates().get(coorSize + 1).getX());
                 line.setEndY(streets.get(streetSize).getCoordinates().get(coorSize + 1).getY());
-                line.setStroke(Color.valueOf(color[streetSize]));
+                //line.setStroke(Color.valueOf(color[streetSize]));
                 line.setStrokeWidth(3);
 
 
