@@ -290,9 +290,6 @@ public class Controller implements Initializable {
                 }
 
             }
-            else{
-                System.err.println("Not valid file");
-            }
         }
         catch (IllegalArgumentException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -353,9 +350,6 @@ public class Controller implements Initializable {
                 } //end for Line line
                 linesBeingSet = false;
             } //end if
-            else{
-                System.out.println("Not valid file");
-            }
         }
         catch (NoSuchElementException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
