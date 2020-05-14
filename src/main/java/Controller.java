@@ -411,18 +411,22 @@ public class Controller implements Initializable {
 
     }
 
-    public void strokeLine(List<javafx.scene.shape.Line> lineList, javafx.scene.shape.Line clickLine){
-        for (javafx.scene.shape.Line line : lineArray) {
-            if (line.getId().equals(clickLine.getId())){
-                line.setStrokeWidth(5);
+    public void strokeLine(List<javafx.scene.shape.Line> lineArray, List<Street> streetArray){
+        for (Street street : streetArray){
+            for (javafx.scene.shape.Line line : lineArray){
+                if (street.getId().equals(line.getId())){
+                    line.setStrokeWidth(7);
+                }
             }
         }
     }
 
-    public void unstrokeLine(List<javafx.scene.shape.Line> lineList, javafx.scene.shape.Line clickLine){
-        for (javafx.scene.shape.Line line : lineArray) {
-            if (line.getId().equals(clickLine.getId())){
-                line.setStrokeWidth(3);
+    public void unstrokeLine(List<javafx.scene.shape.Line> lineArray, List<Street> streetArray){
+        for (Street street : streetArray){
+            for (javafx.scene.shape.Line line : lineArray){
+                if (street.getId().equals(line.getId())){
+                    line.setStrokeWidth(3);
+                }
             }
         }
     }
