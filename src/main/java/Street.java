@@ -46,6 +46,7 @@ public class Street {
      */
     public boolean addStop(Stop stop) {
         if (this.stops.contains(stop)) {
+            stop.setStreet(this);
             return true;
         }
         if (this.isWithinStreet(stop)) {
