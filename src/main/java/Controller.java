@@ -77,6 +77,9 @@ public class Controller implements Initializable {
     private Label Clock;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
     private TextField setHour;
 
     @FXML
@@ -438,7 +441,7 @@ public class Controller implements Initializable {
     public void setNewTime(ActionEvent actionEvent) {
 
         if (setHour.getText().isEmpty() || setMinute.getText().isEmpty()){
-            System.out.println("Wrong time format");
+            errorLabel.setText("Wrong time format");
             return;
         }
 
@@ -469,6 +472,16 @@ public class Controller implements Initializable {
                     @Override
                     public void handle(KeyEvent event) {
                         switch (event.getCode()){
+                            case NUMPAD0:
+                            case NUMPAD1:
+                            case NUMPAD2:
+                            case NUMPAD3:
+                            case NUMPAD4:
+                            case NUMPAD5:
+                            case NUMPAD6:
+                            case NUMPAD7:
+                            case NUMPAD8:
+                            case NUMPAD9:
                             case DIGIT0:
                             case DIGIT1:
                             case DIGIT2:
