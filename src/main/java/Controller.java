@@ -15,7 +15,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -42,6 +44,10 @@ public class Controller implements Initializable {
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private List<Text> textArray = new ArrayList<>();
     private List<Circle> circles = new ArrayList<>();
+    private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET",
+            "MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN",
+            "PURPLE","GREY"};
+
 
     public File StreetFile = null;
     public File LinkFile = null;
@@ -59,8 +65,10 @@ public class Controller implements Initializable {
     boolean linesBeingSet = false;
 
 
-    TextArea timeTable = new TextArea();
-    ComboBox roadDegree = new ComboBox();
+    //TextArea timeTable = new TextArea();
+    //ComboBox roadDegree = new ComboBox();
+    Label streetLabel;
+    Label timeLabel;
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
@@ -216,6 +224,27 @@ public class Controller implements Initializable {
                                                     }
                                                     circles.add(busCircle);
                                                     mapWindow.getChildren().add(busCircle);
+                                                    busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                                            new EventHandler<MouseEvent>() {
+                                                                @Override
+                                                                public void handle(MouseEvent event) {
+                                                                    if (!click) {
+                                                                        visibleNode();
+                                                                        itineraryPrint(line,journey);
+                                                                        strokeLine(lineArray,line.getStreets());
+                                                                        borderP.setRight(anchorP);
+                                                                        click = true;
+                                                                        return;
+                                                                    }
+                                                                    unstrokeLine(lineArray,line.getStreets());
+                                                                    for (Node node : anchorP.getChildren()){
+                                                                        node.setVisible(false);
+                                                                    }
+
+                                                                    borderP.setRight(null);
+                                                                    click = false;
+                                                                }
+                                                            });
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
@@ -250,10 +279,10 @@ public class Controller implements Initializable {
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(roadDegree,closeStreet,timeTable);
+        anchorP = new AnchorPane(closeStreet);
 
-        roadDegree.setPromptText("Road degree");
-        roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
+        //roadDegree.setPromptText("Road degree");
+        //roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
     }
 
     /**
@@ -279,7 +308,7 @@ public class Controller implements Initializable {
 
     /**
      * Open Dialog window when click on MapOpen MenuItem
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void mapClick(ActionEvent actionEvent) {
@@ -300,21 +329,7 @@ public class Controller implements Initializable {
 
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
-                    line.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                            new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    if (!click) {
-                                        visibleNode();
-                                        borderP.setRight(anchorP);
-                                        click = true;
-                                        return;
-                                    }
 
-                                    borderP.setRight(null);
-                                    click = false;
-                                }
-                            });
                 }
 
                 for (Text text : textArray) {
@@ -339,7 +354,7 @@ public class Controller implements Initializable {
 
     /**
      * Open Dialog window when click on LineOpen MenuItem
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void lineClick(ActionEvent actionEvent) {
@@ -400,29 +415,71 @@ public class Controller implements Initializable {
         }
     }
 
+    public void itineraryPrint(Line lineBus, Journey journey){
+        int stopC = 0;
+
+        for (Stop stops : lineBus.getStops()){
+            for (LocalTime start : journey.getStarts()) {
+                if (start.getHour() == currentTime.getHour()) {
+                    streetLabel = new Label();
+                    streetLabel.setFont(new Font("Arial", 20));
+                    streetLabel.setLayoutX(15);
+                    streetLabel.setLayoutY(25 + stopC*30);
+                    streetLabel.setText(stops.getId() + " : " + String.valueOf(start.plusMinutes(journey.getSequence().get(stopC).getArrival())));
+                    anchorP.getChildren().add(streetLabel);
+                }
+            }
+            stopC++;
+            //anchorP.getChildren().add(streetLabel);
+        }
+
+    }
+
+    public void strokeLine(List<javafx.scene.shape.Line> lineArray, List<Street> streetArray){
+        for (Street street : streetArray){
+            for (javafx.scene.shape.Line line : lineArray){
+                if (street.getId().equals(line.getId())){
+                    line.setStrokeWidth(7);
+                }
+            }
+        }
+    }
+
+    public void unstrokeLine(List<javafx.scene.shape.Line> lineArray, List<Street> streetArray){
+        for (Street street : streetArray){
+            for (javafx.scene.shape.Line line : lineArray){
+                if (street.getId().equals(line.getId())){
+                    line.setStrokeWidth(3);
+                }
+            }
+        }
+    }
+
     /**
      * Visible all nodes in BorderPane right.
      */
     private void visibleNode(){
-        timeTable.setPrefWidth(200);
+        /*timeTable.setPrefWidth(200);
         timeTable.setPrefHeight(230);
         timeTable.setLayoutY(130);
         timeTable.setEditable(false);
-        timeTable.setText("Tu bude ten jizdni rad");
+        timeTable.setText("Tu bude ten jizdni rad");*/
 
-        roadDegree.setLayoutX(25);
+        /*roadDegree.setLayoutX(25);
         roadDegree.setLayoutY(5);
-        roadDegree.setPrefWidth(150);
+        roadDegree.setPrefWidth(150);*/
+
 
         closeStreet.setLayoutX(25);
-        closeStreet.setLayoutY(75);
+        closeStreet.setLayoutY(5);
         closeStreet.setPrefWidth(150);
         closeStreet.setSelected(false);
+        closeStreet.setVisible(true);
     }
 
     /**
      * When click on faster button, updateTime increase
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void fasterTime(ActionEvent actionEvent) {
@@ -442,7 +499,7 @@ public class Controller implements Initializable {
 
     /**
      * When click on faster button, updateTime decrease
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void slowerTime(ActionEvent actionEvent) {
@@ -462,7 +519,7 @@ public class Controller implements Initializable {
 
     /**
      * Gets value from text fields into variables.
-     * @param actionEvent
+     * @param actionEvent representing some type of action
      */
     @FXML
     public void setNewTime(ActionEvent actionEvent) {
@@ -474,19 +531,17 @@ public class Controller implements Initializable {
 
         newTimeSet = true;
 
-        if(Integer.parseInt(setHour.getText()) >= 0 && Integer.parseInt(setHour.getText()) <= 24){
+        if(Integer.parseInt(setHour.getText()) >= 0 && Integer.parseInt(setHour.getText()) <= 24 && Integer.parseInt(setMinute.getText()) >= 0 && Integer.parseInt(setMinute.getText()) <= 59){
+            errorLabel.setText("");
             hours = setHour.getText();
-            setHour.setText(setHour.getText());
-        }
-        else {
-            hours = String.valueOf(currentTime.getHour());
-            setHour.setText(hours);
-        }
-        if(Integer.parseInt(setMinute.getText()) >= 0 && Integer.parseInt(setMinute.getText()) <= 59){
             minute = setMinute.getText();
+            setHour.setText(setHour.getText());
             setMinute.setText(setMinute.getText());
         }
         else {
+            errorLabel.setText("Wrong hour or minute format");
+            hours = String.valueOf(currentTime.getHour());
+            setHour.setText(hours);
             minute = String.valueOf(currentTime.getMinute());
             setMinute.setText(minute);
         }
