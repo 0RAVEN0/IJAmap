@@ -8,29 +8,14 @@ import java.util.List;
 
 public class ShapeCircle {
 
-    private final List<Circle> circleArray = new ArrayList<>();
-    private Circle busCircle = null;
+    private Circle busCircle = new Circle();
 
-    public List<Circle> drawCircle(List<Line> line){
+    public Circle drawCircle(Coordinate position){
 
-        /**
-         * ---> nastavíš si stred kruhu (x-ovu a y-ovu suradnisu stredu) plus polomer kruhu.
-         * line.get(0).getStops().get(0).getCoordinate().getX() týmto sposobom
-         * sa posuvam v tom .yaml subore na to miesto ktoré chcem čiže coordinaty.
-         * Choď do Controller. --->
-         */
+        busCircle.setCenterX(position.getX());
+        busCircle.setCenterY(position.getY());
+        busCircle.setRadius(5);
 
-        for (int lineSize = 0; lineSize < line.size(); lineSize++) {
-            for (int i = 0; i < line.get(lineSize).getStops().size(); i++) {
-                busCircle = new Circle();
-                busCircle.setCenterX(line.get(lineSize).getStops().get(i).getCoordinate().getX());
-                busCircle.setCenterY(line.get(lineSize).getStops().get(i).getCoordinate().getY());
-                busCircle.setRadius(5);
-
-                circleArray.add(busCircle);
-            }
-        }
-
-        return circleArray;
+        return busCircle;
     }
 }

@@ -332,28 +332,16 @@ public class Controller implements Initializable {
                                             position = new Coordinate(x,y);
                                         }
                                         System.out.println("Position: "+position);
+
+                                        busCircle = circleC.drawCircle(position);
+
+                                        mapWindow.getChildren().add(busCircle);
                                     }
                                 }
                             }
                         }
                     }
                 } //end for Line line
-
-                //TODO show buses on the map
-                /**
-                 * Do node busCircle si zavoláš metodu drawCircle, ktorá je v classe ShapeCircle.
-                 * Ako argument funkcie použiješ ten lines.yaml subor, ktorý si zmenil na, ved ty vieš
-                 * čo v tvojej classe Reader.
-                 * Chod do ShapeCircle.java. --->
-                 */
-                //busCircle = circleC.drawCircle(lines);
-
-                /**
-                 * ---> mapWindow je Pane do neho vykresluješ kruh pomocou týchto metod.
-                 * KONEC.
-                 */
-                mapWindow.getChildren().add(busCircle);
-
 
             } //end if
             else{
