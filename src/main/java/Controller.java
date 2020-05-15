@@ -60,6 +60,7 @@ public class Controller implements Initializable {
 
     private boolean click = false;
     private boolean newTimeSet = false;
+    private boolean newTimeSet2 = false;
 
     private double updateTime = 1.0;
 
@@ -129,7 +130,7 @@ public class Controller implements Initializable {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        Clock.setText(stringTime);
+                        //Clock.setText(stringTime);
 
                         if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
                                 && (lines != null && !linesBeingSet) ) {
@@ -228,27 +229,27 @@ public class Controller implements Initializable {
                                                     }
 
                                                     ShapeCircle.display(busCircle, circleId, circles, mapWindow);
-                                                        busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                                                new EventHandler<MouseEvent>() {
-                                                                    @Override
-                                                                    public void handle(MouseEvent event) {
-                                                                        if (!click) {
-                                                                            visibleNode();
-                                                                            itineraryPrint(line, journey);
-                                                                            strokeLine(lineArray, line.getStreets());
-                                                                            borderP.setRight(anchorP);
-                                                                            click = true;
-                                                                            return;
-                                                                        }
-                                                                        unstrokeLine(lineArray, line.getStreets());
-                                                                        for (Node node : anchorP.getChildren()) {
-                                                                            node.setVisible(false);
-                                                                        }
+                                                    busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                                            new EventHandler<MouseEvent>() {
+                                                        @Override
+                                                        public void handle(MouseEvent event) {
+                                                            if (!click) {
+                                                                visibleNode();
+                                                                itineraryPrint(line, journey);
+                                                                strokeLine(lineArray, line.getStreets());
+                                                                borderP.setRight(anchorP);
+                                                                click = true;
+                                                                return;
+                                                            }
+                                                            //unstrokeLine(lineArray, line.getStreets());
+                                                            for (Node node : anchorP.getChildren()) {
+                                                                node.setVisible(false);
+                                                            }
 
-                                                                        borderP.setRight(null);
-                                                                        click = false;
-                                                                    }
-                                                                });
+                                                            borderP.setRight(null);
+                                                            click = false;
+                                                        }
+                                                    });
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
@@ -273,27 +274,39 @@ public class Controller implements Initializable {
             @Override
             public void run() {
                 halfcurrentTime = halfcurrentTime.plusSeconds(1);
-
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-                System.out.println("pol.cas = "+halfcurrentTime.format(timeFormat));
+
+                if (newTimeSet2){
+                    halfcurrentTime = LocalTime.of(Math.abs(halfcurrentTime.getHour()
+                            + (Integer.parseInt(hours) - halfcurrentTime.getHour())),Math.abs(currentTime.getMinute()
+                            + (Integer.parseInt(minute) - halfcurrentTime.getMinute())),0);
+                    newTimeSet2 = false;
+                }
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        Clock.setText(halfcurrentTime.format(timeFormat));
+                    }
+                });
+
+
             }
         };
 
-        TimerTask thirdTask = new TimerTask() {
+        /*TimerTask thirdTask = new TimerTask() {
 
             @Override
             public void run() {
                 thirdcurrentTime = thirdcurrentTime.plusSeconds(1);
-
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-                System.out.println("tret.cas = "+thirdcurrentTime.format(timeFormat));
             }
-        };
+        };*/
 
         timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
-        programTime.scheduleAtFixedRate(halfTask,0, 2000);
-        programTime.scheduleAtFixedRate(thirdTask,0, 3000);
+        programTime.scheduleAtFixedRate(halfTask,0, 1000);
+        //programTime.scheduleAtFixedRate(thirdTask,0, 3000);
 
     }
 
@@ -578,6 +591,7 @@ public class Controller implements Initializable {
         }
 
         newTimeSet = true;
+        newTimeSet2 = true;
 
         if(Integer.parseInt(setHour.getText()) >= 0 && Integer.parseInt(setHour.getText()) <= 24 && Integer.parseInt(setMinute.getText()) >= 0 && Integer.parseInt(setMinute.getText()) <= 59){
             errorLabel.setText("");
