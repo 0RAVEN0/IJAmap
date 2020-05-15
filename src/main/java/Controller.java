@@ -43,7 +43,7 @@ public class Controller implements Initializable {
     private List<Line> lines = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private List<Text> textArray = new ArrayList<>();
-    private List<Circle> circles = new ArrayList<>();
+    protected final List<Circle> circles = new ArrayList<>();
     private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET",
             "MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN",
             "PURPLE","GREY"};
@@ -75,10 +75,10 @@ public class Controller implements Initializable {
     private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
 
-    private Circle busCircle = null;
+    protected Circle busCircle = null;
 
     @FXML
-    private Pane mapWindow;
+    protected Pane mapWindow;
 
     @FXML
     private BorderPane borderP;
@@ -125,7 +125,7 @@ public class Controller implements Initializable {
                     public void run() {
                         Clock.setText(stringTime);
 
-                        if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 5))
+                        if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
                                 && (lines != null && !linesBeingSet) ) {
                             lastTime = currentTime;
 
@@ -220,10 +220,9 @@ public class Controller implements Initializable {
                                                             mapWindow.getChildren().remove(circle);
                                                         }
                                                     }
-                                                    busCircle.setFill(Color.LAVENDER);
-                                                    busCircle.setStroke(Color.PURPLE);
-                                                    circles.add(busCircle);
-                                                    mapWindow.getChildren().add(busCircle);
+
+                                                    ShapeCircle.display(busCircle, circleId, circles, mapWindow);
+
                                                     busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
                                                             new EventHandler<MouseEvent>() {
                                                                 @Override
