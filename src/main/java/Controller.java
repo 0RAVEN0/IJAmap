@@ -64,8 +64,6 @@ public class Controller implements Initializable {
     LocalTime lastTime = null;
     boolean linesBeingSet = false;
 
-
-    //ComboBox roadDegree = new ComboBox();
     Label streetLabel;
     Label headLabel = new Label();
     CheckBox closeStreet = new CheckBox("Close street");
@@ -76,6 +74,9 @@ public class Controller implements Initializable {
     private LocalTime currentTime = LocalTime.now();
 
     protected Circle busCircle = null;
+
+    @FXML
+    private ComboBox roadDegree;
 
     @FXML
     protected Pane mapWindow;
@@ -222,28 +223,27 @@ public class Controller implements Initializable {
                                                     }
 
                                                     ShapeCircle.display(busCircle, circleId, circles, mapWindow);
+                                                        busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                                                new EventHandler<MouseEvent>() {
+                                                                    @Override
+                                                                    public void handle(MouseEvent event) {
+                                                                        if (!click) {
+                                                                            visibleNode();
+                                                                            itineraryPrint(line, journey);
+                                                                            strokeLine(lineArray, line.getStreets());
+                                                                            borderP.setRight(anchorP);
+                                                                            click = true;
+                                                                            return;
+                                                                        }
+                                                                        unstrokeLine(lineArray, line.getStreets());
+                                                                        for (Node node : anchorP.getChildren()) {
+                                                                            node.setVisible(false);
+                                                                        }
 
-                                                    busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                                            new EventHandler<MouseEvent>() {
-                                                                @Override
-                                                                public void handle(MouseEvent event) {
-                                                                    if (!click) {
-                                                                        visibleNode();
-                                                                        itineraryPrint(line,journey);
-                                                                        strokeLine(lineArray,line.getStreets());
-                                                                        borderP.setRight(anchorP);
-                                                                        click = true;
-                                                                        return;
+                                                                        borderP.setRight(null);
+                                                                        click = false;
                                                                     }
-                                                                    unstrokeLine(lineArray,line.getStreets());
-                                                                    for (Node node : anchorP.getChildren()){
-                                                                        node.setVisible(false);
-                                                                    }
-
-                                                                    borderP.setRight(null);
-                                                                    click = false;
-                                                                }
-                                                            });
+                                                                });
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
@@ -280,8 +280,7 @@ public class Controller implements Initializable {
 
         anchorP = new AnchorPane(closeStreet,headLabel);
 
-        //roadDegree.setPromptText("Road degree");
-        //roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
+        roadDegree.getItems().addAll("normal","busy","transport collapse");
     }
 
     /**
@@ -465,15 +464,6 @@ public class Controller implements Initializable {
      * Visible all nodes in BorderPane right.
      */
     private void visibleNode(){
-        /*timeTable.setPrefWidth(200);
-        timeTable.setPrefHeight(230);
-        timeTable.setLayoutY(130);
-        timeTable.setEditable(false);
-        timeTable.setText("Tu bude ten jizdni rad");*/
-
-        /*roadDegree.setLayoutX(25);
-        roadDegree.setLayoutY(5);
-        roadDegree.setPrefWidth(150);*/
 
         headLabel.setFont(new Font("Arial", 20));
         headLabel.setText("Stop name | Arrival time");
