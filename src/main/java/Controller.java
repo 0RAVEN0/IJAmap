@@ -65,10 +65,8 @@ public class Controller implements Initializable {
     boolean linesBeingSet = false;
 
 
-    //TextArea timeTable = new TextArea();
     //ComboBox roadDegree = new ComboBox();
     Label streetLabel;
-    Label timeLabel;
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
@@ -222,6 +220,8 @@ public class Controller implements Initializable {
                                                             mapWindow.getChildren().remove(circle);
                                                         }
                                                     }
+                                                    busCircle.setFill(Color.LAVENDER);
+                                                    busCircle.setStroke(Color.PURPLE);
                                                     circles.add(busCircle);
                                                     mapWindow.getChildren().add(busCircle);
                                                     busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -439,6 +439,7 @@ public class Controller implements Initializable {
         for (Street street : streetArray){
             for (javafx.scene.shape.Line line : lineArray){
                 if (street.getId().equals(line.getId())){
+                    line.setStroke(Color.PURPLE);
                     line.setStrokeWidth(7);
                 }
             }
@@ -449,6 +450,7 @@ public class Controller implements Initializable {
         for (Street street : streetArray){
             for (javafx.scene.shape.Line line : lineArray){
                 if (street.getId().equals(line.getId())){
+                    line.setStroke(Color.BLACK);
                     line.setStrokeWidth(3);
                 }
             }
