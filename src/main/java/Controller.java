@@ -5,6 +5,8 @@
 package main.java;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -69,6 +71,7 @@ public class Controller implements Initializable {
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
+    private int rDegree = 0;
 
     private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
@@ -280,7 +283,25 @@ public class Controller implements Initializable {
 
         anchorP = new AnchorPane(closeStreet,headLabel);
 
-        roadDegree.getItems().addAll("normal","busy","transport collapse");
+        roadDegree.getItems().addAll("normal","busy","traffic collapse");
+
+        roadDegree.getSelectionModel().selectedItemProperty().addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        if(roadDegree.getValue().equals("normal")){
+                            rDegree = 1;
+                        }else if(roadDegree.getValue().equals("busy")){
+                            rDegree = 2;
+                        }
+                        else {
+                            rDegree = 3;
+                        }
+                    }
+                });
+
+
+
     }
 
     /**
