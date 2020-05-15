@@ -275,6 +275,10 @@ public class Controller implements Initializable {
         onlyNumber(setHour);
         onlyNumber(setMinute);
 
+        //scale for Pane to be on the full screen
+        mapWindow.setScaleX(0.43046721);
+        mapWindow.setScaleY(0.43046721);
+
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
@@ -334,7 +338,6 @@ public class Controller implements Initializable {
                 for (Text text : textArray) {
                     mapWindow.getChildren().addAll(text);
                 }
-
             }
         }
         catch (IllegalArgumentException e){
