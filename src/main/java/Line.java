@@ -83,7 +83,8 @@ public class Line {
         if (streets.contains(street)) {
             return true;
         }
-        if (!street.follows(this.streets.get(this.streets.size()-1))) {
+        if (!street.follows(this.streets.get(this.streets.size()-1))
+            && street.findIntersectionWith(this.streets.get(this.streets.size()-1)) == null) {
            return false;
         }
         streets.add(street);
@@ -99,27 +100,27 @@ public class Line {
         return null;
     }
 
-    /**
-     * Adds stop to this line
-     * @param stop Stop to be added
-     * @return Returns true upon success, false upon failure
-     */
-    public boolean addStop(Stop stop) {
-        if (this.stops.isEmpty()) {
-            stops.add(stop);
-            streets.add(stop.getStreet());
-            return true;
-        }
-        if (this.stops.contains(stop)) {
-            return true;
-        }
-        if (!stop.getStreet().follows(this.streets.get(this.streets.size()-1))) {
-            return false;
-        }
-        this.stops.add(stop);
-        this.streets.add(stop.getStreet());
-        return true;
-    }
+//    /**
+//     * Adds stop to this line
+//     * @param stop Stop to be added
+//     * @return Returns true upon success, false upon failure
+//     */
+//    public boolean addStop(Stop stop) {
+//        if (this.stops.isEmpty()) {
+//            stops.add(stop);
+//            streets.add(stop.getStreet());
+//            return true;
+//        }
+//        if (this.stops.contains(stop)) {
+//            return true;
+//        }
+//        if (!stop.getStreet().follows(this.streets.get(this.streets.size()-1))) {
+//            return false;
+//        }
+//        this.stops.add(stop);
+//        this.streets.add(stop.getStreet());
+//        return true;
+//    }
 
     @Override
     public boolean equals(Object o) {

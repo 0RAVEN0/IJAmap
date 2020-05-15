@@ -213,7 +213,6 @@ public class Controller implements Initializable {
                                                         }
                                                         position = new Coordinate(x,y);
                                                     }
-                                                    System.out.println("Position: "+position);
                                                     busCircle = ShapeCircle.drawCircle(position, circleId);
                                                     for (Circle circle : circles) {
                                                         if (circle.getId().equals(circleId)) {
