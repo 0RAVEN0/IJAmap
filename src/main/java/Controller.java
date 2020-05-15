@@ -416,22 +416,28 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Print itinerary itno Border Pane
+     * @param lineBus represents click line
+     * @param journey represents line journey
+     */
     public void itineraryPrint(Line lineBus, Journey journey){
         int stopC = 0;
-
+        List<LocalTime> start = new ArrayList<>();
+        start = journey.getStarts();
         for (Stop stops : lineBus.getStops()){
-            for (LocalTime start : journey.getStarts()) {
-                if (start.getHour() == currentTime.getHour()) {
+            for (int i = journey.getStarts().size()-1; i >=0; i--) {
+                if (start.get(i).getHour() == currentTime.getHour() && currentTime.getMinute() >= start.get(i).getMinute()) {
                     streetLabel = new Label();
                     streetLabel.setFont(new Font("Arial", 20));
                     streetLabel.setLayoutX(15);
                     streetLabel.setLayoutY(25 + stopC*30);
-                    streetLabel.setText(stops.getId() + " : " + String.valueOf(start.plusMinutes(journey.getSequence().get(stopC).getArrival())));
+                    streetLabel.setText(stops.getId() + " : " + String.valueOf(start.get(i).plusMinutes(journey.getSequence().get(stopC).getArrival())));
                     anchorP.getChildren().add(streetLabel);
+                    break;
                 }
             }
             stopC++;
-            //anchorP.getChildren().add(streetLabel);
         }
 
     }
