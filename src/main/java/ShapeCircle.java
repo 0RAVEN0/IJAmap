@@ -28,5 +28,7 @@ public class ShapeCircle {
         busCircle.setStroke(Color.PURPLE);
         circles.add(busCircle);
         mapWindow.getChildren().add(busCircle);
+
+
     }
 }

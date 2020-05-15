@@ -75,6 +75,8 @@ public class Controller implements Initializable {
 
     private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
+    private LocalTime halfcurrentTime = LocalTime.now();
+    private LocalTime thirdcurrentTime = LocalTime.now();
 
     protected Circle busCircle = null;
 
@@ -266,8 +268,32 @@ public class Controller implements Initializable {
             }
         };
 
+        TimerTask halfTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                halfcurrentTime = halfcurrentTime.plusSeconds(1);
+
+                DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+                System.out.println("pol.cas = "+halfcurrentTime.format(timeFormat));
+            }
+        };
+
+        TimerTask thirdTask = new TimerTask() {
+
+            @Override
+            public void run() {
+                thirdcurrentTime = thirdcurrentTime.plusSeconds(1);
+
+                DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+                System.out.println("tret.cas = "+thirdcurrentTime.format(timeFormat));
+            }
+        };
+
         timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
+        programTime.scheduleAtFixedRate(halfTask,0, 2000);
+        programTime.scheduleAtFixedRate(thirdTask,0, 3000);
 
     }
 
@@ -284,7 +310,7 @@ public class Controller implements Initializable {
         anchorP = new AnchorPane(closeStreet,headLabel);
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
-
+        roadDegree.setPromptText("normal");
         roadDegree.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener() {
                     @Override
