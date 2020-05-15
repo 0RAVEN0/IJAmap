@@ -27,7 +27,7 @@
          <content>
             <Group fx:id="groupP">
                <children>
-                  <Pane fx:id="mapWindow" onScroll="#Zoom" prefHeight="361.0" prefWidth="597.0" />
+                  <Pane fx:id="mapWindow" onScroll="#Zoom" prefHeight="361.0" prefWidth="600.0" />
                </children>
             </Group>
          </content>

@@ -67,6 +67,7 @@ public class Controller implements Initializable {
 
     //ComboBox roadDegree = new ComboBox();
     Label streetLabel;
+    Label headLabel = new Label();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
 
@@ -275,14 +276,10 @@ public class Controller implements Initializable {
         onlyNumber(setHour);
         onlyNumber(setMinute);
 
-        //scale for Pane to be on the full screen
-        mapWindow.setScaleX(0.43046721);
-        mapWindow.setScaleY(0.43046721);
-
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(closeStreet);
+        anchorP = new AnchorPane(closeStreet,headLabel);
 
         //roadDegree.setPromptText("Road degree");
         //roadDegree.getItems().addAll("1. degree","2. degree","3. degree");
@@ -430,10 +427,10 @@ public class Controller implements Initializable {
             for (int i = journey.getStarts().size()-1; i >=0; i--) {
                 if (start.get(i).getHour() == currentTime.getHour() && currentTime.getMinute() >= start.get(i).getMinute()) {
                     streetLabel = new Label();
-                    streetLabel.setFont(new Font("Arial", 20));
-                    streetLabel.setLayoutX(15);
-                    streetLabel.setLayoutY(25 + stopC*30);
-                    streetLabel.setText(stops.getId() + " : " + String.valueOf(start.get(i).plusMinutes(journey.getSequence().get(stopC).getArrival())));
+                    streetLabel.setFont(new Font("Arial", 18));
+                    streetLabel.setLayoutX(10);
+                    streetLabel.setLayoutY(60 + stopC*30);
+                    streetLabel.setText(stops.getId() + "        | " + String.valueOf(start.get(i).plusMinutes(journey.getSequence().get(stopC).getArrival())));
                     anchorP.getChildren().add(streetLabel);
                     break;
                 }
@@ -479,8 +476,13 @@ public class Controller implements Initializable {
         roadDegree.setLayoutY(5);
         roadDegree.setPrefWidth(150);*/
 
+        headLabel.setFont(new Font("Arial", 20));
+        headLabel.setText("Stop name | Arrival time");
+        headLabel.setLayoutX(10);
+        headLabel.setLayoutY(35);
+        headLabel.setVisible(true);
 
-        closeStreet.setLayoutX(25);
+        closeStreet.setLayoutX(10);
         closeStreet.setLayoutY(5);
         closeStreet.setPrefWidth(150);
         closeStreet.setSelected(false);

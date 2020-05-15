@@ -35,7 +35,7 @@ public class Map extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/main/resources/map.fxml"));
 
         primaryStage.setTitle("Map");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root, 1180, 600));
         primaryStage.show();
     }
 
