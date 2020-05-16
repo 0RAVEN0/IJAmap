@@ -31,18 +31,5 @@ public class ShapeCircle {
         circles.add(busCircle);
         mapWindow.getChildren().add(busCircle);
 
-        /*mapWindow.setOnMouseClicked((MouseEvent evt) -> {
-
-            busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                    new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent event) {
-                            System.out.println("Click on circle");
-                        }
-                    });
-
-            System.out.println("Click outside textfield");
-        });*/
-
     }
 }

@@ -294,24 +294,17 @@ public class Controller implements Initializable {
             }
         };
 
-        /*TimerTask thirdTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                thirdcurrentTime = thirdcurrentTime.plusSeconds(1);
-                DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
-            }
-        };*/
-
         timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
         programTime.scheduleAtFixedRate(halfTask,0, 1000);
-        //programTime.scheduleAtFixedRate(thirdTask,0, 3000);
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        roadDegree.getItems().addAll("normal","busy","traffic collapse");
+        roadDegree.setPromptText("normal");
+
         timeStart(updateTime);
 
         onlyNumber(setHour);
@@ -320,25 +313,7 @@ public class Controller implements Initializable {
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(closeStreet,headLabel);
-
-        roadDegree.getItems().addAll("normal","busy","traffic collapse");
-        roadDegree.setPromptText("normal");
-        roadDegree.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        if(roadDegree.getValue().equals("normal")){
-                            rDegree = 1;
-                        }else if(roadDegree.getValue().equals("busy")){
-                            rDegree = 2;
-                        }
-                        else {
-                            rDegree = 3;
-                        }
-                    }
-                });
-
+        anchorP = new AnchorPane(closeStreet,headLabel,closeLine);
 
 
     }
@@ -473,7 +448,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Print itinerary itno Border Pane
+     * Print itinerary into Border Pane
      * @param lineBus represents click line
      * @param journey represents line journey
      */
@@ -545,7 +520,7 @@ public class Controller implements Initializable {
     @FXML
     public void fasterTime(ActionEvent actionEvent) {
 
-        if (updateTime >= 1) {
+        /*if (updateTime >= 1) {
             updateTime = updateTime + 1;
             programTime.cancel();
             timeStart(updateTime);
@@ -555,7 +530,7 @@ public class Controller implements Initializable {
             updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
             programTime.cancel();
             timeStart(updateTime);
-        }
+        }*/
     }
 
     /**
@@ -565,7 +540,7 @@ public class Controller implements Initializable {
     @FXML
     public void slowerTime(ActionEvent actionEvent) {
 
-        if (updateTime > 1) {
+        /*if (updateTime > 1) {
             updateTime = updateTime - 1;
             programTime.cancel();
             timeStart(updateTime);
@@ -575,7 +550,7 @@ public class Controller implements Initializable {
             updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
             programTime.cancel();
             timeStart(updateTime);
-        }
+        }*/
     }
 
     /**
@@ -609,6 +584,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * TextFields accept only numbers
+     * @param timeField text fields for clock
+     */
     public void onlyNumber(TextField timeField){
         Pattern pattern = Pattern.compile(".{0,2}");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>)
@@ -649,5 +628,27 @@ public class Controller implements Initializable {
                         }
                     }
                 });
+    }
+
+    /**
+     * Function for define difficult traffic situations
+     * @param actionEvent representing some type of action
+     */
+    @FXML
+    public void roadDegreeChoose(ActionEvent actionEvent) {
+        if(roadDegree.getValue().equals("normal")){
+            updateTime = 1.0;
+            programTime.cancel();
+            timeStart(updateTime);
+        }else if(roadDegree.getValue().equals("busy")){
+            updateTime = 0.5;
+            programTime.cancel();
+            timeStart(updateTime);
+        }
+        else {
+            updateTime = 0.33;
+            programTime.cancel();
+            timeStart(updateTime);
+        }
     }
 }
