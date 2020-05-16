@@ -49,7 +49,7 @@ public class Controller implements Initializable {
     private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET",
             "MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN",
             "PURPLE","GREY"};
-
+    private List<Street> strokeStreet = null;
 
     public File StreetFile = null;
     public File LinkFile = null;
@@ -71,13 +71,13 @@ public class Controller implements Initializable {
     Label headLabel = new Label();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
+    Button closeLine = new Button();
 
     private int rDegree = 0;
 
     private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
     private LocalTime halfcurrentTime = LocalTime.now();
-    private LocalTime thirdcurrentTime = LocalTime.now();
 
     protected Circle busCircle = null;
 
@@ -237,17 +237,21 @@ public class Controller implements Initializable {
                                                                 visibleNode();
                                                                 itineraryPrint(line, journey);
                                                                 strokeLine(lineArray, line.getStreets());
+                                                                strokeStreet = line.getStreets();
                                                                 borderP.setRight(anchorP);
-                                                                click = true;
-                                                                return;
+                                                                click=true;
                                                             }
-                                                            //unstrokeLine(lineArray, line.getStreets());
+                                                        }
+                                                    });
+
+                                                    closeLine.setOnAction(new EventHandler<ActionEvent>() {
+                                                        @Override public void handle(ActionEvent e) {
+                                                            click = false;
+                                                            unstrokeLine(lineArray, strokeStreet);
                                                             for (Node node : anchorP.getChildren()) {
                                                                 node.setVisible(false);
                                                             }
-
                                                             borderP.setRight(null);
-                                                            click = false;
                                                         }
                                                     });
                                                 } // end if time within two stop times
@@ -300,12 +304,13 @@ public class Controller implements Initializable {
 
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        timeStart(updateTime);
+
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
         roadDegree.setPromptText("normal");
-
-        timeStart(updateTime);
 
         onlyNumber(setHour);
         onlyNumber(setMinute);
@@ -314,7 +319,6 @@ public class Controller implements Initializable {
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
         anchorP = new AnchorPane(closeStreet,headLabel,closeLine);
-
 
     }
 
@@ -511,6 +515,12 @@ public class Controller implements Initializable {
         closeStreet.setPrefWidth(150);
         closeStreet.setSelected(false);
         closeStreet.setVisible(true);
+
+        closeLine.setLayoutX(25);
+        closeLine.setLayoutY(300);
+        closeLine.setPrefWidth(150);
+        closeLine.setText("Close itinerary");
+        closeLine.setVisible(true);
     }
 
     /**
