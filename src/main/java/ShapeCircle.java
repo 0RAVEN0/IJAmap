@@ -14,7 +14,7 @@ import java.util.List;
 public class ShapeCircle {
 
     public static Circle drawCircle(Coordinate position, String id){
-        Circle circle = new Circle(position.getX(), position.getY(), 5);
+        Circle circle = new Circle(position.getX(), position.getY(), 7);
         circle.setId(id);
         circle.setCursor(Cursor.HAND);
         return circle;

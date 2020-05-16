@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -38,9 +39,8 @@ public class ShapeLine {
                 line.setStartY(streets.get(streetSize).getCoordinates().get(coorSize).getY());
                 line.setEndX(streets.get(streetSize).getCoordinates().get(coorSize + 1).getX());
                 line.setEndY(streets.get(streetSize).getCoordinates().get(coorSize + 1).getY());
-                //line.setStroke(Color.valueOf(color[streetSize]));
                 line.setStrokeWidth(3);
-
+                line.setStrokeLineCap(StrokeLineCap.ROUND);
 
                 lineArray.add(line);
             }
