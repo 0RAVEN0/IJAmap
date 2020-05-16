@@ -56,7 +56,48 @@
             sequence:
                 -   arrival: 0
                     departure: 0
+                -   arrival: 5
+                    departure: 6
+                -   arrival: 10
+                    departure: 11
+        -   id: L2journey2
+            originStop: *L2stop3
+            starts:
+                -   "12:50"
+                -   "13:25"
+                -   "14:25"
+            sequence:
+                -   arrival: 0
+                    departure: 0
+                -   arrival: 5
+                    departure: 6
+                -   arrival: 10
+                    departure: 11
+-   id: line3
+    stops:
+        -   &L3stop1 id: L3stop1
+            coordinate:
+                x: 454
+                y: 488
+        -   &L3stop2 id: L3stop2
+            coordinate:
+                x: 683
+                y: 432
+        -   &L3stop3 id: L3stop3
+            coordinate:
+                x: 950
+                y: 343
+    journeys:
+        -   id: L3journey1
+            originStop: *L3stop1
+            starts:
+                -   "12:30"
+                -   "13:30"
+                -   "15:30"
+            sequence:
+                -   arrival: 0
+                    departure: 0
+                -   arrival: 3
+                    departure: 4
                 -   arrival: 30
-                    departure: 32
-                -   arrival: 51
-                    departure: 51
+                    departure: 31
