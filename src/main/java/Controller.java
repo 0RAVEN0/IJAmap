@@ -17,6 +17,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -44,9 +45,6 @@ public class Controller implements Initializable {
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
     private List<Text> textArray = new ArrayList<>();
     protected final List<Circle> circles = new ArrayList<>();
-    private final String[] color = {"CYAN","CORAL","GOLD","FUCHSIA","DARKGREEN","DARKCYAN","BLUEVIOLET",
-            "MAGENTA","MAROON","OLIVE","DARKBLUE","RED","BLUE","GREEN","YELLOW","PINK","ORANGE","BROWN",
-            "PURPLE","GREY"};
     private List<Street> strokeStreet = null;
 
     public File StreetFile = null;
@@ -69,9 +67,9 @@ public class Controller implements Initializable {
     Label headLabel = new Label();
     CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
+    javafx.scene.shape.Line Hline = new javafx.scene.shape.Line();
     Button closeLine = new Button();
 
-    private int rDegree = 0;
 
     private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
@@ -100,8 +98,6 @@ public class Controller implements Initializable {
     @FXML
     private TextField setMinute;
 
-    @FXML
-    private Label timeSpeed;
 
     /**
      * Run time and change time by adding time into text fields. Set this time into Label.
@@ -128,7 +124,6 @@ public class Controller implements Initializable {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        //Clock.setText(stringTime);
 
                         if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
                                 && (lines != null && !linesBeingSet) ) {
@@ -291,12 +286,9 @@ public class Controller implements Initializable {
                         Clock.setText(halfcurrentTime.format(timeFormat));
                     }
                 });
-
-
             }
         };
 
-        //timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
         programTime.scheduleAtFixedRate(halfTask,0, 1000);
 
@@ -316,7 +308,7 @@ public class Controller implements Initializable {
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(closeStreet,headLabel,closeLine);
+        anchorP = new AnchorPane(closeStreet,headLabel,Hline,closeLine);
 
     }
 
@@ -359,17 +351,11 @@ public class Controller implements Initializable {
                 streets = stRead.readStreets(StreetFile);
 
                 lineArray = lineC.drawLine(streets);
-                //textArray = lineC.drawText(streets);
-
 
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
 
                 }
-
-                /*for (Text text : textArray) {
-                    mapWindow.getChildren().addAll(text);
-                }*/
             }
         }
         catch (IllegalArgumentException e){
@@ -465,7 +451,15 @@ public class Controller implements Initializable {
                     streetLabel.setFont(new Font("Arial", 18));
                     streetLabel.setLayoutX(10);
                     streetLabel.setLayoutY(60 + stopC*30);
-                    streetLabel.setText(stops.getId() + "        | " + String.valueOf(start.get(i).plusMinutes(journey.getSequence().get(stopC).getArrival())));
+                    streetLabel.setText(stops.getId() + "        | " + String.valueOf(start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture())));
+                    if (currentTime.getMinute() == start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()).getMinute()){
+                        streetLabel.setTextFill(Color.GREEN);
+                        Hline.setVisible(false);
+                    }
+                    else if (currentTime.getMinute() > start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()).getMinute()){
+                        Hline.setStartY(85 + stopC*30);
+                        Hline.setEndY(85 + stopC*30);
+                    }
                     anchorP.getChildren().add(streetLabel);
                     break;
                 }
@@ -511,9 +505,15 @@ public class Controller implements Initializable {
      * Visible all nodes in BorderPane right.
      */
     private void visibleNode(){
+        Hline.setStartX(10);
+        Hline.setEndX(250);
+        Hline.setStrokeWidth(3);
+        Hline.setStrokeLineCap(StrokeLineCap.ROUND);
+        Hline.setStroke(Color.GREEN);
+        Hline.setVisible(true);
 
         headLabel.setFont(new Font("Arial", 20));
-        headLabel.setText("Stop name | Arrival time");
+        headLabel.setText("Stop name | Departure time");
         headLabel.setLayoutX(10);
         headLabel.setLayoutY(35);
         headLabel.setVisible(true);
@@ -529,46 +529,6 @@ public class Controller implements Initializable {
         closeLine.setPrefWidth(150);
         closeLine.setText("Close itinerary");
         closeLine.setVisible(true);
-    }
-
-    /*/**
-     * When click on faster button, updateTime increase
-     * @param actionEvent representing some type of action
-     */
-    @FXML
-    public void fasterTime(ActionEvent actionEvent) {
-
-        /*if (updateTime >= 1) {
-            updateTime = updateTime + 1;
-            programTime.cancel();
-            timeStart(updateTime);
-            return;
-        }
-        if (updateTime >= 0.1){
-            updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
-            programTime.cancel();
-            timeStart(updateTime);
-        }*/
-    }
-
-    /**
-     * When click on faster button, updateTime decrease
-     * @param actionEvent representing some type of action
-     */
-    @FXML
-    public void slowerTime(ActionEvent actionEvent) {
-
-        /*if (updateTime > 1) {
-            updateTime = updateTime - 1;
-            programTime.cancel();
-            timeStart(updateTime);
-            return;
-        }
-        if (updateTime > 0.1){
-            updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
-            programTime.cancel();
-            timeStart(updateTime);
-        }*/
     }
 
     /**
