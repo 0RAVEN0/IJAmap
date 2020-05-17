@@ -37,24 +37,17 @@
       <AnchorPane fx:id="timeAnchor" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="Clock" layoutX="7.0" prefHeight="38.0" prefWidth="80.0" text="Label" />
-            <Button fx:id="plusBtn" alignment="CENTER" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#fasterTime" prefHeight="15.0" prefWidth="35.0" text="&gt;&gt;" />
-            <Button fx:id="minusBtn" alignment="CENTER" layoutX="250.0" layoutY="10.0" mnemonicParsing="false" onAction="#slowerTime" prefHeight="15.0" prefWidth="35.0" text="&lt;&lt;" />
             <TextField fx:id="setHour" layoutX="72.0" layoutY="3.0" prefHeight="15.0" prefWidth="30.0" />
             <Label layoutX="105.0" layoutY="6.0" text="h : " />
             <TextField fx:id="setMinute" layoutX="125.0" layoutY="3.0" prefHeight="15.0" prefWidth="30.0" />
             <Label layoutX="160.0" layoutY="6.0" text="m" />
             <Button fx:id="setBtn" layoutX="180.0" layoutY="3.0" mnemonicParsing="false" onAction="#setNewTime" prefHeight="15.0" prefWidth="35.0" text="Set" />
-            <Label fx:id="timeSpeed" layoutX="340.0" layoutY="10.0" text="Label">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
             <Label fx:id="errorLabel" layoutX="72.0" layoutY="25.0" text="" textFill="RED">
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <ComboBox fx:id="roadDegree" layoutX="400.0" layoutY="10.0" onAction="#roadDegreeChoose" prefWidth="150.0" promptText="Road degree" />
+            <ComboBox fx:id="roadDegree" layoutX="300.0" layoutY="10.0" onAction="#roadDegreeChoose" prefWidth="150.0" promptText="Road degree" />
          </children>
       </AnchorPane>
    </bottom>
