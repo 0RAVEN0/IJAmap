@@ -282,7 +282,7 @@ public class Controller implements Initializable {
 
                 if (newTimeSet2){
                     halfcurrentTime = LocalTime.of(Math.abs(halfcurrentTime.getHour()
-                            + (Integer.parseInt(hours) - halfcurrentTime.getHour())),Math.abs(currentTime.getMinute()
+                            + (Integer.parseInt(hours) - halfcurrentTime.getHour())),Math.abs(halfcurrentTime.getMinute()
                             + (Integer.parseInt(minute) - halfcurrentTime.getMinute())),0);
                     newTimeSet2 = false;
                 }
