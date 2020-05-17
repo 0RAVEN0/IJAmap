@@ -65,7 +65,6 @@ public class Controller implements Initializable {
 
     Label streetLabel;
     Label headLabel = new Label();
-    CheckBox closeStreet = new CheckBox("Close street");
     AnchorPane anchorP;
     javafx.scene.shape.Line Hline = new javafx.scene.shape.Line();
     Button closeLine = new Button();
@@ -308,7 +307,7 @@ public class Controller implements Initializable {
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(closeStreet,headLabel,Hline,closeLine);
+        anchorP = new AnchorPane(headLabel,Hline,closeLine);
 
     }
 
@@ -517,12 +516,6 @@ public class Controller implements Initializable {
         headLabel.setLayoutX(10);
         headLabel.setLayoutY(35);
         headLabel.setVisible(true);
-
-        closeStreet.setLayoutX(10);
-        closeStreet.setLayoutY(5);
-        closeStreet.setPrefWidth(150);
-        closeStreet.setSelected(false);
-        closeStreet.setVisible(true);
 
         closeLine.setLayoutX(25);
         closeLine.setLayoutY(300);
