@@ -1,4 +1,5 @@
 #!/bin/sh
+cd "$(dirname "$0")"
 
 wget -nc https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.11.0/jackson-annotations-2.11.0.jar
 
