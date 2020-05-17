@@ -110,13 +110,13 @@ public class Street {
             if (this.begin().getY() <= this.end().getY()) {
                 return stop.getCoordinate().getX() <= this.begin().getX()
                         && stop.getCoordinate().getY() >= this.begin().getY()
-                        && stop.getCoordinate().getX() >= this.begin().getX()
+                        && stop.getCoordinate().getX() >= this.end().getX()
                         && stop.getCoordinate().getY() <= this.end().getY();
             }
             else {
                 return stop.getCoordinate().getX() <= this.begin().getX()
                         && stop.getCoordinate().getY() <= this.begin().getY()
-                        && stop.getCoordinate().getX() >= this.begin().getX()
+                        && stop.getCoordinate().getX() >= this.end().getX()
                         && stop.getCoordinate().getY() >= this.end().getY();
             }
         }

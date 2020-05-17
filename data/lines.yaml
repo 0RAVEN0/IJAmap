@@ -77,8 +77,8 @@
     stops:
         -   &L3stop1 id: L3stop1
             coordinate:
-                x: 454
-                y: 488
+                x: 462
+                y: 478
         -   &L3stop2 id: L3stop2
             coordinate:
                 x: 683
