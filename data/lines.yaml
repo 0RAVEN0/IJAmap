@@ -18,8 +18,8 @@
             sequence:
                 -   arrival: 0
                     departure: 0
-                -   arrival: 40
-                    departure: 50
+                -   arrival: 6
+                    departure: 7
         -   id: L1journey2
             originStop: *L1stop2
             starts:
@@ -29,8 +29,8 @@
             sequence:
                 -   arrival: 0
                     departure: 0
-                -   arrival: 50
-                    departure: 51
+                -   arrival: 6
+                    departure: 7
 -   id: line2
     stops:
         -   &L2stop1 id: L2stop1
@@ -99,5 +99,5 @@
                     departure: 0
                 -   arrival: 3
                     departure: 4
-                -   arrival: 30
-                    departure: 31
+                -   arrival: 8
+                    departure: 9

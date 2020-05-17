@@ -5,8 +5,6 @@
 package main.java;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -222,11 +220,6 @@ public class Controller implements Initializable {
                                                         position = new Coordinate(x,y);
                                                     }
                                                     busCircle = ShapeCircle.drawCircle(position, circleId);
-                                                    for (Circle circle : circles) {
-                                                        if (circle.getId().equals(circleId)) {
-                                                            mapWindow.getChildren().remove(circle);
-                                                        }
-                                                    }
 
                                                     ShapeCircle.display(busCircle, circleId, circles, mapWindow);
                                                     busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
@@ -258,10 +251,15 @@ public class Controller implements Initializable {
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
                                         else {
+                                            Circle tempCircle = null;
                                             for (Circle circle : circles) {
                                                 if (circle.getId().equals(circleId)) {
                                                     mapWindow.getChildren().remove(circle);
+                                                    tempCircle = circle;
                                                 }
+                                            }
+                                            if (tempCircle != null) {
+                                                circles.remove(tempCircle);
                                             }
                                         }
                                     } //end for journey.starts
