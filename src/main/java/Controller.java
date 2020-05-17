@@ -298,7 +298,7 @@ public class Controller implements Initializable {
             }
         };
 
-        timeSpeed.setText(updateTime + "x");
+        //timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
         programTime.scheduleAtFixedRate(halfTask,0, 1000);
 
@@ -361,7 +361,7 @@ public class Controller implements Initializable {
                 streets = stRead.readStreets(StreetFile);
 
                 lineArray = lineC.drawLine(streets);
-                textArray = lineC.drawText(streets);
+                //textArray = lineC.drawText(streets);
 
 
                 for (javafx.scene.shape.Line line : lineArray) {
@@ -369,9 +369,9 @@ public class Controller implements Initializable {
 
                 }
 
-                for (Text text : textArray) {
+                /*for (Text text : textArray) {
                     mapWindow.getChildren().addAll(text);
-                }
+                }*/
             }
         }
         catch (IllegalArgumentException e){
@@ -477,6 +477,11 @@ public class Controller implements Initializable {
 
     }
 
+    /**
+     * Making line thick and colored
+     * @param lineArray list of all lines
+     * @param streetArray list of streets on concrete Line
+     */
     public void strokeLine(List<javafx.scene.shape.Line> lineArray, List<Street> streetArray){
         for (Street street : streetArray){
             for (javafx.scene.shape.Line line : lineArray){
@@ -488,6 +493,11 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Sets line black and on normal thickness
+     * @param lineArray list of all lines
+     * @param streetArray list of streets on concrete Line
+     */
     public void unstrokeLine(List<javafx.scene.shape.Line> lineArray, List<Street> streetArray){
         for (Street street : streetArray){
             for (javafx.scene.shape.Line line : lineArray){
@@ -523,7 +533,7 @@ public class Controller implements Initializable {
         closeLine.setVisible(true);
     }
 
-    /**
+    /*/**
      * When click on faster button, updateTime increase
      * @param actionEvent representing some type of action
      */
