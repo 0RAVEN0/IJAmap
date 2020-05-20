@@ -55,7 +55,6 @@ public class Line {
         return id;
     }
 
-
     public List<Street> getStreets() {
         return streets;
     }
@@ -90,37 +89,6 @@ public class Line {
         streets.add(street);
         return true;
     }
-
-    public Journey findJourneyByID(String id) {
-        for (Journey journey : this.journeys) {
-            if (journey.getId().equals(id)) {
-                return journey;
-            }
-        }
-        return null;
-    }
-
-//    /**
-//     * Adds stop to this line
-//     * @param stop Stop to be added
-//     * @return Returns true upon success, false upon failure
-//     */
-//    public boolean addStop(Stop stop) {
-//        if (this.stops.isEmpty()) {
-//            stops.add(stop);
-//            streets.add(stop.getStreet());
-//            return true;
-//        }
-//        if (this.stops.contains(stop)) {
-//            return true;
-//        }
-//        if (!stop.getStreet().follows(this.streets.get(this.streets.size()-1))) {
-//            return false;
-//        }
-//        this.stops.add(stop);
-//        this.streets.add(stop.getStreet());
-//        return true;
-//    }
 
     @Override
     public boolean equals(Object o) {

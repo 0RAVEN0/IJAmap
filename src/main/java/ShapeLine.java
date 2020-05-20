@@ -4,9 +4,6 @@
  */
 package main.java;
 
-import javafx.scene.Cursor;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
@@ -28,7 +25,9 @@ public class ShapeLine {
 
 
     /**
-     * Draw all lines into Pane from StreetReader class
+     * Draw all lines into Pane from Reader class
+     * @param streets A list of streets
+     * @return A list of drawn lines
      */
     public List<Line> drawLine(List<Street> streets){
         for (int streetSize = 0; streetSize < streets.size(); streetSize++) {
@@ -47,25 +46,5 @@ public class ShapeLine {
         }
 
         return lineArray;
-    }
-
-    /**
-     * Draw name of street into Pane from StreetReader class
-     */
-    public List<Text> drawText(List<Street> streets){
-        for (Street street : streets) {
-            if (street.getCoordinates().get(0).getX() == street.getCoordinates().get(1).getX()) {
-                text = new Text(Math.abs(street.getCoordinates().get(0).getX() - 10), Math.abs(street.getCoordinates().get(0).getY() + street.getCoordinates().get(1).getY()) / 2.0, street.getId());
-                text.setRotate(-90);
-            } else if (street.getCoordinates().get(0).getY() == street.getCoordinates().get(1).getY()) {
-                text = new Text(Math.abs(street.getCoordinates().get(0).getX() + street.getCoordinates().get(1).getX()) / 2.0, Math.abs(street.getCoordinates().get(0).getY() - 10), street.getId());
-            } else {
-                text = new Text(Math.abs(street.getCoordinates().get(0).getX() + street.getCoordinates().get(1).getX()) / 2.0, Math.abs(street.getCoordinates().get(0).getY() + street.getCoordinates().get(1).getY()) / 2.0, street.getId());
-            }
-
-            text.setFont(Font.font("Verdana", 12));
-            textArray.add(text);
-        }
-        return textArray;
     }
 }

@@ -15,6 +15,9 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
+/**
+ * Entry point for GUI
+ */
 public class Map extends Application {
 
     public static void main(String[] args) {

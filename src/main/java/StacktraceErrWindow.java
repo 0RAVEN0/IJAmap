@@ -1,3 +1,7 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: Printing of pretty stacktracke error window
+ */
 package main.java;
 
 import javafx.scene.control.Alert;
@@ -9,7 +13,14 @@ import javafx.scene.layout.Priority;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Printing of pretty stacktracke error window
+ */
 public class StacktraceErrWindow {
+    /**
+     * Displays a pretty error window with viewable stacktrace of given exception
+     * @param e Exception with stacktrace to print
+     */
     public static void display(Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
+/**
+ * An xy coordinates on the map
+ */
 public class Coordinate {
     private double x;
     private double y;

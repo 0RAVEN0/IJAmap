@@ -7,6 +7,9 @@ import javafx.scene.shape.Circle;
 
 import java.util.List;
 
+/**
+ * Methods for drawing a circle on the map
+ */
 public class ShapeCircle {
 
     /**
@@ -27,7 +30,7 @@ public class ShapeCircle {
      * @param busCircle The circle to display
      * @param circleId id of the given circle
      * @param circles list of circles where the circle will be added
-     * @param mapWindow
+     * @param mapWindow the pane with street map
      */
     public static void display(Circle busCircle, String circleId, List<Circle> circles, Pane mapWindow) {
         Circle tempCircle = null;

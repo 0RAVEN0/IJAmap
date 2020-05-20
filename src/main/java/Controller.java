@@ -34,7 +34,7 @@ import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 /**
- * Used for displaying a map
+ * The main controller used for displaying a map
  */
 public class Controller implements Initializable {
 

@@ -59,6 +59,10 @@ public class Journey {
         return sequence;
     }
 
+    /**
+     * Gets the last schedule in journey's sequence
+     * @return The last schedule
+     */
     public Schedule getLastSchedule() {
         return sequence.get(sequence.size()-1);
     }

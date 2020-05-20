@@ -1,6 +1,6 @@
 /**
  * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
- * Contents: Class representing street with adittional functions
+ * Contents: Class representing a street
  */
 package main.java;
 
@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class representing a street
+ */
 public class Street {
     private final String id;
     private final List<Coordinate> coordinates;
@@ -140,6 +143,11 @@ public class Street {
         }
     }
 
+    /**
+     * Finds and intersection point of two crossing streets
+     * @param street The street to find intersection with
+     * @return Coordinates of the intersection if found, null if not found
+     */
     public Coordinate findIntersectionWith(Street street) {
         double a1 = this.end().getY() - this.begin().getY();
         double b1 = this.begin().getX() - this.end().getX();
