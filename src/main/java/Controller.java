@@ -97,6 +97,9 @@ public class Controller implements Initializable {
     @FXML
     private TextField setMinute;
 
+    @FXML
+    private Label timeSpeed;
+
 
     /**
      * Run time and change time by adding time into text fields. Set this time into Label.
@@ -265,6 +268,7 @@ public class Controller implements Initializable {
             }
         };
 
+        timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
         programTime.scheduleAtFixedRate(halfTask,0, 1000);
 
@@ -434,7 +438,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * When click on cloce itinerary button, close itinerary
+     * When click on close itinerary button, close itinerary
      */
     public void closeByClick(){
         closeLine.setOnAction(new EventHandler<ActionEvent>() {
@@ -633,6 +637,44 @@ public class Controller implements Initializable {
         }
         else {
             updateTime = 0.33;
+            programTime.cancel();
+            timeStart(updateTime);
+        }
+    }
+
+    /**
+     * When click on faster button, updateTime increase
+     * @param actionEvent representing some type of action
+     */
+    @FXML
+    public void fasterTime(ActionEvent actionEvent) {
+        if (updateTime >= 1) {
+            updateTime = updateTime + 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime >= 0.1){
+            updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+        }
+    }
+
+    /**
+     * When click on faster button, updateTime decrease
+     * @param actionEvent representing some type of action
+     */
+    @FXML
+    public void slowerTime(ActionEvent actionEvent) {
+        if (updateTime > 1) {
+            updateTime = updateTime - 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime > 0.1){
+            updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
             programTime.cancel();
             timeStart(updateTime);
         }
