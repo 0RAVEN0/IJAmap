@@ -2,12 +2,13 @@
  * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
  * Contents: Graphic representations of line shape for javaFX
  */
-package main.java;
+package main.java.shapes;
 
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import main.java.map.Street;
 
 import java.util.ArrayList;
 import java.util.List;

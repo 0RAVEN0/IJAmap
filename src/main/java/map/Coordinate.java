@@ -2,7 +2,7 @@
  * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
  * Contents: Map coordinates representation
  */
-package main.java;
+package main.java.map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -7,6 +7,8 @@ package main.java;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import main.java.map.Street;
+import main.java.transport.Line;
 
 import java.io.File;
 import java.util.List;

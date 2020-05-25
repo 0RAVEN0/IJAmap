@@ -1,9 +1,10 @@
-package main.java;
+package main.java.shapes;
 
 import javafx.scene.Cursor;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import main.java.map.Coordinate;
 
 import java.util.List;
 

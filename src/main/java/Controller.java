@@ -21,6 +21,13 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import main.java.map.Coordinate;
+import main.java.map.Stop;
+import main.java.map.Street;
+import main.java.shapes.ShapeCircle;
+import main.java.shapes.ShapeLine;
+import main.java.transport.Journey;
+import main.java.transport.Line;
 
 import java.io.File;
 import java.net.URL;
