@@ -216,31 +216,8 @@ public class Controller implements Initializable {
                                                     busCircle = ShapeCircle.drawCircle(position, circleId);
 
                                                     ShapeCircle.display(busCircle, circleId, circles, mapWindow);
-                                                    busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                                            new EventHandler<MouseEvent>() {
-                                                        @Override
-                                                        public void handle(MouseEvent event) {
-                                                            if (!click) {
-                                                                visibleNode();
-                                                                itineraryPrint(line, journey);
-                                                                strokeLine(lineArray, line.getStreets());
-                                                                strokeStreet = line.getStreets();
-                                                                borderP.setRight(anchorP);
-                                                                click=true;
-                                                            }
-                                                        }
-                                                    });
-
-                                                    closeLine.setOnAction(new EventHandler<ActionEvent>() {
-                                                        @Override public void handle(ActionEvent e) {
-                                                            click = false;
-                                                            unstrokeLine(lineArray, strokeStreet);
-                                                            for (Node node : anchorP.getChildren()) {
-                                                                node.setVisible(false);
-                                                            }
-                                                            borderP.setRight(null);
-                                                        }
-                                                    });
+                                                    busClick(line,journey);
+                                                    closeByClick();
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
@@ -432,6 +409,44 @@ public class Controller implements Initializable {
         catch (Exception e){
             StacktraceErrWindow.display(e);
         }
+    }
+
+    /**
+     * When click on bus, itinerary will show
+     * @param line line where bus goes
+     * @param journey particular journey of bus
+     */
+    public void busClick(Line line, Journey journey){
+        busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (!click) {
+                            visibleNode();
+                            itineraryPrint(line, journey);
+                            strokeLine(lineArray, line.getStreets());
+                            strokeStreet = line.getStreets();
+                            borderP.setRight(anchorP);
+                            click=true;
+                        }
+                    }
+                });
+    }
+
+    /**
+     * When click on cloce itinerary button, close itinerary
+     */
+    public void closeByClick(){
+        closeLine.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                click = false;
+                unstrokeLine(lineArray, strokeStreet);
+                for (Node node : anchorP.getChildren()) {
+                    node.setVisible(false);
+                }
+                borderP.setRight(null);
+            }
+        });
     }
 
     /**
