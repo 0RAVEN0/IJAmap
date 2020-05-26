@@ -380,6 +380,9 @@ public class Controller implements Initializable {
                 //check if all streets within all lines are valid and add them, same with stops
                 for (Line line : lines) {
                     for (Stop stop : line.getStops()) {
+                        Circle circle = new Circle(stop.getCoordinate().getX(), stop.getCoordinate().getY(), 10);
+                        circle.setFill(Color.PURPLE);
+                        mapWindow.getChildren().add(circle);
                         boolean found = false;
                         for(Street street : streets) {
                             if(street.addStop(stop)) {
