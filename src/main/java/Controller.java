@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -700,6 +701,32 @@ public class Controller implements Initializable {
             stopTimeBtn.setText("|>");
             timeStop=false;
             timeStart(updateTime);
+        }
+    }
+
+    public void closeStreet(ActionEvent actionEvent) {
+        List<String> lineID = new ArrayList<String>();
+        for (javafx.scene.shape.Line line : lineArray) {
+            line.setCursor(Cursor.HAND);
+            line.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            if (!lineID.contains(line.getId())) {
+                                line.setStroke(Color.BLUE);
+                                line.setStrokeWidth(7);
+                                System.out.println("id = "+line.getId());
+                                lineID.add(line.getId());
+                                return;
+                            }
+                            else{
+                                line.setStroke(Color.BLACK);
+                                line.setStrokeWidth(3);
+                                lineID.remove(line.getId());
+                            }
+                        }
+                    });
+
         }
     }
 }
