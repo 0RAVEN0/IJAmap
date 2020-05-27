@@ -40,6 +40,7 @@
             <TextField fx:id="setHour" layoutX="72.0" layoutY="3.0" prefHeight="15.0" prefWidth="30.0" />
             <Button fx:id="plusBtn" alignment="CENTER" layoutX="300.0" layoutY="10.0" mnemonicParsing="false" onAction="#fasterTime" prefHeight="15.0" prefWidth="35.0" text="&gt;&gt;" />
             <Button fx:id="minusBtn" alignment="CENTER" layoutX="250.0" layoutY="10.0" mnemonicParsing="false" onAction="#slowerTime" prefHeight="15.0" prefWidth="35.0" text="&lt;&lt;" />
+            <Button fx:id="stopTimeBtn" alignment="CENTER" layoutX="600.0" layoutY="10.0" mnemonicParsing="false" onAction="#stopTime" prefHeight="15.0" prefWidth="35.0" text="|>" />
             <Label layoutX="105.0" layoutY="6.0" text="h : " />
             <TextField fx:id="setMinute" layoutX="125.0" layoutY="3.0" prefHeight="15.0" prefWidth="30.0" />
             <Label layoutX="160.0" layoutY="6.0" text="m" />

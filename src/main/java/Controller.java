@@ -62,6 +62,7 @@ public class Controller implements Initializable {
 
     LocalTime lastTime = null;
     boolean linesBeingSet = false;
+    boolean timeStop = false;
 
     Label streetLabel;
     Label headLabel = new Label();
@@ -99,6 +100,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Label timeSpeed;
+
+    @FXML
+    private Button stopTimeBtn;
 
 
     /**
@@ -679,6 +683,22 @@ public class Controller implements Initializable {
         if (updateTime > 0.1){
             updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
             programTime.cancel();
+            timeStart(updateTime);
+        }
+    }
+
+    @FXML
+    public void stopTime(ActionEvent actionEvent) {
+
+        if (!timeStop){
+            stopTimeBtn.setText("||");
+            timeStop = true;
+            programTime.cancel();
+            return;
+        }
+        else {
+            stopTimeBtn.setText("|>");
+            timeStop=false;
             timeStart(updateTime);
         }
     }
