@@ -621,11 +621,11 @@ public class Controller implements Initializable {
 
         if (!closeStreetBtn2.isSelected()) {
             if (!timeStop) {
-                stopTimeBtn.setText("|>");
+                stopTimeBtn.setText("\u25B6");
                 timeStop = true;
                 programTime.cancel();
             } else {
-                stopTimeBtn.setText("||");
+                stopTimeBtn.setText("\u23F8");
                 timeStop = false;
                 timeStart(updateTime);
             }
