@@ -74,6 +74,7 @@ public class Controller implements Initializable {
     boolean linesBeingSet = false;
     boolean timeStop = false;
 
+    CheckBox closeStreetBtn2 = new CheckBox("Close street");
     Label streetLabel;
     Label headLabel = new Label();
     AnchorPane anchorP;
@@ -113,9 +114,6 @@ public class Controller implements Initializable {
 
     @FXML
     private Button stopTimeBtn;
-
-    @FXML
-    private CheckBox closeStreetBtn;
 
 
     /**
@@ -211,13 +209,26 @@ public class Controller implements Initializable {
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
         roadDegree.setPromptText("normal");
 
+        closeStreetBtn2.setSelected(false);
+        closeStreetBtn2.setLayoutX(25);
+        closeStreetBtn2.setLayoutY(25);
+        closeStreetBtn2.setPrefWidth(150);
+        closeStreetBtn2.setVisible(false);
+        closeStreetBtn2.setOnAction(e -> {
+            if (closeStreetBtn2.isSelected()) {
+                programTime.cancel();
+            } else {
+                timeStart(updateTime);
+            }
+        });
+
         onlyNumber(setHour);
         onlyNumber(setMinute);
 
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(headLabel,Hline,closeLine);
+        anchorP = new AnchorPane(headLabel,Hline,closeLine,closeStreetBtn2);
 
     }
 
@@ -273,11 +284,17 @@ public class Controller implements Initializable {
                                         line.setStroke(Color.BLUE);
                                         line.setStrokeWidth(7);
                                         lineID.add(line.getId());
+                                        closeStreetBtn2.setVisible(true);
+                                        borderP.setRight(anchorP);
                                     }
                                     else{
                                         line.setStroke(Color.BLACK);
                                         line.setStrokeWidth(3);
                                         lineID.remove(line.getId());
+                                        if (lineID.isEmpty()){
+                                            closeStreetBtn2.setVisible(false);
+                                            borderP.setRight(null);
+                                        }
                                     }
                                 }
                             });
@@ -373,39 +390,6 @@ public class Controller implements Initializable {
             StacktraceErrWindow.display(e);
         }
     }
-
-    /**
-     * When click on bus, itinerary will show
-     * @param line line where bus goes
-     * @param journey particular journey of bus
-     */
-    /*public void busClick(Line line, Journey journey){
-        busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                event -> {
-                    if (!click) {
-                        visibleNode();
-                        itineraryPrint(line, journey);
-                        strokeLine(lineArray, line.getStreets());
-                        strokeStreet = line.getStreets();
-                        borderP.setRight(anchorP);
-                        click=true;
-                    }
-                });
-    }*/
-
-    /**
-     * When click on close itinerary button, close itinerary
-     */
-    /*public void closeByClick(){
-        closeLine.setOnAction(e -> {
-            click = false;
-            unstrokeLine(lineArray, strokeStreet);
-            for (Node node : anchorP.getChildren()) {
-                node.setVisible(false);
-            }
-            borderP.setRight(null);
-        });
-    }*/
 
     /**
      * Print itinerary into Border Pane
@@ -637,7 +621,7 @@ public class Controller implements Initializable {
     @FXML
     public void stopTime(ActionEvent actionEvent) {
 
-        if (!closeStreetBtn.isSelected()) {
+        if (!closeStreetBtn2.isSelected()) {
             if (!timeStop) {
                 stopTimeBtn.setText("|>");
                 timeStop = true;
@@ -647,17 +631,6 @@ public class Controller implements Initializable {
                 timeStop = false;
                 timeStart(updateTime);
             }
-        }
-    }
-
-    @FXML
-    public void closeStreet(ActionEvent actionEvent) {
-
-        if (closeStreetBtn.isSelected()){
-            programTime.cancel();
-        }
-        else {
-            timeStart(updateTime);
         }
     }
 }
