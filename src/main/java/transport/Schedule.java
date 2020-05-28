@@ -2,7 +2,7 @@
  * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
  * Contents: Single arrival and departure time in the schedule, represented by amount of minutes since departure from starting stop
  */
-package main.java;
+package main.java.transport;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

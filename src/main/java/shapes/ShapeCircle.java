@@ -1,9 +1,10 @@
-package main.java;
+package main.java.shapes;
 
 import javafx.scene.Cursor;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import main.java.map.Coordinate;
 
 import java.util.List;
 
@@ -28,14 +29,22 @@ public class ShapeCircle {
     /**
      * Displays circle on the map
      * @param busCircle The circle to display
-     * @param circleId id of the given circle
      * @param circles list of circles where the circle will be added
      * @param mapWindow the pane with street map
      */
-    public static void display(Circle busCircle, String circleId, List<Circle> circles, Pane mapWindow) {
+    public static void display(Circle busCircle, List<Circle> circles, Pane mapWindow) {
+        ShapeCircle.remove(circles, mapWindow, busCircle);
+
+        busCircle.setFill(Color.LAVENDER);
+        busCircle.setStroke(Color.PURPLE);
+        circles.add(busCircle);
+        mapWindow.getChildren().add(busCircle);
+    }
+
+    public static void remove(List<Circle> circles, Pane mapWindow, Circle busCircle) {
         Circle tempCircle = null;
         for (Circle circle : circles) {
-            if (circle.getId().equals(circleId)) {
+            if (circle.getId().equals(busCircle.getId())) {
                 mapWindow.getChildren().remove(circle);
                 tempCircle = circle;
             }
@@ -43,10 +52,5 @@ public class ShapeCircle {
         if (tempCircle != null) {
             circles.remove(tempCircle);
         }
-
-        busCircle.setFill(Color.LAVENDER);
-        busCircle.setStroke(Color.PURPLE);
-        circles.add(busCircle);
-        mapWindow.getChildren().add(busCircle);
     }
 }

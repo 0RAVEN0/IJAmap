@@ -2,7 +2,7 @@
  * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
  * Contents: Representation of a line crossing one or more streets with multiple stops
  */
-package main.java;
+package main.java.transport;
 
 
 import java.util.*;
@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import main.java.map.Stop;
+import main.java.map.Street;
 
 /**
  * Representation of a line crossing one or more streets with multiple stops

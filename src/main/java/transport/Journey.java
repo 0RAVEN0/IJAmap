@@ -2,10 +2,11 @@
  * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
  * Contents: A single journey path from one end of the line to the other with all departure times
  */
-package main.java;
+package main.java.transport;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import main.java.map.Stop;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
