@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
@@ -62,6 +63,7 @@ public class Controller implements Initializable {
 
     LocalTime lastTime = null;
     boolean linesBeingSet = false;
+    boolean timeStop = false;
 
     Label streetLabel;
     Label headLabel = new Label();
@@ -96,6 +98,12 @@ public class Controller implements Initializable {
 
     @FXML
     private TextField setMinute;
+
+    @FXML
+    private Label timeSpeed;
+
+    @FXML
+    private Button stopTimeBtn;
 
 
     /**
@@ -216,31 +224,8 @@ public class Controller implements Initializable {
                                                     busCircle = ShapeCircle.drawCircle(position, circleId);
 
                                                     ShapeCircle.display(busCircle, circleId, circles, mapWindow);
-                                                    busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                                            new EventHandler<MouseEvent>() {
-                                                        @Override
-                                                        public void handle(MouseEvent event) {
-                                                            if (!click) {
-                                                                visibleNode();
-                                                                itineraryPrint(line, journey);
-                                                                strokeLine(lineArray, line.getStreets());
-                                                                strokeStreet = line.getStreets();
-                                                                borderP.setRight(anchorP);
-                                                                click=true;
-                                                            }
-                                                        }
-                                                    });
-
-                                                    closeLine.setOnAction(new EventHandler<ActionEvent>() {
-                                                        @Override public void handle(ActionEvent e) {
-                                                            click = false;
-                                                            unstrokeLine(lineArray, strokeStreet);
-                                                            for (Node node : anchorP.getChildren()) {
-                                                                node.setVisible(false);
-                                                            }
-                                                            borderP.setRight(null);
-                                                        }
-                                                    });
+                                                    busClick(line,journey);
+                                                    closeByClick();
                                                 } // end if time within two stop times
                                             } //end for journey.sequence
                                         } //end if time between first and last stop
@@ -288,6 +273,7 @@ public class Controller implements Initializable {
             }
         };
 
+        timeSpeed.setText(updateTime + "x");
         programTime.scheduleAtFixedRate(timerTask,0, (long) (1000 / updateTime));
         programTime.scheduleAtFixedRate(halfTask,0, 1000);
 
@@ -399,6 +385,9 @@ public class Controller implements Initializable {
                 //check if all streets within all lines are valid and add them, same with stops
                 for (Line line : lines) {
                     for (Stop stop : line.getStops()) {
+                        Circle circle = new Circle(stop.getCoordinate().getX(), stop.getCoordinate().getY(), 10);
+                        circle.setFill(Color.PURPLE);
+                        mapWindow.getChildren().add(circle);
                         boolean found = false;
                         for(Street street : streets) {
                             if(street.addStop(stop)) {
@@ -432,6 +421,44 @@ public class Controller implements Initializable {
         catch (Exception e){
             StacktraceErrWindow.display(e);
         }
+    }
+
+    /**
+     * When click on bus, itinerary will show
+     * @param line line where bus goes
+     * @param journey particular journey of bus
+     */
+    public void busClick(Line line, Journey journey){
+        busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (!click) {
+                            visibleNode();
+                            itineraryPrint(line, journey);
+                            strokeLine(lineArray, line.getStreets());
+                            strokeStreet = line.getStreets();
+                            borderP.setRight(anchorP);
+                            click=true;
+                        }
+                    }
+                });
+    }
+
+    /**
+     * When click on close itinerary button, close itinerary
+     */
+    public void closeByClick(){
+        closeLine.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                click = false;
+                unstrokeLine(lineArray, strokeStreet);
+                for (Node node : anchorP.getChildren()) {
+                    node.setVisible(false);
+                }
+                borderP.setRight(null);
+            }
+        });
     }
 
     /**
@@ -620,6 +647,86 @@ public class Controller implements Initializable {
             updateTime = 0.33;
             programTime.cancel();
             timeStart(updateTime);
+        }
+    }
+
+    /**
+     * When click on faster button, updateTime increase
+     * @param actionEvent representing some type of action
+     */
+    @FXML
+    public void fasterTime(ActionEvent actionEvent) {
+        if (updateTime >= 1) {
+            updateTime = updateTime + 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime >= 0.1){
+            updateTime = (int)((updateTime + 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+        }
+    }
+
+    /**
+     * When click on faster button, updateTime decrease
+     * @param actionEvent representing some type of action
+     */
+    @FXML
+    public void slowerTime(ActionEvent actionEvent) {
+        if (updateTime > 1) {
+            updateTime = updateTime - 1;
+            programTime.cancel();
+            timeStart(updateTime);
+            return;
+        }
+        if (updateTime > 0.1){
+            updateTime = (int)((updateTime - 0.1) * 100 + 0.5) / 100.0;
+            programTime.cancel();
+            timeStart(updateTime);
+        }
+    }
+
+    @FXML
+    public void stopTime(ActionEvent actionEvent) {
+
+        if (!timeStop){
+            stopTimeBtn.setText("||");
+            timeStop = true;
+            programTime.cancel();
+            return;
+        }
+        else {
+            stopTimeBtn.setText("|>");
+            timeStop=false;
+            timeStart(updateTime);
+        }
+    }
+
+    public void closeStreet(ActionEvent actionEvent) {
+        List<String> lineID = new ArrayList<String>();
+        for (javafx.scene.shape.Line line : lineArray) {
+            line.setCursor(Cursor.HAND);
+            line.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                    new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent event) {
+                            if (!lineID.contains(line.getId())) {
+                                line.setStroke(Color.BLUE);
+                                line.setStrokeWidth(7);
+                                System.out.println("id = "+line.getId());
+                                lineID.add(line.getId());
+                                return;
+                            }
+                            else{
+                                line.setStroke(Color.BLACK);
+                                line.setStrokeWidth(3);
+                                lineID.remove(line.getId());
+                            }
+                        }
+                    });
+
         }
     }
 }
