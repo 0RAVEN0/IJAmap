@@ -80,6 +80,7 @@ public class Controller implements Initializable {
     AnchorPane anchorP;
     javafx.scene.shape.Line Hline = new javafx.scene.shape.Line();
     Button closeLine = new Button();
+    ComboBox<String> roadDegree = new ComboBox<String>();
 
 
     private Timer programTime;
@@ -87,9 +88,6 @@ public class Controller implements Initializable {
     private LocalTime halfcurrentTime = LocalTime.now();
 
     protected Circle busCircle = null;
-
-    @FXML
-    private ComboBox<String> roadDegree;
 
     @FXML
     protected Pane mapWindow;
@@ -208,6 +206,25 @@ public class Controller implements Initializable {
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
         roadDegree.setPromptText("normal");
+        roadDegree.setLayoutX(25);
+        roadDegree.setLayoutY(50);
+        roadDegree.setVisible(false);
+        roadDegree.setOnAction(e -> {
+            if(roadDegree.getValue().equals("normal")){
+                updateTime = 1.0;
+                programTime.cancel();
+                timeStart(updateTime);
+            }else if(roadDegree.getValue().equals("busy")){
+                updateTime = 0.5;
+                programTime.cancel();
+                timeStart(updateTime);
+            }
+            else {
+                updateTime = 0.33;
+                programTime.cancel();
+                timeStart(updateTime);
+            }
+        });
 
         closeStreetBtn2.setSelected(false);
         closeStreetBtn2.setLayoutX(25);
@@ -228,7 +245,8 @@ public class Controller implements Initializable {
         setHour.setPromptText(String.valueOf(currentTime.getHour()));
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
-        anchorP = new AnchorPane(headLabel,Hline,closeLine,closeStreetBtn2);
+        closeLine.setVisible(false);
+        anchorP = new AnchorPane(headLabel,Hline,closeLine,closeStreetBtn2,roadDegree);
 
     }
 
@@ -285,6 +303,7 @@ public class Controller implements Initializable {
                                         line.setStrokeWidth(7);
                                         lineID.add(line.getId());
                                         closeStreetBtn2.setVisible(true);
+                                        roadDegree.setVisible(true);
                                         borderP.setRight(anchorP);
                                     }
                                     else{
@@ -293,6 +312,7 @@ public class Controller implements Initializable {
                                         lineID.remove(line.getId());
                                         if (lineID.isEmpty()){
                                             closeStreetBtn2.setVisible(false);
+                                            roadDegree.setVisible(false);
                                             borderP.setRight(null);
                                         }
                                     }
@@ -556,28 +576,6 @@ public class Controller implements Initializable {
                         }
                     }
                 });
-    }
-
-    /**
-     * Function for define difficult traffic situations
-     * @param actionEvent representing some type of action
-     */
-    @FXML
-    public void roadDegreeChoose(ActionEvent actionEvent) {
-        if(roadDegree.getValue().equals("normal")){
-            updateTime = 1.0;
-            programTime.cancel();
-            timeStart(updateTime);
-        }else if(roadDegree.getValue().equals("busy")){
-            updateTime = 0.5;
-            programTime.cancel();
-            timeStart(updateTime);
-        }
-        else {
-            updateTime = 0.33;
-            programTime.cancel();
-            timeStart(updateTime);
-        }
     }
 
     /**
