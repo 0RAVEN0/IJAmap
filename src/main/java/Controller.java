@@ -21,10 +21,8 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import main.java.map.Coordinate;
 import main.java.map.Stop;
 import main.java.map.Street;
-import main.java.shapes.ShapeCircle;
 import main.java.shapes.ShapeLine;
 import main.java.transport.Bus;
 import main.java.transport.BusList;
@@ -52,10 +50,10 @@ public class Controller implements Initializable {
     private List<Street> streets = null;
     private List<Line> lines = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
-    private List<Text> textArray = new ArrayList<>();
+    private final List<Text> textArray = new ArrayList<>();
     protected final List<Circle> circles = new ArrayList<>();
     private List<Street> strokeStreet = null;
-    private BusList busList = new BusList();
+    private final BusList busList = new BusList();
 
     public File StreetFile = null;
     public File LinkFile = null;
