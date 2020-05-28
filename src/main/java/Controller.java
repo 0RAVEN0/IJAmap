@@ -87,7 +87,7 @@ public class Controller implements Initializable {
     protected Circle busCircle = null;
 
     @FXML
-    private ComboBox roadDegree;
+    private ComboBox<String> roadDegree;
 
     @FXML
     protected Pane mapWindow;
@@ -136,46 +136,41 @@ public class Controller implements Initializable {
                     lastTime = null;
                 }
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
+                Platform.runLater(() -> {
 
-                        if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
-                                && (lines != null && !linesBeingSet) ) {
-                            lastTime = currentTime;
+                    if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
+                            && (lines != null && !linesBeingSet) ) {
+                        lastTime = currentTime;
 
-                            for (Bus bus : busList.getBusList()) {
-                                busCircle = bus.updatePosition(currentTime, circles, mapWindow);
-                                if (busCircle != null) {
-                                    busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                            new EventHandler<MouseEvent>() {
-                                                @Override
-                                                public void handle(MouseEvent event) {
-                                                    if (!click) {
-                                                        visibleNode();
-                                                        itineraryPrint(bus.getLine(), bus.getJourney());
-                                                        strokeLine(lineArray, bus.getLine().getStreets());
-                                                        strokeStreet = bus.getLine().getStreets();
-                                                        borderP.setRight(anchorP);
-                                                        click=true;
-                                                    }
+                        for (Bus bus : busList.getBusList()) {
+                            busCircle = bus.updatePosition(currentTime, circles, mapWindow);
+                            if (busCircle != null) {
+                                busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                                        new EventHandler<MouseEvent>() {
+                                            @Override
+                                            public void handle(MouseEvent event) {
+                                                if (!click) {
+                                                    visibleNode();
+                                                    itineraryPrint(bus.getLine(), bus.getJourney());
+                                                    strokeLine(lineArray, bus.getLine().getStreets());
+                                                    strokeStreet = bus.getLine().getStreets();
+                                                    borderP.setRight(anchorP);
+                                                    click=true;
                                                 }
-                                            });
-
-                                    closeLine.setOnAction(new EventHandler<ActionEvent>() {
-                                        @Override public void handle(ActionEvent e) {
-                                            click = false;
-                                            unstrokeLine(lineArray, strokeStreet);
-                                            for (Node node : anchorP.getChildren()) {
-                                                node.setVisible(false);
                                             }
-                                            borderP.setRight(null);
-                                        }
-                                    });
-                                }//end if busCircle != null
-                            }//end for Bus bus
-                        }//end if time to redraw
-                    }
+                                        });
+
+                                closeLine.setOnAction(e -> {
+                                    click = false;
+                                    unstrokeLine(lineArray, strokeStreet);
+                                    for (Node node : anchorP.getChildren()) {
+                                        node.setVisible(false);
+                                    }
+                                    borderP.setRight(null);
+                                });
+                            }//end if busCircle != null
+                        }//end for Bus bus
+                    }//end if time to redraw
                 });
             }
         };
@@ -194,12 +189,7 @@ public class Controller implements Initializable {
                     newTimeSet2 = false;
                 }
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        Clock.setText(halfcurrentTime.format(timeFormat));
-                    }
-                });
+                Platform.runLater(() -> Clock.setText(halfcurrentTime.format(timeFormat)));
             }
         };
 
@@ -234,7 +224,7 @@ public class Controller implements Initializable {
     private void Zoom(ScrollEvent event){
         event.consume();
 
-        double mapZoom = 0.0;
+        double mapZoom;
 
         if (event.getDeltaY() > 0){
             mapZoom = 1.1;
@@ -278,7 +268,6 @@ public class Controller implements Initializable {
             alert.setTitle("Error");
             alert.setHeaderText("Error in file, please check the file for mistakes");
             alert.showAndWait();
-            //e.printStackTrace();
         }
         //catching generic exception with displaying stacktrace in the error window
         catch (Exception e) {
@@ -371,17 +360,14 @@ public class Controller implements Initializable {
      */
     public void busClick(Line line, Journey journey){
         busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (!click) {
-                            visibleNode();
-                            itineraryPrint(line, journey);
-                            strokeLine(lineArray, line.getStreets());
-                            strokeStreet = line.getStreets();
-                            borderP.setRight(anchorP);
-                            click=true;
-                        }
+                event -> {
+                    if (!click) {
+                        visibleNode();
+                        itineraryPrint(line, journey);
+                        strokeLine(lineArray, line.getStreets());
+                        strokeStreet = line.getStreets();
+                        borderP.setRight(anchorP);
+                        click=true;
                     }
                 });
     }
@@ -390,15 +376,13 @@ public class Controller implements Initializable {
      * When click on close itinerary button, close itinerary
      */
     public void closeByClick(){
-        closeLine.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-                click = false;
-                unstrokeLine(lineArray, strokeStreet);
-                for (Node node : anchorP.getChildren()) {
-                    node.setVisible(false);
-                }
-                borderP.setRight(null);
+        closeLine.setOnAction(e -> {
+            click = false;
+            unstrokeLine(lineArray, strokeStreet);
+            for (Node node : anchorP.getChildren()) {
+                node.setVisible(false);
             }
+            borderP.setRight(null);
         });
     }
 
@@ -409,7 +393,7 @@ public class Controller implements Initializable {
      */
     public void itineraryPrint(Line lineBus, Journey journey){
         int stopC = 0;
-        List<LocalTime> start = new ArrayList<>();
+        List<LocalTime> start;
         start = journey.getStarts();
         for (Stop stops : lineBus.getStops()){
             for (int i = journey.getStarts().size()-1; i >=0; i--) {
@@ -418,7 +402,7 @@ public class Controller implements Initializable {
                     streetLabel.setFont(new Font("Arial", 18));
                     streetLabel.setLayoutX(10);
                     streetLabel.setLayoutY(60 + stopC*30);
-                    streetLabel.setText(stops.getId() + "        | " + String.valueOf(start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture())));
+                    streetLabel.setText(stops.getId() + "        | " + start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()));
                     if (currentTime.getMinute() == start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()).getMinute()){
                         streetLabel.setTextFill(Color.GREEN);
                         Hline.setVisible(false);
@@ -636,7 +620,6 @@ public class Controller implements Initializable {
             stopTimeBtn.setText("||");
             timeStop = true;
             programTime.cancel();
-            return;
         }
         else {
             stopTimeBtn.setText("|>");
@@ -658,7 +641,6 @@ public class Controller implements Initializable {
                                 line.setStrokeWidth(7);
                                 System.out.println("id = "+line.getId());
                                 lineID.add(line.getId());
-                                return;
                             }
                             else{
                                 line.setStroke(Color.BLACK);
