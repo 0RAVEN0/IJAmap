@@ -13,6 +13,7 @@ import main.java.shapes.ShapeCircle;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ public class Bus {
     private final Journey journey;
     private final Line line;
     private Circle busCircle = null;
+    private final List<BusSchedule> busSchedules = new ArrayList<>();
     private final LocalTime start;
     private final LocalTime finish;
 
@@ -39,6 +41,9 @@ public class Bus {
         this.id = id;
         this.journey = journey;
         this.line = line;
+        for (Schedule schedule : journey.getSequence()) {
+            busSchedules.add(new BusSchedule(start, schedule.getArrival(), schedule.getDeparture()));
+        }
         this.start = start;
         this.finish = finish;
     }
@@ -87,10 +92,10 @@ public class Bus {
                 && currentTime.compareTo(this.finish) <= 0) {
             //check between which 2 stops the bus should be
             for (int i = 0; i < journey.getSequence().size()-1; i++) {
-                LocalTime stop1arrival = start.plusMinutes(journey.getSequence().get(i).getArrival());
-                LocalTime stop1departure = start.plusMinutes(journey.getSequence().get(i).getDeparture());
-                LocalTime stop2arrival = start.plusMinutes(journey.getSequence().get(i+1).getArrival());
-                LocalTime stop2departure = start.plusMinutes(journey.getSequence().get(i+1).getDeparture());
+                LocalTime stop1arrival = busSchedules.get(i).getArrival();
+                LocalTime stop1departure = busSchedules.get(i).getDeparture();
+                LocalTime stop2arrival = busSchedules.get(i+1).getArrival();
+                LocalTime stop2departure = busSchedules.get(i+1).getDeparture();
                 Stop stop1 = journey.getStops().get(i);
                 Stop stop2 = journey.getStops().get(i+1);
 
@@ -99,14 +104,15 @@ public class Bus {
                 if (currentTime.compareTo(stop1departure) >= 0 && currentTime.compareTo(stop2arrival) <= 0) {
                     //number of seconds between stops
                     int timeDiff = (journey.getSequence().get(i+1).getArrival()-journey.getSequence().get(i).getDeparture())*60;
-                    double x, y;
 
                     //if the stops are on the same street (which is just a line)
                     if (stop1.getStreet() == stop2.getStreet()) {
+                        //TODO if street is slowed down, increase the second stop arrival time
                         Coordinate distance = stop1.distance(stop2.getCoordinate());
                         position = calculatePosition(stop1.getCoordinate(), distance, timeDiff, currentTime, stop1departure);
                     }
                     else {
+                        //TODO if street is slowed down, increase the time between stop1 and streetEnd or streetEnd and stop2
                         Coordinate streetEnd;
                         if (stop1.getStreet().follows(stop2.getStreet())) {
                             streetEnd = stop1.getStreet().closerEndTo(stop2.getCoordinate());
