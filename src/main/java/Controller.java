@@ -54,7 +54,7 @@ public class Controller implements Initializable {
     private final List<Text> textArray = new ArrayList<>();
     protected final List<Circle> circles = new ArrayList<>();
     private List<Street> strokeStreet = null;
-    private List<String> lineID = new ArrayList<>();
+    private final List<String> lineID = new ArrayList<>();
     private final BusList busList = new BusList();
 
     public File StreetFile = null;
@@ -85,7 +85,7 @@ public class Controller implements Initializable {
 
     private Timer programTime;
     private LocalTime currentTime = LocalTime.now();
-    private LocalTime halfcurrentTime = LocalTime.now();
+    private LocalTime halfCurrentTime = LocalTime.now();
 
     protected Circle busCircle = null;
 
@@ -146,17 +146,14 @@ public class Controller implements Initializable {
                             busCircle = bus.updatePosition(currentTime, circles, mapWindow);
                             if (busCircle != null) {
                                 busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                                        new EventHandler<MouseEvent>() {
-                                            @Override
-                                            public void handle(MouseEvent event) {
-                                                if (!click) {
-                                                    visibleNode();
-                                                    itineraryPrint(bus.getLine(), bus.getJourney());
-                                                    strokeLine(lineArray, bus.getLine().getStreets());
-                                                    strokeStreet = bus.getLine().getStreets();
-                                                    borderP.setRight(anchorP);
-                                                    click=true;
-                                                }
+                                        event -> {
+                                            if (!click) {
+                                                visibleNode();
+                                                itineraryPrint(bus.getLine(), bus.getJourney());
+                                                strokeLine(lineArray, bus.getLine().getStreets());
+                                                strokeStreet = bus.getLine().getStreets();
+                                                borderP.setRight(anchorP);
+                                                click=true;
                                             }
                                         });
 
@@ -179,17 +176,17 @@ public class Controller implements Initializable {
 
             @Override
             public void run() {
-                halfcurrentTime = halfcurrentTime.plusSeconds(1);
+                halfCurrentTime = halfCurrentTime.plusSeconds(1);
                 DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
                 if (newTimeSet2){
-                    halfcurrentTime = LocalTime.of(Math.abs(halfcurrentTime.getHour()
-                            + (Integer.parseInt(hours) - halfcurrentTime.getHour())),Math.abs(halfcurrentTime.getMinute()
-                            + (Integer.parseInt(minute) - halfcurrentTime.getMinute())),0);
+                    halfCurrentTime = LocalTime.of(Math.abs(halfCurrentTime.getHour()
+                            + (Integer.parseInt(hours) - halfCurrentTime.getHour())),Math.abs(halfCurrentTime.getMinute()
+                            + (Integer.parseInt(minute) - halfCurrentTime.getMinute())),0);
                     newTimeSet2 = false;
                 }
 
-                Platform.runLater(() -> Clock.setText(halfcurrentTime.format(timeFormat)));
+                Platform.runLater(() -> Clock.setText(halfCurrentTime.format(timeFormat)));
             }
         };
 
@@ -295,26 +292,23 @@ public class Controller implements Initializable {
 
                     line.setCursor(Cursor.HAND);
                     line.addEventHandler(MouseEvent.MOUSE_CLICKED,
-                            new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    if (!lineID.contains(line.getId())) {
-                                        line.setStroke(Color.BLUE);
-                                        line.setStrokeWidth(7);
-                                        lineID.add(line.getId());
-                                        closeStreetBtn2.setVisible(true);
-                                        roadDegree.setVisible(true);
-                                        borderP.setRight(anchorP);
-                                    }
-                                    else{
-                                        line.setStroke(Color.BLACK);
-                                        line.setStrokeWidth(3);
-                                        lineID.remove(line.getId());
-                                        if (lineID.isEmpty()){
-                                            closeStreetBtn2.setVisible(false);
-                                            roadDegree.setVisible(false);
-                                            borderP.setRight(null);
-                                        }
+                            event -> {
+                                if (!lineID.contains(line.getId())) {
+                                    line.setStroke(Color.BLUE);
+                                    line.setStrokeWidth(7);
+                                    lineID.add(line.getId());
+                                    closeStreetBtn2.setVisible(true);
+                                    roadDegree.setVisible(true);
+                                    borderP.setRight(anchorP);
+                                }
+                                else{
+                                    line.setStroke(Color.BLACK);
+                                    line.setStrokeWidth(3);
+                                    lineID.remove(line.getId());
+                                    if (lineID.isEmpty()){
+                                        closeStreetBtn2.setVisible(false);
+                                        roadDegree.setVisible(false);
+                                        borderP.setRight(null);
                                     }
                                 }
                             });
