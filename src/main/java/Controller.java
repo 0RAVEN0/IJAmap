@@ -294,7 +294,7 @@ public class Controller implements Initializable {
                     line.addEventHandler(MouseEvent.MOUSE_CLICKED,
                             event -> {
                                 if (!lineID.contains(line.getId())) {
-                                    line.setStroke(Color.BLUE);
+                                    line.setStroke(Color.valueOf("#333D79FF"));
                                     line.setStrokeWidth(7);
                                     lineID.add(line.getId());
                                     closeStreetBtn2.setVisible(true);
@@ -358,7 +358,7 @@ public class Controller implements Initializable {
                 for (Line line : lines) {
                     for (Stop stop : line.getStops()) {
                         Circle circle = new Circle(stop.getCoordinate().getX(), stop.getCoordinate().getY(), 10);
-                        circle.setFill(Color.PURPLE);
+                        circle.setFill(Color.valueOf("#76528BFF"));
                         mapWindow.getChildren().add(circle);
                         boolean found = false;
                         for(Street street : streets) {
@@ -448,7 +448,7 @@ public class Controller implements Initializable {
         for (Street street : streetArray){
             for (javafx.scene.shape.Line line : lineArray){
                 if (street.getId().equals(line.getId())){
-                    line.setStroke(Color.PURPLE);
+                    line.setStroke(Color.valueOf("#76528BFF"));
                     line.setStrokeWidth(7);
                 }
             }

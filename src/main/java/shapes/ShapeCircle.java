@@ -35,8 +35,8 @@ public class ShapeCircle {
     public static void display(Circle busCircle, List<Circle> circles, Pane mapWindow) {
         ShapeCircle.remove(circles, mapWindow, busCircle);
 
-        busCircle.setFill(Color.LAVENDER);
-        busCircle.setStroke(Color.PURPLE);
+        busCircle.setFill(Color.valueOf("#FAD0C9FF"));
+        busCircle.setStroke(Color.valueOf("#76528BFF"));
         circles.add(busCircle);
         mapWindow.getChildren().add(busCircle);
     }
