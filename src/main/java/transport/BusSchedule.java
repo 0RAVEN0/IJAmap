@@ -1,7 +1,14 @@
+/**
+ * Authors: Michal Vanka (xvanka00), Romana Džubarová (xdzuba00)
+ * Contents: A schedule for one stop for one particular bus journey
+ */
 package main.java.transport;
 
 import java.time.LocalTime;
 
+/**
+ * A schedule for one stop for one particular bus journey
+ */
 public class BusSchedule {
     private LocalTime arrival;
     private LocalTime departure;
@@ -12,6 +19,11 @@ public class BusSchedule {
     private static final int busyDelay = 5;
     private static final int collapseDelay = 15;
 
+    /**
+     * @param start Start time of the bus journey
+     * @param arrival arrival time at the stop (taken from journey sequence, thus int)
+     * @param departure departure time at the stop (taken from journey sequence, thus int)
+     */
     public BusSchedule(LocalTime start, int arrival, int departure) {
         this.arrival = start.plusMinutes(arrival);
         this.departure = start.plusMinutes(departure);
