@@ -66,7 +66,7 @@ public class Street {
             stop.setStreet(this);
             return true;
         }
-        if (this.isWithinStreet(stop)) {
+        if (this.isWithinStreet(stop.getCoordinate())) {
             stops.add(stop);
             stop.setStreet(this);
             return true;
@@ -105,36 +105,36 @@ public class Street {
 
     /**
      * Checks if the stop is within street coordinates
-     * @param stop Stop to be checked
+     * @param position Position to be checked
      * @return Returns true if stop is within this street, false if not
      */
-    public boolean isWithinStreet(Stop stop) {
+    public boolean isWithinStreet(Coordinate position) {
         if (this.begin().getX() <= this.end().getX()) {
             if (this.begin().getY() <= this.end().getY()) {
-                return stop.getCoordinate().getX() >= this.begin().getX()
-                        && stop.getCoordinate().getY() >= this.begin().getY()
-                        && stop.getCoordinate().getX() <= this.end().getX()
-                        && stop.getCoordinate().getY() <= this.end().getY();
+                return position.getX() >= this.begin().getX()
+                        && position.getY() >= this.begin().getY()
+                        && position.getX() <= this.end().getX()
+                        && position.getY() <= this.end().getY();
             }
             else {
-                return stop.getCoordinate().getX() >= this.begin().getX()
-                        && stop.getCoordinate().getY() <= this.begin().getY()
-                        && stop.getCoordinate().getX() <= this.end().getX()
-                        && stop.getCoordinate().getY() >= this.end().getY();
+                return position.getX() >= this.begin().getX()
+                        && position.getY() <= this.begin().getY()
+                        && position.getX() <= this.end().getX()
+                        && position.getY() >= this.end().getY();
             }
         }
         else {
             if (this.begin().getY() <= this.end().getY()) {
-                return stop.getCoordinate().getX() <= this.begin().getX()
-                        && stop.getCoordinate().getY() >= this.begin().getY()
-                        && stop.getCoordinate().getX() >= this.end().getX()
-                        && stop.getCoordinate().getY() <= this.end().getY();
+                return position.getX() <= this.begin().getX()
+                        && position.getY() >= this.begin().getY()
+                        && position.getX() >= this.end().getX()
+                        && position.getY() <= this.end().getY();
             }
             else {
-                return stop.getCoordinate().getX() <= this.begin().getX()
-                        && stop.getCoordinate().getY() <= this.begin().getY()
-                        && stop.getCoordinate().getX() >= this.end().getX()
-                        && stop.getCoordinate().getY() >= this.end().getY();
+                return position.getX() <= this.begin().getX()
+                        && position.getY() <= this.begin().getY()
+                        && position.getX() >= this.end().getX()
+                        && position.getY() >= this.end().getY();
             }
         }
     }
