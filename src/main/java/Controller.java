@@ -70,6 +70,8 @@ public class Controller implements Initializable {
 
     private double updateTime = 1.0;
 
+    private int Road_D = 1;
+
     LocalTime lastTime = null;
     boolean linesBeingSet = false;
     boolean timeStop = false;
@@ -196,45 +198,13 @@ public class Controller implements Initializable {
 
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         timeStart(updateTime);
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
-        roadDegree.setPromptText("normal");
-        roadDegree.setLayoutX(25);
-        roadDegree.setLayoutY(50);
-        roadDegree.setVisible(false);
-        roadDegree.setOnAction(e -> {
-            if(roadDegree.getValue().equals("normal")){
-                updateTime = 1.0;
-                programTime.cancel();
-                timeStart(updateTime);
-            }else if(roadDegree.getValue().equals("busy")){
-                updateTime = 0.5;
-                programTime.cancel();
-                timeStart(updateTime);
-            }
-            else {
-                updateTime = 0.33;
-                programTime.cancel();
-                timeStart(updateTime);
-            }
-        });
 
-        closeStreetBtn2.setSelected(false);
-        closeStreetBtn2.setLayoutX(25);
-        closeStreetBtn2.setLayoutY(25);
-        closeStreetBtn2.setPrefWidth(150);
-        closeStreetBtn2.setVisible(false);
-        closeStreetBtn2.setOnAction(e -> {
-            if (closeStreetBtn2.isSelected()) {
-                programTime.cancel();
-            } else {
-                timeStart(updateTime);
-            }
-        });
+        streetManipul(false);
 
         onlyNumber(setHour);
         onlyNumber(setMinute);
@@ -297,8 +267,13 @@ public class Controller implements Initializable {
                                     line.setStroke(Color.valueOf("#333D79FF"));
                                     line.setStrokeWidth(7);
                                     lineID.add(line.getId());
-                                    closeStreetBtn2.setVisible(true);
-                                    roadDegree.setVisible(true);
+                                    streetManipul(true);
+                                    setRoadDegree();
+                                    for (Street street : streets){
+                                        if (street.getId().equals(line.getId())){
+                                            street.setBusyness(Road_D);
+                                        }
+                                    }
                                     borderP.setRight(anchorP);
                                 }
                                 else{
@@ -306,8 +281,7 @@ public class Controller implements Initializable {
                                     line.setStrokeWidth(3);
                                     lineID.remove(line.getId());
                                     if (lineID.isEmpty()){
-                                        closeStreetBtn2.setVisible(false);
-                                        roadDegree.setVisible(false);
+                                        streetManipul(false);
                                         borderP.setRight(null);
                                     }
                                 }
@@ -624,5 +598,50 @@ public class Controller implements Initializable {
                 timeStart(updateTime);
             }
         }
+    }
+
+    /**
+     * Function which sets road degree on street
+     */
+    public void setRoadDegree(){
+        roadDegree.setOnAction(e -> {
+            if(roadDegree.getValue().equals("normal")){
+                //updateTime = 1.0;
+                Road_D = 1;
+            }else if(roadDegree.getValue().equals("busy")){
+                //updateTime = 0.5;
+                Road_D = 2;
+            }
+            else {
+                //updateTime = 0.33;
+                Road_D = 3;
+            }
+            /*programTime.cancel();
+            timeStart(updateTime);*/
+        });
+    }
+
+    /**
+     * Setting CheckBox and ComboBox parameter
+     * @param visible if ChceckBox and ComboBox should be visible
+     */
+    public void streetManipul(boolean visible){
+        roadDegree.setPromptText("normal");
+        roadDegree.setLayoutX(25);
+        roadDegree.setLayoutY(50);
+        roadDegree.setVisible(visible);
+
+        closeStreetBtn2.setSelected(false);
+        closeStreetBtn2.setLayoutX(25);
+        closeStreetBtn2.setLayoutY(25);
+        closeStreetBtn2.setPrefWidth(150);
+        closeStreetBtn2.setVisible(visible);
+        closeStreetBtn2.setOnAction(e -> {
+            if (closeStreetBtn2.isSelected()) {
+                programTime.cancel();
+            } else {
+                timeStart(updateTime);
+            }
+        });
     }
 }
