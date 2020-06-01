@@ -48,9 +48,11 @@ public class Controller implements Initializable {
     private List<Street> streets = null;
     private List<Line> lines = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
-    private final List<Text> textArray = new ArrayList<>();
     protected final List<Circle> circles = new ArrayList<>();
     private List<Street> strokeStreet = null;
+    private  List<Street> clickedStreet = new ArrayList<>();
+    private  List<Stop> clickedStop = new ArrayList<>();
+    private List<Stop> imaginaryStops = new ArrayList<>();
     private final List<String> lineID = new ArrayList<>();
     private final BusList busList = new BusList();
 
@@ -60,6 +62,8 @@ public class Controller implements Initializable {
     private String hours;
     private String minute;
     public String stringTime;
+
+    private Street firstClicked;
 
     private boolean click = false;
     private boolean newTimeSet = false;
@@ -225,6 +229,20 @@ public class Controller implements Initializable {
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
 
+        closeStreetBtn2.setOnAction(e -> {
+            if (closeStreetBtn2.isSelected()) {
+                programTime.cancel();
+                if (clickedStreet.isEmpty()){
+                    clickedStreet.add(firstClicked);
+                }
+            } else {
+                timeStart(updateTime);
+                if (!clickedStreet.isEmpty()) {
+                    clickedStop = imaginaryStopCreate(clickedStreet);
+                }
+            }
+        });
+
         streetManipul(false);
 
         onlyNumber(setHour);
@@ -293,6 +311,12 @@ public class Controller implements Initializable {
                                     for (Street street : streets){
                                         if (street.getId().equals(line.getId())){
                                             street.setBusyness(Road_D);
+                                            if (clickedStreet.isEmpty()) {
+                                                firstClicked = street;
+                                            }
+                                            if (closeStreetBtn2.isSelected()) {
+                                                clickedStreet.add(street);
+                                            }
                                         }
                                     }
                                     borderP.setRight(anchorP);
@@ -307,6 +331,7 @@ public class Controller implements Initializable {
                                     }
                                 }
                             });
+
                 }
             }
         }
@@ -673,18 +698,25 @@ public class Controller implements Initializable {
         roadDegree.setLayoutY(50);
         roadDegree.setVisible(visible);
 
-        closeStreetBtn2.setSelected(false);
         closeStreetBtn2.setLayoutX(25);
         closeStreetBtn2.setLayoutY(25);
         closeStreetBtn2.setPrefWidth(150);
         closeStreetBtn2.setVisible(visible);
 
-        closeStreetBtn2.setOnAction(e -> {
-            if (closeStreetBtn2.isSelected()) {
-                programTime.cancel();
-            } else {
-                timeStart(updateTime);
+    }
+
+
+    public List<Stop> imaginaryStopCreate (List<Street> clickedStreet){
+        for (int i = 0; i < clickedStreet.size()-1; i++ ){
+            if (clickedStreet.get(i).findIntersectionWith(clickedStreet.get(i + 1)) == null){
+                System.out.println("Incoherent road");
+                break;
             }
-        });
+            else{
+                Stop stop = new Stop(clickedStreet.get(i).getId(),clickedStreet.get(i).findIntersectionWith(clickedStreet.get(i+1)));
+                imaginaryStops.add(stop);
+            }
+        }
+        return imaginaryStops;
     }
 }
