@@ -584,6 +584,10 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Pause/run time while click on button
+     * @param actionEvent representing some type of action
+     */
     @FXML
     public void stopTime(ActionEvent actionEvent) {
 
@@ -606,18 +610,13 @@ public class Controller implements Initializable {
     public void setRoadDegree(){
         roadDegree.setOnAction(e -> {
             if(roadDegree.getValue().equals("normal")){
-                //updateTime = 1.0;
                 Road_D = 1;
             }else if(roadDegree.getValue().equals("busy")){
-                //updateTime = 0.5;
                 Road_D = 2;
             }
             else {
-                //updateTime = 0.33;
                 Road_D = 3;
             }
-            /*programTime.cancel();
-            timeStart(updateTime);*/
         });
     }
 
@@ -636,6 +635,7 @@ public class Controller implements Initializable {
         closeStreetBtn2.setLayoutY(25);
         closeStreetBtn2.setPrefWidth(150);
         closeStreetBtn2.setVisible(visible);
+
         closeStreetBtn2.setOnAction(e -> {
             if (closeStreetBtn2.isSelected()) {
                 programTime.cancel();
