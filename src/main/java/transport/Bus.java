@@ -64,6 +64,10 @@ public class Bus {
         return line;
     }
 
+    public List<BusSchedule> getBusSchedules() {
+        return busSchedules;
+    }
+
     /**
      * Calculates the position of the bus based on given parameters
      * @param pos Starting position on the current trail
@@ -103,11 +107,10 @@ public class Bus {
                 //if the time is between these two stops
                 if (currentTime.compareTo(stop1departure) >= 0 && currentTime.compareTo(stop2arrival) <= 0) {
                     //number of seconds between stops
-                    int timeDiff = (journey.getSequence().get(i+1).getArrival()-journey.getSequence().get(i).getDeparture())*60;
+                    long timeDiff = stop1departure.until(stop2arrival, ChronoUnit.SECONDS);
 
                     //if the stops are on the same street (which is just a line)
                     if (stop1.getStreet() == stop2.getStreet()) {
-                        //TODO if street is slowed down, increase the second stop arrival time
                         Coordinate distance = stop1.distance(stop2.getCoordinate());
                         position = calculatePosition(stop1.getCoordinate(), distance, timeDiff, currentTime, stop1departure);
                     }
