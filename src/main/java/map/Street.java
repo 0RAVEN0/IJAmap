@@ -18,6 +18,7 @@ public class Street {
     private final String id;
     private final List<Coordinate> coordinates;
     private final List<Stop> stops = new ArrayList<>();
+    private int busyness;
 
     /**
      * Constructor for the street
@@ -28,6 +29,7 @@ public class Street {
     public Street(@JsonProperty("id") String id,@JsonProperty("coordinates") List<Coordinate> coordinates){
         this.id = id;
         this.coordinates = coordinates;
+        this.busyness = 1;
     }
 
     public String getId() {
@@ -40,6 +42,18 @@ public class Street {
 
     public List<Stop> getStops() {
         return stops;
+    }
+
+    public int getBusyness() {
+        return busyness;
+    }
+
+    /**
+     * Sets busyness level of the street
+     * @param busyness busyness level, 1 = normal, 2 = busy, 3 = traffic collapse
+     */
+    public void setBusyness(int busyness) {
+        this.busyness = busyness;
     }
 
     /**
