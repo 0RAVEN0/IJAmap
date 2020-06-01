@@ -25,10 +25,7 @@ import javafx.stage.FileChooser;
 import main.java.map.Stop;
 import main.java.map.Street;
 import main.java.shapes.ShapeLine;
-import main.java.transport.Bus;
-import main.java.transport.BusList;
-import main.java.transport.Journey;
-import main.java.transport.Line;
+import main.java.transport.*;
 
 import java.io.File;
 import java.net.URL;
@@ -71,6 +68,7 @@ public class Controller implements Initializable {
     private double updateTime = 1.0;
 
     private int Road_D = 1;
+    private int busDelay = 0;
 
     LocalTime lastTime = null;
     boolean linesBeingSet = false;
@@ -79,6 +77,7 @@ public class Controller implements Initializable {
     CheckBox closeStreetBtn2 = new CheckBox("Close street");
     Label streetLabel;
     Label headLabel = new Label();
+    Label delayLabel = new Label();
     AnchorPane anchorP;
     javafx.scene.shape.Line Hline = new javafx.scene.shape.Line();
     Button closeLine = new Button();
@@ -150,8 +149,30 @@ public class Controller implements Initializable {
                                 busCircle.addEventHandler(MouseEvent.MOUSE_CLICKED,
                                         event -> {
                                             if (!click) {
+                                                LocalTime startTime;
+                                                for (int i = bus.getJourney().getStarts().size()-1; i >=0; i--) {
+                                                    //find, which time from start times is actuall
+                                                    if (bus.getJourney().getStarts().get(i).getHour() == currentTime.getHour() &&
+                                                            currentTime.getMinute() >= bus.getJourney().getStarts().get(i).getMinute()) {
+                                                        startTime = bus.getJourney().getStarts().get(i);
+
+                                                        for (BusSchedule schedule : bus.getBusSchedules()){
+                                                            //find original arrival time from schedule and set busDelay variable
+                                                            if (schedule.getOriginalArrival().equals(startTime)){
+                                                                if (schedule.getOriginalArrival().compareTo(schedule.getArrival()) == 0){
+                                                                    busDelay = 0;
+                                                                }
+                                                                if (schedule.getOriginalArrival().compareTo(schedule.getArrival()) < 0){
+                                                                    busDelay = schedule.getArrival().getMinute()-schedule.getOriginalArrival().getMinute();
+                                                                }
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
                                                 visibleNode();
-                                                itineraryPrint(bus.getLine(), bus.getJourney());
+                                                itineraryPrint(bus.getLine(), bus.getJourney(),busDelay);
                                                 strokeLine(lineArray, bus.getLine().getStreets());
                                                 strokeStreet = bus.getLine().getStreets();
                                                 borderP.setRight(anchorP);
@@ -213,7 +234,7 @@ public class Controller implements Initializable {
         setMinute.setPromptText(String.valueOf(currentTime.getMinute()));
 
         closeLine.setVisible(false);
-        anchorP = new AnchorPane(headLabel,Hline,closeLine,closeStreetBtn2,roadDegree);
+        anchorP = new AnchorPane(headLabel,Hline,closeLine,closeStreetBtn2,roadDegree,delayLabel);
 
     }
 
@@ -383,27 +404,44 @@ public class Controller implements Initializable {
      * Print itinerary into Border Pane
      * @param lineBus represents click line
      * @param journey represents line journey
+     * @param busDelay represents how long bus is delayed
      */
-    public void itineraryPrint(Line lineBus, Journey journey){
+    public void itineraryPrint(Line lineBus, Journey journey, int busDelay){
         int stopC = 0;
         List<LocalTime> start;
         start = journey.getStarts();
+
+        //add delayLabel into anchorP with information about delay
+        if(busDelay == 0){
+            delayLabel.setTextFill(Color.GREEN);
+            delayLabel.setText("Bus is on time.");
+        }
+        else {
+            delayLabel.setTextFill(Color.RED);
+            delayLabel.setText("Bus has " + busDelay + "delay.");
+        }
+
         for (Stop stops : lineBus.getStops()){
             for (int i = journey.getStarts().size()-1; i >=0; i--) {
+                //add stops names and departure times into anchorP
                 if (start.get(i).getHour() == currentTime.getHour() && currentTime.getMinute() >= start.get(i).getMinute()) {
                     streetLabel = new Label();
                     streetLabel.setFont(new Font("Arial", 18));
                     streetLabel.setLayoutX(10);
                     streetLabel.setLayoutY(60 + stopC*30);
                     streetLabel.setText(stops.getId() + "        | " + start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()));
+
+                    //if bus is on stop set color of bus departure time on green
                     if (currentTime.getMinute() == start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()).getMinute()){
-                        streetLabel.setTextFill(Color.GREEN);
+                        streetLabel.setTextFill(Color.BROWN);
                         Hline.setVisible(false);
                     }
+                    //if bus is between two stops set green line between two departure times
                     else if (currentTime.getMinute() > start.get(i).plusMinutes(journey.getSequence().get(stopC).getDeparture()).getMinute()){
                         Hline.setStartY(85 + stopC*30);
                         Hline.setEndY(85 + stopC*30);
                     }
+
                     anchorP.getChildren().add(streetLabel);
                     break;
                 }
@@ -453,7 +491,7 @@ public class Controller implements Initializable {
         Hline.setEndX(250);
         Hline.setStrokeWidth(3);
         Hline.setStrokeLineCap(StrokeLineCap.ROUND);
-        Hline.setStroke(Color.GREEN);
+        Hline.setStroke(Color.BROWN);
         Hline.setVisible(true);
 
         headLabel.setFont(new Font("Arial", 20));
@@ -461,6 +499,11 @@ public class Controller implements Initializable {
         headLabel.setLayoutX(10);
         headLabel.setLayoutY(35);
         headLabel.setVisible(true);
+
+        delayLabel.setLayoutX(25);
+        delayLabel.setLayoutY(150);
+        delayLabel.setVisible(true);
+        delayLabel.setFont(new Font("Arial",12));
 
         closeLine.setLayoutX(25);
         closeLine.setLayoutY(300);
