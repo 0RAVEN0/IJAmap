@@ -75,6 +75,10 @@ public class Coordinate {
         this.y = -y;
     }
 
+    public Coordinate difference(Coordinate coordinate) {
+        return new Coordinate(coordinate.diffX(this), coordinate.diffY(this), true);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

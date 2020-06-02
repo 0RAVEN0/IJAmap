@@ -135,11 +135,16 @@ public class Controller implements Initializable {
                             + (Integer.parseInt(minute) - currentTime.getMinute())),0);
                     newTimeSet = false;
                     lastTime = null;
+                    for (Bus bus : busList.getBusList()) {
+                        bus.setPosition(null);
+                    }
                 }
 
                 Platform.runLater(() -> {
 
-                    if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
+                    Clock.setText(currentTime.format(timeFormat));
+
+                    if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 1))
                             && (lines != null && !linesBeingSet) ) {
                         lastTime = currentTime;
 
@@ -208,8 +213,6 @@ public class Controller implements Initializable {
                             + (Integer.parseInt(minute) - halfCurrentTime.getMinute())),0);
                     newTimeSet2 = false;
                 }
-
-                Platform.runLater(() -> Clock.setText(halfCurrentTime.format(timeFormat)));
             }
         };
 
@@ -224,6 +227,7 @@ public class Controller implements Initializable {
         timeStart(updateTime);
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
+        setRoadDegree();
 
         streetManipul(false);
 
@@ -289,7 +293,7 @@ public class Controller implements Initializable {
                                     line.setStrokeWidth(7);
                                     lineID.add(line.getId());
                                     streetManipul(true);
-                                    setRoadDegree();
+
                                     for (Street street : streets){
                                         if (street.getId().equals(line.getId())){
                                             street.setBusyness(Road_D);
