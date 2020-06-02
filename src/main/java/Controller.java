@@ -142,11 +142,16 @@ public class Controller implements Initializable {
                             + (Integer.parseInt(minute) - currentTime.getMinute())),0);
                     newTimeSet = false;
                     lastTime = null;
+                    for (Bus bus : busList.getBusList()) {
+                        bus.setPosition(null);
+                    }
                 }
 
                 Platform.runLater(() -> {
 
-                    if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 2))
+                    Clock.setText(currentTime.format(timeFormat));
+
+                    if ( (lastTime == null || (lastTime.until(currentTime, ChronoUnit.SECONDS) == 1))
                             && (lines != null && !linesBeingSet) ) {
                         lastTime = currentTime;
 
@@ -215,8 +220,6 @@ public class Controller implements Initializable {
                             + (Integer.parseInt(minute) - halfCurrentTime.getMinute())),0);
                     newTimeSet2 = false;
                 }
-
-                Platform.runLater(() -> Clock.setText(halfCurrentTime.format(timeFormat)));
             }
         };
 
@@ -231,6 +234,7 @@ public class Controller implements Initializable {
         timeStart(updateTime);
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
+        roadDegree.setPromptText("normal");
 
         closeStreetBtn2.setOnAction(e -> {
             if (closeStreetBtn2.isSelected()) {
@@ -354,9 +358,23 @@ public class Controller implements Initializable {
                                     line.setStrokeWidth(7);
                                     lineID.add(line.getId());
                                     streetManipul(true);
-                                    setRoadDegree();
+
                                     for (Street street : streets){
                                         if (street.getId().equals(line.getId())){
+
+                                            roadDegree.setOnAction(e -> {
+                                                if(roadDegree.getValue().equals("normal")){
+                                                    Road_D = 1;
+                                                }else if(roadDegree.getValue().equals("busy")){
+                                                    Road_D = 2;
+                                                }
+                                                else {
+                                                    Road_D = 3;
+                                                }
+
+                                                street.setBusyness(Road_D);
+                                            });
+
                                             street.setBusyness(Road_D);
                                             if (clickedStreet.isEmpty()) {
                                                 firstClicked = street;
@@ -720,27 +738,11 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Function which sets road degree on street
-     */
-    public void setRoadDegree(){
-        roadDegree.setOnAction(e -> {
-            if(roadDegree.getValue().equals("normal")){
-                Road_D = 1;
-            }else if(roadDegree.getValue().equals("busy")){
-                Road_D = 2;
-            }
-            else {
-                Road_D = 3;
-            }
-        });
-    }
-
-    /**
      * Setting CheckBox and ComboBox parameter
      * @param visible if ChceckBox and ComboBox should be visible
      */
     public void streetManipul(boolean visible){
-        roadDegree.setPromptText("normal");
+
         roadDegree.setLayoutX(25);
         roadDegree.setLayoutY(50);
         roadDegree.setVisible(visible);
