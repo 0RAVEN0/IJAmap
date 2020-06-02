@@ -227,7 +227,7 @@ public class Controller implements Initializable {
         timeStart(updateTime);
 
         roadDegree.getItems().addAll("normal","busy","traffic collapse");
-        setRoadDegree();
+        roadDegree.setPromptText("normal");
 
         streetManipul(false);
 
@@ -296,6 +296,20 @@ public class Controller implements Initializable {
 
                                     for (Street street : streets){
                                         if (street.getId().equals(line.getId())){
+
+                                            roadDegree.setOnAction(e -> {
+                                                if(roadDegree.getValue().equals("normal")){
+                                                    Road_D = 1;
+                                                }else if(roadDegree.getValue().equals("busy")){
+                                                    Road_D = 2;
+                                                }
+                                                else {
+                                                    Road_D = 3;
+                                                }
+
+                                                street.setBusyness(Road_D);
+                                            });
+
                                             street.setBusyness(Road_D);
                                         }
                                     }
@@ -652,27 +666,11 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Function which sets road degree on street
-     */
-    public void setRoadDegree(){
-        roadDegree.setOnAction(e -> {
-            if(roadDegree.getValue().equals("normal")){
-                Road_D = 1;
-            }else if(roadDegree.getValue().equals("busy")){
-                Road_D = 2;
-            }
-            else {
-                Road_D = 3;
-            }
-        });
-    }
-
-    /**
      * Setting CheckBox and ComboBox parameter
      * @param visible if ChceckBox and ComboBox should be visible
      */
     public void streetManipul(boolean visible){
-        roadDegree.setPromptText("normal");
+
         roadDegree.setLayoutX(25);
         roadDegree.setLayoutY(50);
         roadDegree.setVisible(visible);
