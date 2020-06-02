@@ -197,7 +197,6 @@ public class Bus {
 
                         if (currentTime.compareTo(streetEndArrival) < 0) {
                             busyness = stop1.getStreet().getBusyness();
-                            System.out.println("Busyness: "+busyness);
                             position = calculatePosition(position, streetEnd, streetEndArrival, currentTime, busyness);
                         }
                         else {
