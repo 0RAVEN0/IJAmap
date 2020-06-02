@@ -49,6 +49,7 @@ public class Controller implements Initializable {
     private List<Street> streets = null;
     private List<Line> lines = null;
     private List<javafx.scene.shape.Line> lineArray = new ArrayList<>();
+    private List<javafx.scene.shape.Line> shortlineArray = new ArrayList<>();
     protected final List<Circle> circles = new ArrayList<>();
     private List<Street> strokeStreet = null;
     private  List<Street> clickedStreet = new ArrayList<>();
@@ -240,7 +241,14 @@ public class Controller implements Initializable {
             } else {
                 timeStart(updateTime);
                 if (!clickedStreet.isEmpty()) {
-                    clickedStop = imaginaryStopCreate(clickedStreet);
+                    for(int s =0; s < clickedStreet.size()-1;s++) {
+                        if (clickedStreet.get(s).findIntersectionWith(clickedStreet.get(s+1)) == null) {
+                            System.out.println("Incoherent road");
+                        } else {
+                            Stop stop = new Stop(clickedStreet.get(s).getId(), clickedStreet.get(s).findIntersectionWith(clickedStreet.get(s+1)));
+                            imaginaryStops.add(stop);
+                        }
+                    }
                 }
                 if(!clickedStreet.isEmpty() && !imaginaryStops.isEmpty()){
                     Coordinate startStreet = null;
@@ -742,20 +750,5 @@ public class Controller implements Initializable {
         closeStreetBtn2.setPrefWidth(150);
         closeStreetBtn2.setVisible(visible);
 
-    }
-
-
-    public List<Stop> imaginaryStopCreate (List<Street> clickedStreet){
-        for (int i = 0; i < clickedStreet.size()-1; i++ ){
-            if (clickedStreet.get(i).findIntersectionWith(clickedStreet.get(i + 1)) == null){
-                System.out.println("Incoherent road");
-                break;
-            }
-            else{
-                Stop stop = new Stop(clickedStreet.get(i).getId(),clickedStreet.get(i).findIntersectionWith(clickedStreet.get(i+1)));
-                imaginaryStops.add(stop);
-            }
-        }
-        return imaginaryStops;
     }
 }
