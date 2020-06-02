@@ -22,6 +22,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import main.java.map.Coordinate;
 import main.java.map.Stop;
 import main.java.map.Street;
 import main.java.shapes.ShapeLine;
@@ -51,6 +52,7 @@ public class Controller implements Initializable {
     protected final List<Circle> circles = new ArrayList<>();
     private List<Street> strokeStreet = null;
     private  List<Street> clickedStreet = new ArrayList<>();
+    private  List<Street> shortStreet = new ArrayList<>();
     private  List<Stop> clickedStop = new ArrayList<>();
     private List<Stop> imaginaryStops = new ArrayList<>();
     private final List<String> lineID = new ArrayList<>();
@@ -240,6 +242,43 @@ public class Controller implements Initializable {
                 if (!clickedStreet.isEmpty()) {
                     clickedStop = imaginaryStopCreate(clickedStreet);
                 }
+                if(!clickedStreet.isEmpty() && !imaginaryStops.isEmpty()){
+                    Coordinate startStreet = null;
+                    Coordinate endStreet = null;
+                    Street imaginaryStreet;
+                    List<Coordinate> coordinateList;
+                    for (int k = 0; k<clickedStreet.size();k++){
+                        //set first Street
+                        if (k == 0){
+                            startStreet = new Coordinate(clickedStreet.get(k).begin().getX(),clickedStreet.get(k).begin().getY());
+                            endStreet = new Coordinate(imaginaryStops.get(k).getCoordinate().getX(),imaginaryStops.get(k).getCoordinate().getY());
+                        }
+                        //set last Street
+                        else if(k == clickedStreet.size()-1){
+                            startStreet = new Coordinate(imaginaryStops.get(k-1).getCoordinate().getX(),imaginaryStops.get(k-1).getCoordinate().getY());
+                            endStreet = new Coordinate(clickedStreet.get(k).end().getX(),clickedStreet.get(k).end().getY());
+
+                        }
+                        else{
+                            startStreet = new Coordinate(imaginaryStops.get(k-1).getCoordinate().getX(),imaginaryStops.get(k-1).getCoordinate().getY());
+                            endStreet = new Coordinate(imaginaryStops.get(k).getCoordinate().getX(),imaginaryStops.get(k).getCoordinate().getY());
+
+                        }
+                        coordinateList = new ArrayList<>();
+                        coordinateList.add(0,startStreet);
+                        coordinateList.add(1,endStreet);
+                        imaginaryStreet = new Street(clickedStreet.get(k).getId(),coordinateList);
+                        shortStreet.add(imaginaryStreet);
+                    }
+                    unstrokeLine(lineArray, clickedStreet);
+                    lineC = new ShapeLine();
+                    shortlineArray = lineC.drawLine(shortStreet,"#E5989B");
+
+                    for (javafx.scene.shape.Line lineShort : shortlineArray) {
+                        lineShort.setStrokeWidth(7);
+                        mapWindow.getChildren().addAll(lineShort);
+                    }
+                }
             }
         });
 
@@ -294,7 +333,7 @@ public class Controller implements Initializable {
             if (StreetFile != null){
                 streets = stRead.readStreets(StreetFile);
 
-                lineArray = lineC.drawLine(streets);
+                lineArray = lineC.drawLine(streets,"#000000");
 
                 for (javafx.scene.shape.Line line : lineArray) {
                     mapWindow.getChildren().addAll(line);
