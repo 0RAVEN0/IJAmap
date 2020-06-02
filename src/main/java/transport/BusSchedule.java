@@ -13,11 +13,10 @@ public class BusSchedule {
     private LocalTime arrival;
     private LocalTime departure;
 
+    private long delay;
+
     private final LocalTime originalArrival;
     private final LocalTime originalDeparture;
-
-    private static final int busyDelay = 5;
-    private static final int collapseDelay = 15;
 
     /**
      * @param start Start time of the bus journey
@@ -47,27 +46,17 @@ public class BusSchedule {
         return originalDeparture;
     }
 
-    /**
-     * Resets the schedule to the original times
-     */
-    public void reset() {
-        this.arrival = originalArrival;
-        this.departure = originalDeparture;
+    public long getDelay() {
+        return delay;
     }
 
     /**
-     * Adds 5 minute delay
+     * Sets the delay
+     * @param delay Delay in minutes
      */
-    public void setDelayBusy() {
-        this.arrival = this.originalArrival.plusMinutes(busyDelay);
-        this.departure = this.originalDeparture.plusMinutes(busyDelay);
-    }
-
-    /**
-     * Adds 15 minute delay
-     */
-    public void setDelayCollapse() {
-        this.arrival = this.originalArrival.plusMinutes(collapseDelay);
-        this.departure = this.originalDeparture.plusMinutes(collapseDelay);
+    public void setDelay(long delay) {
+        this.arrival = this.originalArrival.plusMinutes(delay);
+        this.departure = this.originalDeparture.plusMinutes(delay);
+        this.delay = delay;
     }
 }
