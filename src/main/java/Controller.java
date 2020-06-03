@@ -283,6 +283,7 @@ public class Controller implements Initializable {
                         shortStreet.add(imaginaryStreet);
                     }
                     unstrokeLine(lineArray, clickedStreet);
+                    borderP.setRight(null);
                     lineC = new ShapeLine();
                     shortlineArray = lineC.drawLine(shortStreet,"#E5989B");
 
